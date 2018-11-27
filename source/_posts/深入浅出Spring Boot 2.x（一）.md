@@ -8,6 +8,8 @@ categories :
 - 深入浅出Spring Boot 2.x
 ---
 
+概要
+
 Servlet3.0后，Web容器可以脱离web.xml的部署，可以完全基于注解开发。
 
 ### Spring Boot运行Demo
