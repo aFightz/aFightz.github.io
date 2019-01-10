@@ -34,7 +34,7 @@ select id from t_person where name = 'a';
 假设现在给加了索引(name , age)
 那么下面语句将会先过滤，减少回表次数
 select * from tuser where name like '张%' and age=10 and ismale = 1 ;
-![](MySQL实战45讲（五）\索引下推.jpg)
+![](MySQL实战45讲_05_深入浅出索引（下）\索引下推.jpg)
 
 
 

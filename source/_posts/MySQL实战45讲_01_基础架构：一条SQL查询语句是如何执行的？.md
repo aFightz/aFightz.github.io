@@ -12,7 +12,7 @@ categories :
 
 ### MySQL的逻辑架构图
 
-![](MySQL实战45讲（一）\MySQL的逻辑架构图.png)
+![](MySQL实战45讲_01_基础架构：一条SQL查询语句是如何执行的？\MySQL的逻辑架构图.png)
 
 MySQL 可以分为 `Server 层`和`存储引擎层`两部分。
 

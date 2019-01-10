@@ -20,7 +20,7 @@ redo log  使用了 `WAL（Write-Ahead Logging）技术`，即先写日志，再
 
 InnoDB 的 redo log 是固定大小的，比如可以配置为一组 4 个文件，每个文件的大小是 1GB：
 
-![](MySQL实战45讲（二）\redolog.jpg)
+![](MySQL实战45讲_02_日志系统：一条SQL更新语句是如何执行的？\redolog.jpg)
 
 <font color = "red">write pos</font> 是当前记录的位置，一边写一边后移，写到第 3 号文件末尾后就回到 0 号文件开头。<font color = "red">checkpoint</font> 是当前要擦除的位置，也是往后推移并且循环的，擦除记录前要把记录更新到数据文件。
 
