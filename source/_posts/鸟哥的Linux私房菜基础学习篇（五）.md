@@ -226,7 +226,7 @@ makewhatis
 
 ### nano
 
-nanao命令可以浏览文件，如下
+nano命令可以浏览文件，如下
 
 ```shell
 huangjunlong@ubuntu:~/Desktop$ nano test.txt

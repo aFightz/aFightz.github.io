@@ -25,8 +25,9 @@ MySQL 可以分为 `Server 层`和`存储引擎层`两部分。
 用以下命令可以登录Mysql。
 
 ```mysql
-mysql -h$ip -P$port -u$user -p
+mysql -h 127.0.0.1 -P 3306 -u root -p database_name
 ```
+之后需要输入你的密码即可。
 
 一个用户成功建立连接后，即使你用管理员账号对这个用户的权限做了修改，也<font color = "red">不会影响</font>已经存在连接的权限。
 
