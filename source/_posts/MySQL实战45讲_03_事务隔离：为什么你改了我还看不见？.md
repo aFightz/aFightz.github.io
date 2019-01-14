@@ -8,7 +8,7 @@ categories :
 - MySQL实战45讲
 ---
 
-> **概要**：主要介绍了redolog与Binlog的机制与区别
+> **概要**：主要介绍了四种隔离级别。
 
 ### 事务的四大特性（ACID）
 - 原子性（Atomicity）
@@ -55,18 +55,18 @@ Mysql：可重复读(repeatable read)。
 
 ### 设置Mysql的隔离级别
 - 全局修改。修改mysql.ini配置文件：
-  ```
+  ```sql
   #可选参数有：READ-UNCOMMITTED, READ-COMMITTED, REPEATABLE-READ, SERIALIZABLE.
   transaction-isolation = REPEATABLE-READ
   ```
 - 当前session修改。
-  ```
+  ```sql
   set session transaction isolation level read uncommitted;
   ```
 
 
 #### 查看全局与当前session事务级别
-```
+```sql
 SELECT @@global.tx_isolation; 
 SELECT @@session.tx_isolation; 
 ```
@@ -89,7 +89,7 @@ SELECT @@session.tx_isolation;
 **`commit work and chain`语句可以在提交commit后，立刻执行begin,减少客户端与Mysql的交互次数。**
 
 ### 查询长事务
-```
+```sql
 select * from information_schema.innodb_trx where TIME_TO_SEC(timediff(now(),trx_started))>60
 ```
 
