@@ -18,13 +18,32 @@ categories :
 ![](数据结构Tree以及基本应用\二叉树.png)
 
 -树的实现
+
+-二叉树的实现
+public class Tree {
+    //根节点
+    private Node head;
+}
+
+public class Node {
+    private int element;
+    HuffManNode left;
+    HuffManNode right;
+}
+
+
+
 -相关专业术语
+叶子节点
+高度
 
 
 
 树的遍历
+先序/中序/后序遍历
 
 哈夫曼树
+
 
 二叉搜索树
 
