@@ -8,7 +8,8 @@ categories :
 - 深入浅出Spring Boot 2.x
 ---
 
-**概要**：SpringBoot的快速搭建运行Demo。
+> **概要**：SpringBoot的快速搭建运行Demo。
+>
 
 Servlet3.0后，Web容器可以脱离web.xml的部署，可以完全基于注解开发。
 
@@ -18,7 +19,7 @@ Servlet3.0后，Web容器可以脱离web.xml的部署，可以完全基于注解
 
 
 
-```java
+```
 <parent>
   <groupId>org.springframework.boot</groupId>
   <artifactId>spring-boot-starter-parent</artifactId>

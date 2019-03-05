@@ -26,21 +26,32 @@ public class Tree {
 }
 
 public class Node {
-    private int element;
-    HuffManNode left;
-    HuffManNode right;
+    public int element;
+    public HuffManNode left;
+    public HuffManNode right;
 }
 
 
 
 -相关专业术语
-叶子节点
-高度
+叶子节点：没有子节点（孩子节点）的节点。
+高度：树的最大层次。
 
 
 
-树的遍历
-先序/中序/后序遍历
+树的遍历：先序/中序/后序遍历
+
+后序遍历Demo
+public void orderTraverse(Node t){
+    if(t == null){
+        return ;
+    }
+    //System.out.println(t.element); 如果在这里（前面）访问元素则是先序遍历
+    orderTraverse(t.left);
+    //System.out.println(t.element); 如果在这里（中间）访问元素则是中序遍历
+    orderTraverse(t.right);
+    System.out.println(t.element);
+}
 
 哈夫曼树
 
