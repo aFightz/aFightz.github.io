@@ -57,8 +57,12 @@ public void orderTraverse(Node t){
 
 
 二叉搜索树
+性质
+left < parent < right
+
 
 平衡二叉树(AVL Tree)
+
 
 B树
 
