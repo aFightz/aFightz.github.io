@@ -1,5 +1,5 @@
 ---
-线程安全性
+title: 02 | 线程安全性
 date: 2019-03-22 10:49:43
 tags: [并发]
 categories :
@@ -16,8 +16,9 @@ categories :
 
 - volatile
 - synchronized
-- 显示锁
-- 原子类
+- 显示锁Lock
+- 原子类Atomic
+快速记忆：<font color = "blue">阿sa背着lv（salv）</font>
 
 ##### 不变性的定义
 

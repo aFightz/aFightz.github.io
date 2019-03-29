@@ -1,5 +1,5 @@
 ---
-数据结构Tree的基本应用
+title: 数据结构Tree的基本应用
 date: 2019-02-05 17:55:43
 tags: [数据结构]
 categories :
