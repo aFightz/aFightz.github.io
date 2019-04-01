@@ -35,13 +35,12 @@ public class NoVisibility {
 - 程序正常结束，输出0
 - 正确无法结束，一直在无限循环。
 
-涉及到的知识点:
+> 涉及到的知识点:
 - volatile与Java线程模型
 - 重排序的概念
 - 多线程的环境下重排序导致的问题(可以将两个线程变成一个流程，串行去理解)
 - volatile防止重排序
 
-疑惑：实际运行的时候，如果加上Thread.yield()，其他线程ready会拿到最新值，而如果去掉Thread.yield()让while无限循环，那么ready则不会取到最新值，这是为什么？
 
 
 #### volatile
@@ -91,7 +90,7 @@ volatile不会执行加锁操作，所以开销会比synchronized更小。
 ```
 上述例子中，ThisEscape有可能还没被创建完成，doSomething方法就被调用了。
 所以不要在构造函数中，启动线程或者创建内部类。
-若一定要这么做，可以在ThisEscape构造方法<font color = "red">加锁</font>避免这个问题，或者使用工厂方法避免不必要的错误。
+若一定要这么做，可以使用工厂方法避免不必要的错误。
 
 ```java
 public class SafeListener{
@@ -114,7 +113,6 @@ public class SafeListener{
 ```
 总的思路就是，在构造完对象之前,不能让this逸出。
 
-疑惑：在构造方法中加锁怎么避免这个问题？
 
 #### 使用ThreadLocal保证线程安全
 ```java
@@ -138,12 +136,14 @@ final能保证初始化过程中的安全性。
 volatile不仅能保证初始化过程中的安全性，还能保证可见性。
 
 ##### final的重排序规则
-在构造函数内对一个final域的写入，与随后把这个被构造对象的引用赋值给一个引用变量，这两个操作之间不能重排序。
-初次读一个包含final域的对象的引用，与随后初次读这个final域，这两个操作之间不能重排序。
-要保证final在写之前不能被读。
+- 在构造函数内对一个final域的写入，与随后把这个被构造对象的引用赋值给一个引用变量，这两个操作之间不能重排序。
+- 初次读一个包含final域的对象的引用，与随后初次读这个final域，这两个操作之间不能重排序。
+
+<font color = "#7EC0EE">总的来说就是final在写之前不会被读。</font>
 
 
-对“使用不可变类来实现线程安全”的分析
+##### 对“使用不可变类来实现线程安全”的分析
+```java
 public static class Cache{
     private final Integer value;
     private final Integer[] factors;
@@ -161,30 +161,25 @@ public static class Cache{
         return Arrays.copyOf(factors , factors.length);
     }
 }
-
+```
+```java
 public static class CacheUtil{
     private volatile Cache cache = new Cache(null , null);
 
     public Integer[] getFactors(Integer i){
-    
-        Integer[] factors = cache.getFactors();
+        Integer[] factors = cache.getFactors(i);
         if(factors == null){
             //因式分解得到factors
-
-
-            cache = new Cache(i , factors);//这一步是原子操作吗
-    
+            
+            cache = new Cache(i , factors);//volatile类型的初始化是线程安全的    
         }
-        return cache.getFactors();
+        return factors;
     }
 }
-在这个Demo里，线程安全只指Cache类里的value变量与factors变量要保持同步一致，也就是说这两者要能同步初始化，同步更新。
-重点看两个点：
-- CacheUtil的cache变量使用了volatile。
-- Cache的value、factors变量使用了final。
-volatile保证cache的不会失效，这个显而易见。
-value、factors变量如果不使用final，会出现什么情况呢？有可能在构造Cache对象的时候，这两个变量还没被赋值完毕，cache引用就已经被传递出去了。导致其他线程读取的value与factors会有错误。
-但是volatile能保证构造对象的安全性，那么是不是意味着这里不用final也行呢？
+```
+
+在这个Demo里，线程安全是指Cache类里的value变量与factors变量要保持同步一致，也就是说这两者要能同步初始化，同步更新。由于没有使用DML，所以可能会出现初始化两次的情况，但是这没关系，因为逻辑就是只保存最新的因式分解结果。
+CacheUtil的cache变量使用了volatile。volatile保证cache不会失效，以及保证cache的初始化是线程安全的。
 
 
 #### 创建一个可以让其他线程访问的可变对象的四种模式
@@ -195,7 +190,8 @@ value、factors变量如果不使用final，会出现什么情况呢？有可能
 
 
 
-
+#### 疑惑
+- NoVisibilityDemo实际运行的时候，如果加上Thread.yield()，其他线程ready会拿到最新值，而如果去掉Thread.yield()让while无限循环，那么ready则不会取到最新值，这是为什么？
 
 
 
