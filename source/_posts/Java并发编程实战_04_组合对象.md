@@ -1,5 +1,5 @@
 ---
-title: 04 | 对象的共享
+title: 04 | 组合对象
 date: 2019-04-03 17:49:12
 tags: [并发]
 categories :
@@ -8,13 +8,12 @@ categories :
 - Java并发编程实战
 ---
 
-可以使用装饰器方法保护非线程安全的类。
-e.g 使用Collections.synchronizedList保护ArrayList。
+#### <center><font color = "grey">✎✎✎</font><br/><font color = "#36648B">私有锁与对象锁</font></center>
 
-私有锁与对象锁
-对象锁会暴露给外部，而私有锁不会。
+*<font color = "#4A708B">对象锁会暴露给外部，而私有锁不会。</font>*
 
-对Collections.unmodifiableMap的一些浅显探讨
+**对Collections.unmodifiableMap的一些探讨**
+
 ```java
 public class Test7 {
 
@@ -23,16 +22,13 @@ public class Test7 {
         map.put(1 , new Location(1 ,1));
 
         Map<Integer , Location> otherMap = Collections.unmodifiableMap(map);
-
         System.out.println("map "+map.get(1));   //输出 map 1,1
         System.out.println("othermap "+otherMap.get(1)); //输出 othermap 1,1
 
         map.get(1).setX(11);
-
         System.out.println("othermap "+otherMap.get(1)); //输出 othermap 11,1
 
         otherMap.get(1).setX(12);
-
         System.out.println("othermap "+otherMap.get(1)); //输出 othermap 12,1
 
         otherMap.put(2 , new Location(1 ,1)); //抛出java.lang.UnsupportedOperationException
@@ -55,19 +51,13 @@ public class Test7 {
     }
 }
 ```
-由上面的输出可知，unmodifiableMap的value执行的是深层复制，而且可以对value对象里面的属性进行更改。但是不能对引用进行更改。
+由上面的输出可知，unmodifiableMap的value执行的是`深层复制`，而且<u>*可以对value对象里面的属性进行更改。但是不能对引用进行更改*</u>。
 
-任何的线程问题都可以从这个角度出发：内存是否一致。
+任何的线程问题都可以从这个角度出发：<font color = "red">**内存是否一致**</font>。
 
+**由于锁不一样导致的问题**
 
-
-是否会存在这种情况：对象创建时引用已经赋值给变量了，但是对象方法还未被初始化？
-
-如果变量是被“线程安全”地访问，那么是不是就不存在还未被初始化就被访问的问题？（这个涉及到内存屏障的重排序问题）
-
-
-
-由于锁不一样导致的问题
+```java
 public class ListHelper<E> {
     public List<E> list = Collections.synchronizedList(new ArrayList<>());
 
@@ -79,11 +69,13 @@ public class ListHelper<E> {
         return absent;
     }
 }
+```
 
 synchronizedList这个方法提供了同步的方法，但是锁的对象是内置的一个obejct。
-由于以下几点原因：
-list的get/set的锁与putIfAbsent的锁不是同一个锁。
-list是由public修饰的，所以可以直接被访问。
+由于以下两点原因：
+- list的get/set的锁与putIfAbsent的锁不是同一个锁。
+- list是由public修饰的，所以可以直接被访问。
+
 导致putIfAbsent其实是线程不安全的。
 
 解决这个问题也很简单：
@@ -116,10 +108,8 @@ SynchronizedCollection(Collection<E> c, Object mutex) {
 }
 
 
+是否会存在这种情况：对象创建时引用已经赋值给变量了，但是对象方法还未被初始化？
 
-
-
-
-
-
+使用`装饰器方法`保护非线程安全的类：
+> e.g 使用**Collections.synchronizedList**保护ArrayList。
 
