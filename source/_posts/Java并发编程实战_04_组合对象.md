@@ -8,9 +8,9 @@ categories :
 - Java并发编程实战
 ---
 
-#### <center><font color = "grey">✎✎✎</font><br/><font color = "#36648B">私有锁与对象锁</font></center>
+#### <center><font color = "#36648B">✎</font><br/><font color = "#36648B">私有锁与对象锁</font></center>
 
-*<font color = "#4A708B">对象锁会暴露给外部，而私有锁不会。</font>*
+*<font color = "#36648B">对象锁会暴露给外部，而私有锁不会。</font>*
 
 **对Collections.unmodifiableMap的一些探讨**
 
