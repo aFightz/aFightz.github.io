@@ -36,6 +36,10 @@ binlog（归档日志）是属于Server层的日志，只能用于归档，没�
 - statement 格式：是记sql语句。
 -  row格式：记录行的内容。
 
+>
+> **思考**：为什么Binlog不具备crash-safe的能力，该怎么从数据层面去理解。
+>
+
 #### <center><font color = "#36648B">✎✎✎</font><br/><font color = "#36648B">两种日志的不同点</font></center>
 
 - redo log是InnoDB引擎特有的，而binlog是MySQL的Server层实现的，所有引擎都可以使用。
@@ -69,8 +73,3 @@ binlog（归档日志）是属于Server层的日志，只能用于归档，没�
 `innodb_flush_log_at_trx_commit`： 这个参数设置成 1 的时候，表示每次事务的 redo log 都直接持久化到磁盘。（建议设置为1）
 `sync_binlog` ：这个参数设置成 1 的时候，表示每次事务的 binlog 都持久化到磁盘。（建议设置为1）
 
-
-#### <center><font color = "#36648B">✎✎✎✎✎✎✎</font><br/><font color = "#36648B">为什么不能去掉binlog</font></center>
-
-- redolog只有InnoDB有，别的引擎没有。
-- redolog是循环写的，不持久保存。binlog的“归档”这个功能，redolog是不具备的。  
