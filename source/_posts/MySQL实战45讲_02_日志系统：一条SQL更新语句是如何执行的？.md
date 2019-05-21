@@ -44,7 +44,7 @@ binlog（归档日志）是属于Server层的日志，只能用于归档，没�
 
 - redo log是InnoDB引擎特有的，而binlog是MySQL的Server层实现的，所有引擎都可以使用。
 - redo log是<font color = "#CD5555">**物理日志**</font>，记录的是<font color = "#ADADAD">“在某个数据页上做了什么修改”</font>，binlog 是<font color = "#CD5555">**逻辑日志**</font>，记录的是这个语句的原始逻辑，比如<font color = "#ADADAD">“给ID=2这一行的c字段加1”</font>。
-- redo log是循环写的，空间固定会用完。binlog 是可以追加写入的。“追加写”是指 binlog 文件写到一定大小后会切换到下一个，并不会覆盖以前的日志。
+- redo log是循环写的，空间color =固定会用完。binlog 是可以追加写入的。“追加写”是指 binlog 文件写到一定大小后会切换到下一个，并不会覆盖以前的日志。
 
 
 
