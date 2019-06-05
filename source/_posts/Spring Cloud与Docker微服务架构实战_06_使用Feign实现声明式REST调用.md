@@ -99,12 +99,12 @@ Feign可以设置为对请求或响应进行压缩，还能对压缩进行一些
 Feign默认的日志级别是DEBUG，可以通过配置进行一些自定义的日志级别配置，甚至可以对某一特定服务进行单独的日志级别配置。
 
 #### <center><font color = "#36648B">✎✎✎</font><br/><font color = "#36648B">构造多参数请求</font></center>
-- 使用@RequestParam和Map构造get的多参数请求。
-- 使用@RequestBody构造post的多参数请求。
+- 使用`@RequestParam`和Map构造get的多参数请求。
+- 使用`@RequestBody`构造post的多参数请求。
 
 
 #### <center><font color = "#36648B">✎✎✎✎</font><br/><font color = "#36648B">使用Feign上传文件</font></center>
-- 引入feign-form（需要使用它的Encoder）。
+- 引入`feign-form`（需要使用它的Encoder）。
 - Hystrix的超时时间需要设长一点。不然文件还没上传完就超时了。
 
 
