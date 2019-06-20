@@ -334,6 +334,7 @@ int[] smallPrimes = new int[2];
 smallPrimes[0] = 1;
 ```
 
+
 <font color = "#36648B">匿名数组</font>
 ```java
 new int[]{2,3,5} ;
