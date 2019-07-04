@@ -78,6 +78,7 @@ docker run [OPTIONS] IMAGE [COMMAND][ARG..]
   - hostPort:containerPort 
   - containerPort
 
+
 <font color = "#CD5555">**启动并进入交互式容器**</font>
 ```
 docker run -it centos = docker run -it centos /bin/bash
@@ -93,7 +94,13 @@ Docker容器运行，需要有一个前台进程。容器运行的命令如果�
 ```
 docker run-d centos /bin/sh -c "while true;do echo hello zzyy;sleep 2;done"（可以通过容器日志看到这些输出。）
 ```
+<font color = "#CD5555">**启动时指定端口映射**</font>
+```
+docker run -it -p 8080(容器端口):8080(宿主机端口) tomcat
 
+#宿主机端口随机分配
+docker run -it -P tomcat  
+```
 
 **2、列出当前所有正在运行的容器**
 ```
