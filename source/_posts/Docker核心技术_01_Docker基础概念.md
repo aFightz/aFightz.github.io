@@ -5,7 +5,7 @@ tags: [Docker]
 categories :
 - 学习笔记
 - Docker
-- 尚硅谷_Docker核心技术
+- Docker核心技术
 ---
 
 #### <center><font color = "#36648B">✎</font><br/><font color = "#36648B">Docker与传统虚拟机</font></center>

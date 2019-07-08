@@ -5,7 +5,7 @@ tags: [Docker]
 categories :
 - 学习笔记
 - Docker
-- 尚硅谷_Docker核心技术
+- Docker核心技术
 ---
 
 #### <center><font color = "#36648B">✎</font><br/><font color = "#36648B">帮助命令</font></center>
@@ -67,7 +67,7 @@ docker rmi -f $（docker images -qa）             #删除全部
 docker run [OPTIONS] IMAGE [COMMAND][ARG..]
 ```
 <font color = "#CD5555">OPTIONS：</font>
-- **-name**：为容器指定一个名称。
+- **--name**：为容器指定一个名称。
 - **-d**：后台运行容器，并返回容器ID，也即启动守护式容器。
 - **-i**：以交互模式运行容器，通常与-t同时使用。
 - **-t**：为容器重新分配一个伪输入终端，通常与-i同时使用。

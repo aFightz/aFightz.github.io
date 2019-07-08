@@ -5,7 +5,7 @@ tags: [Docker]
 categories :
 - 学习笔记
 - Docker
-- 尚硅谷_Docker核心技术
+- Docker核心技术
 ---
 
 #### <center><font color = "#36648B">✎</font><br/><font color = "#36648B">镜像加速</font></center>
@@ -17,7 +17,7 @@ categories :
 docker run hello-world（不添加版本号，则默认是 hello-world:latest）
 ```
 **run的过程**
-![](尚硅谷_Docker核心技术_03_Docker的helloworld\run命令的过程.jpg)
+![](Docker核心技术_03_Docker的helloworld\run命令的过程.jpg)
 
 
 
