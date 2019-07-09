@@ -47,7 +47,24 @@ service docker start
 docker version
 ```
 
+#### <center><font color = "#36648B">✎✎✎</font><br/><font color = "#36648B">开启2375端口</font></center>
+**1、编辑以下文本**
+```
+vim /usr/lib/systemd/system/docker.service
+#或者
+vim /lib/systemd/system/docker.service
+```
 
+将文件内容编辑如下(简略)：
+```
+ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix://var/run/docker.sock \
+```
+
+**2、重启docker**
+```
+systemctl daemon-reload   
+systemctl restart docker
+``` 
 
 
 
