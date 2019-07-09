@@ -39,7 +39,7 @@ docker images [OPTIONS]
 
 **2、Docker镜像查找**
 ```
-docker search imagename #可模糊查找，即使配了阿里云镜像加速，也会到DockerHub查。
+docker search [IMAGE_NAME] #可模糊查找，即使配了阿里云镜像加速，也会到DockerHub查。
 ```
 <font color = "#CD5555">OPTIONS：</font>
 - **--no-trunc**：显示完整的镜像描述。
@@ -50,21 +50,31 @@ docker search imagename #可模糊查找，即使配了阿里云镜像加速，�
 
 **3、拉Docker镜像**
 ```
-docker pull imagename
+docker pull [IMAGE_NAME]
 ```
 
 **4、删除镜像**
 ```
-docker rmi -f imageid                            #删除单个
-docker rmi -f imagename1：TAG imagename2：TAG    #删除多个
-docker rmi -f $（docker images -qa）             #删除全部
+docker rmi -f [IMAGE_ID]                            #删除单个
+docker rmi -f [IMAGE_NAME] [IMAGE_NAME]    #删除多个
+docker rmi -f $(docker images -qa)             #删除全部
+```
+
+**5、查看镜像构建历史**
+```
+docker history [IMAGE] 
+```
+
+**6、给镜像命名**
+```
+docker tag [IMAGE_ID] [REPOSITORY]:[TAG]
 ```
 
 
 #### <center><font color = "#36648B">✎✎✎</font><br/><font color = "#36648B">容器命令</font></center>
 **1、新建并启动容器**
 ```
-docker run [OPTIONS] IMAGE [COMMAND][ARG..]
+docker run [OPTIONS] [IMAGE] [COMMAND][ARG..]
 ```
 <font color = "#CD5555">OPTIONS：</font>
 - **--name**：为容器指定一个名称。
@@ -82,25 +92,25 @@ docker run [OPTIONS] IMAGE [COMMAND][ARG..]
 
 <font color = "#CD5555">**启动并进入交互式容器**</font>
 ```
-docker run -it centos = docker run -it centos /bin/bash
+docker run -it [IMAGE] = docker run -it [IMAGE] /bin/bash
 ```
 
 
 <font color = "#CD5555">**启动守护式容器**</font>(以后台进程方式运行)
 ```
-docker run -d centos
+docker run -d [IMAGE]
 ```
 Docker容器运行，需要有一个前台进程。容器运行的命令如果不是那些一直挂起的命令（比如运行top，tail)，是会自动退出的。
 可以启动容器并循环打印消息到前台（如下），这样容器就不会自动退出。（自动退出检测的时间间隔是多久？）
 ```
-docker run-d centos /bin/sh -c "while true;do echo hello zzyy;sleep 2;done"（可以通过容器日志看到这些输出。）
+docker run-d [IMAGE] /bin/sh -c "while true;do echo hello zzyy;sleep 2;done"（可以通过容器日志看到这些输出。）
 ```
 <font color = "#CD5555">**启动时指定端口映射**</font>
 ```
-docker run -it -p 8080(容器端口):8080(宿主机端口) tomcat
+docker run -it -p 8080(容器端口):8080(宿主机端口) [IMAGE]
 
 #宿主机端口随机分配
-docker run -it -P tomcat  
+docker run -it -P [IMAGE]  
 ```
 
 **2、列出当前所有正在运行的容器**
@@ -121,61 +131,61 @@ docker ps [OPTIONS]
 
 **4、启动容器**
 ```
-docker start 容器ID或者容器名
+docker start [CONTAINER]
 ```
 
 **5、重启容器**
 ```
-docker restart 容器ID或者容器名
+docker restart [CONTAINER]
 ```
 
 **6、停止容器**
 ```
-docker stop 容器ID或者容器名
+docker stop [CONTAINER]
 ```
 
 **7、强制停止容器**
 ```
-docker kill 容器ID或者容器名
+docker kill [CONTAINER]
 ```
 
 **8、删除已停止的容器**
 ```
-docker rm 容器ID
-docker rm -f 容器ID(强制删除，可以删除正在运行的容器)
+docker rm [CONTAINER_ID]
+docker rm -f [CONTAINER_ID](强制删除，可以删除正在运行的容器)
 ```
 
-一次性删除多个容器
+**9、一次性删除多个容器**
 ```
 docker rm -f $(docker ps -a -q)
 docker ps -a -q | xargs docker rm
 ```
 
-**9、查看容器日志**
+**10、查看容器日志**
 ```
-docker logs -f -t --tail 容器ID
+docker logs -f -t --tail [CONTAINER_ID]
 ```
 - -t: 是加入时间戳。
 - -f: 跟随最新的日志打印。
 - --tail: 数字显示最后多少条。
 
-**10、查看容器内运行的进程**
+**11、查看容器内运行的进程**
 ```
-docker top 容器ID
-```
-
-**11、查看容器内部细节**
-```
-docker inspect 容器ID
+docker top [CONTAINER_ID]
 ```
 
-**12、进入正在运行的容器并以命令行交互**
+**12、查看容器内部细节**
 ```
-docker exec -it 容器ID bashShell
+docker inspect [CONTAINER_ID]
+```
+
+**13、进入正在运行的容器并以命令行交互**
+```
+docker exec -it [CONTAINER_ID] [BASH_SHELL]
 ```
 exec是在容器中打开新的终端，并且可以启动新的进程。（不用进入到容器内进行交互，可以直接执行bashShell）
 ```
-docker attach 容器ID = docker exec-t 容器ID /bin/bash
+docker attach [CONTAINER_ID] = docker exec-t [CONTAINER_ID] /bin/bash
 ```
 attach直接进入容器启动命令的终端，不会启动新的进程
 attach进入容器后，exit会退出并关闭容器，exec进入容器（用/bin/bash这种方式），exit会退出但并不关闭容器。
@@ -183,15 +193,35 @@ attach进入容器后，exit会退出并关闭容器，exec进入容器（用/bi
 
 **13、从容器内拷贝文件到主机上**
 ```
-docker cp 容器ID:容器内路径 目的主机路径
-```
-
-**14、查看镜像构建历史**
-```
-docker history IMAGE 
+docker cp [CONTAINER_ID]:[容器内路径] [目的主机路径]
 ```
 
 
+
+#### <center><font color = "#36648B">✎✎✎</font><br/><font color = "#36648B">导入与导出</font></center>
+**1、导出镜像 > 导入镜像**
+```
+#导出
+docker save -o [目标文件] [IMAGE]
+docker save > [目标文件] [IMAGE]
+#导出
+docker load < [目标文件]
+docker load -i [目标文件]
+```
+
+**2、导出容器 > 导入镜像**
+```
+#导出
+docker export -o [目标文件] [CONTAINER]
+#导入
+docker import [目标文件] [REPOSITORY]:[TAG]
+cat [目标文件] | docker import - [REPOSITORY]:[TAG]
+```
+
+**3、这两者的区别**
+- save的来源是镜像，export的来源是容器。
+- export的文件会小一点。
+- load会保存镜像的所有历史记录。import丢失所有元数据和历史记录，仅保存容器当时的状态。
 
 
 
