@@ -66,18 +66,19 @@ ls /
 ```
 
 #### <center><font color = "#36648B">✎✎</font><br/><font color = "#36648B">配置参数解读</font></center>
-- **tickTime=2000**：
-每隔一个tickTime就会发送一个心跳，时间单位为毫秒。它用于心跳机制，并且设置session的最小超时时间是**2*tickTime**。
+- **tickTime=2000**
+每隔一个tickTime就会发送一个心跳，时间单位为毫秒。它用于心跳机制，并且设置session的最小超时时间是`2*tickTime`。
 
-- **initLimit=10**：
-LF初始通信时限。集群中的Follower与Leader之间初始连接时最长等待时间为initLimit*tickTime。
+- **initLimit=10**
+LF初始通信时限。集群中的Follower与Leader之间初始连接时最长等待时间为`initLimit*tickTime`。
 
-- **syncLimit=5**：LF同步通信时限。假如响应超过syncLimit*tickTime，Leader认为Follwer死掉，从服务器列表中删除Follwer。
+- **syncLimit=5**
+LF同步通信时限。假如响应超过`syncLimit*tickTime`，Leader认为Follwer死掉，从服务器列表中删除Follwer。
 
-- **dataDir**：
+- **dataDir**
 数据文件目录+数据持久化路径。主要用于保存Zookeeper中的数据。
 
-- **clientPort=2181**：
+- **clientPort=2181**
 客户端连接端口监听客户端连接的端口。
 
 
