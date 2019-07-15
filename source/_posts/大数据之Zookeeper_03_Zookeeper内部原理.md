@@ -16,7 +16,7 @@ categories :
 
 
 #### <center><font color = "#36648B">✎✎</font><br/><font color = "#36648B">节点类型</font></center>
-**1、类型分类**
+**1、类型**
 - **持久（Persistent）**：客户端和服务器端断开连接后，创建的节点不删除。
   持久分为两种类型：
   - **持久化目录节点**：客户端与Zookeeper断开连接后，该节点依旧存在。

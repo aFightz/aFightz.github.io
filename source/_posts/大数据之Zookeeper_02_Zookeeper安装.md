@@ -44,6 +44,7 @@ dataDir=[自定义的zkData路径]
 ```
 [ZK_PATH]/bin/zkServer.sh status
 ```
+可以知道这个server是leader还是follower。
 
 - 启动客户端
 ```
