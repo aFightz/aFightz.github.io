@@ -1,5 +1,5 @@
 ---
-title: 02 | Zookeeper内部原理
+title: 03 | Zookeeper内部原理
 date: 2019-07-15 18:43:28
 tags: [Zookeeper]
 categories :
@@ -35,8 +35,39 @@ categories :
 > 这个顺序标识可以知道全局中哪个节点先上线。
 
 
+#### <center><font color = "#36648B">✎✎✎</font><br/><font color = "#36648B">Stat结构体</font></center>
+- czxid：创建节点的事务zid
+  - 每次修改ZooKeeper状态都会收到一个zxid形式的时间戳，也就是**ZooKeeper事务ID**。
+  - 事务ID是ZooKeeper中所有修改总的次序。每个修改都有**唯一**的zxid，如果zxid1小于zxid2，那么zxid1在zxid2之前发生。
+- ctime-znode：被创建的毫秒数（从1970年开始）。
+- mzxid-znode：最后更新的事务zxid。
+- mtime-znode：最后修改的毫秒数（从1970年开始）。
+- pZxid-znode：最后更新的子节点zxid。
+- cversion-znode：子节点变化号，zmode子节点修改次数。
+- dataversion-znode：数据变化号。
+- aclVersion-znode：访问控制列表的变化号。
+- ephemeralOwner：如果是临时节点，这个是znode拥有者的session id。如果不是临时节点则是0。
+- dataLength：znode的数据长度。
+- numChildren：znode子节点数量。
 
 
+#### <center><font color = "#36648B">✎✎✎✎</font><br/><font color = "#36648B">监听器原理</font></center>
+**1、监听过程**
+- 首先要有一个main()线程。
+- 在main线程中创建Zookeeper客户端，这时就会创建两个线程，一个负责网络连接通信（connet），一个负责监听（listener）。
+- 通过connect线程将注册的监听事件发送给Zookeeper。
+- 在Zookeeper的注册监听器列表中将注册的监听事件添加到列表中。
+- Zookeeper监听到有数据或路径变化，就会将这个消息发送给listener线程。
+- listener线程内部调用了process()方法。(回调方法)
 
+
+#### <center><font color = "#36648B">✎✎✎✎✎</font><br/><font color = "#36648B">写数据流程</font></center>
+- Client向ZooKeeper的Server1上写数据，发送一个写请求。
+- 如果Server1不是Leader，那么Server1会把接受到的请求进一步转发给Leader，因为每个ZooKeeper的Server里面有一个是Leader。这个Leader会将写请求广播给各个Server，比如Server1和Server2，各个Server写成功后就会通知Leader。
+- 当Leader收到大多数(半数以上)Server数据写成功了，那么就说明数据写成功了。
+> 如果这里三个节点的话，只要有两个节点数据写成功了，那么就认为数据写成功了。写成功之后，Leader会告诉Server1数据写成功了。
+- Server1会进一步通知Client数据写成功了，这时就认为整个写操作成功。
+
+![](大数据之Zookeeper_03_Zookeeper内部原理\写数据过程.jpg)
 
 
