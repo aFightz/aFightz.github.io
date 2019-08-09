@@ -56,3 +56,15 @@ ack为on可以保证生产者不会丢数据。ack为on时的写入流程如下�
 **1、消费者组**
 每个分区在同一时间只能由group中的一个消费者读取，但是多个group可以同时消费这个partition。如果一个消费者失败了，那么其他的group成员会自动负载均衡读取之前失败的消费者读取的分区。
 
+
+**2、消费者组Demo**
+
+- 指定groupId。修改/config/consumer.properties配置文件中的group.id属性。
+```
+vi consumer.properties
+group.id=atguigu
+```
+- 启动消费者
+```
+bin/kafka-console-consumer.sh --zookeeper hadoop102:2181 --topic first --consumer.config config/consumer.properties
+```
