@@ -13,22 +13,26 @@ categories :
 > 所以这就是有些类的构造方法中为什么一定要有super的原因
 
 一个对象变量可以指示多种实际类型的现象被称为<font color = "#CD5555">多态</font>，在运行时能够自动地选择调用哪个方法的现象称为<font color = "#CD5555">动态绑定</font>。
-Java中，子类数组的引用可以转换成超类数组的引用，而不需要采用强制类型的转换。
-同样的子类对象的引用可以转换成超类对象的引用，而不需要采用强制类型的转换。
+- 子类数组的引用可以转换成超类数组的引用，而不需要采用强制类型的转换。
+- 同样的子类对象的引用可以转换成超类对象的引用，而不需要采用强制类型的转换。
 
-Employee类
+> 总的来说就是：
+引用一定要“>=”对象。
+赋值时，左边的引用要“>=”右边的引用，否则需要强转。（有可能强转失败）
+
+Employee类（父类）
 ```java
 public class Employee {
 
 }
 ```
-Manager类
+Manager类（子类）
 ```java
 public class Manager extends Employee{
     public void say(){}
 }
 ```
-以下代码会导致`ArrayStoreException`
+以下代码会导致`ArrayStoreException`：
 ```java
 Manager[] managers = new Manager[10];
 Employee[] staff = managers;
@@ -78,20 +82,21 @@ Manager：
 #### <center><font color = "#36648B">✎✎✎</font><br/><font color = "#36648B">阻止继承 ： final类与方法</font></center>
 final修饰的类与方法不能被继承。
 
-将一个类定义为final后，这个类的全部方法都将变为final，但属性并不会变成final。
+将一个类定义为final后，这个类的**全部方法都将变为final，但属性并不会变成final**。
 
 早期的Java中，有些程序员为了避免动态绑定带来的系统开销而使用final关键字。
 如果一个方法没有被覆盖、被调用很频繁并且很短，编译器就能够对它进行优化，这个过程被称为内联。
 
-e.g 内联调用`e.getName()`将被替换为访问`e.name`域。
-因为CPU在处理调用方法的指令时，使用的分支转移会扰乱预取指令的策略。
-如果getNmae在另外一个类中被覆盖，编译器无法知道被覆盖的代码将做什么操作，因此也就不能对它进行内联处理了。
+```
+e.g 内联调用e.getName()将被替换为访问e.name域。
+```
+如果getNmae在另外一个类中被覆盖，编译器无法知道被覆盖的代码将做什么操作，也就不能对它进行内联处理了。
 
 当虚拟机加载了另外一个子类，而这个子类中包含了对内联方法的覆盖，那么优化器将取消对覆盖方法的内联。
 
 在继承链上进行向下的转换会报`ClassCastException`错误。
-
 所以在强转前最好先事先判断一下。
+
 e.g.
 ```java
 if(C instanceof D){//假设C是D的子类
