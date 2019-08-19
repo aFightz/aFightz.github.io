@@ -1,5 +1,5 @@
 ---
-title: 05 | 接口、lambda表达式与内部类
+title: 06 | 接口、lambda表达式与内部类
 date: 2019-08-19 17:23:20
 tags: [Java基础]
 categories :
