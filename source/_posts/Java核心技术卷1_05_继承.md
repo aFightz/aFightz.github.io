@@ -367,25 +367,28 @@ Boolean类里边定义了值为true和false的两个final类。不管Boolean的�
 
 #### <center><font color = "#36648B">✎✎✎✎✎✎✎✎✎</font><br/><font color = "#36648B">参数数量可变的方法</font></center>
 
-
+```java
 public void test(Object...){
 }
-Object..参数类型与Object[]完全一样。
-调用时像以下这样调用
-
-test(Object1 , Object2 ...);
-
+```
+`Object..`参数类型与`Object[]`完全一样。
+调用时像以下这样调用：
+```java
+test(Object1 , Object2);
+```
 
 #### <center><font color = "#36648B">✎✎✎✎✎✎✎✎✎✎</font><br/><font color = "#36648B">枚举类</font></center>
-
+```java
 public enum TestEnum {
     ONE,
     TWO
 }
-这个声明定义的类型是一个类，它刚好有2个实例，所以在比较两个枚举类型的值时，永远不需要调用equals，而直接使用“==”就可以了。
+```
+这个声明定义的类型是一个类，它刚好有2个**实例**，所以在比较两个枚举类型的值时，永远不需要调用equals，而直接使用“==”就可以了。
+> **可以与单例模式关联起来**。
 
 可以在枚举类型中添加一些构造器、方法和属性：
-
+```java
 public enum TestEnum {
     ONE(1),
     TWO(2);
@@ -397,162 +400,19 @@ public enum TestEnum {
         this.value = value;
     }
 }
+```
+
+`static Enum valueOf(Class enumClass , String name)`
+返回指定名字、给定类的枚举常量。
 
 
-static Enum valueOf(Class enumClass , String name)
-返回指定名字、给定类的枚举常量
+`String toString()`
+返回枚举常量名。
 
 
-String toString()
-返回枚举常量名
+`int ordinal()`
+返回枚举常量在enum声明中的位置，位置从0开始计数。
 
 
-int ordinal()
-返回枚举常量在enum声明中的位置，位置从0开始计数
-
-
-int compareTo(E other)
+`int compareTo(E other)`
 如果枚举常量出现在other之前，则返回一个负值；如果this==other，则返回0；否则返回正值。枚举常量的出现次序在enum声明中给出。
-
-#### <center><font color = "#36648B">✎✎✎✎✎✎✎✎✎✎✎</font><br/><font color = "#36648B">Class类</font></center>
-可以根据存储在字符串中的类名创建一个对象：
-
-String s  = "java.util.Random";
-Object m = Class.forName(s).newInstance();
-
-
-利用反射分析类的能力
-
-java.lang.Class
-
-public Field[] getFields()         //返回记录了这个类或其超类的公有域的Field对象数组。
-public Field[] getDeclaredFields() //返回记录了这个类全部域的数组（不包含超类的）
-
-//返回方法
-public Method[] getMethods()                
-public Method[] getDeclaredMethods()
-
-//返回构造器
-public Constructor<?>[] getConstructors()
-public Constructor<?>[] getDeclaredConstructors()
-
-
-java.lang.reflect.Field
-java.lang.reflect.Method
-java.lang.reflect.Constuctor
-
-public Class<T> getDeclaringClass()   //返回一个描述类中定义的构造器、方法或域的Class对象。
-public Class<?>[] getExceptionTypes() //返回一个用于描述方法抛出的异常类型的Class对象数组。（在Constructor和Method类中）
-public int getModifiers() //返回一个用于描述构造器、方法或域的修饰符的整型数值。使用Modifier类中的方法可以分析这个返回值。
-public String getName()   //返回一个用于描述构造器、方法或域名的字符串
-public Class<?>[] getParameterTypes() //返回一个用于描述参数类型的Class对象数组。（在Constructor和Method类中）
-public Class<?> getReturnType()  //返回一个用于描述返回类型的Class对象。（在Method类中）
-
-
-
-java.lang.reflect.Modifier
-
-public static String toString(int mod)    //返回对应modifiers中位设置的修饰符的字符串标识。
-public static boolean isXXX (int mod)   //是否是此修饰符的判
-
-
-在运行时使用反射分析对象
-
-e.g
-
-Employee harry = new Employee();
-harry.setName("harry hacker");
-
-Class cl = harry.getClass();
-Field f = cl.getDeclaredField("name");
-Object v = f.get(harry);//返回name field 的object
-System.out.println(v);  //harry hacker
-上面的代码会有问题，因为name属性是private的，所以不可以直接用get访问到，还得再加上一句。
-
-f.setAccessible(true);
-setAccessible方法时AccessibleObject类中的一个方法，它是Field、Method和Constructor类的公共超类。
-上述代码的egt方法还有一个需要解决的问题。因为name是String类型，属于Object，所以调用get返回一个Object没什么问题，假设要访问一个类型为double(double是基本类型，不属于Object)，那么该怎么办呢？
-可以调用getDouble方法（但是调用get方法也可以，只是返回的是Object，需要自己另外强转）。
-
-
-java.lang.reflect.AccessibleObject
-
-public void setAccessible(boolean flag) //为反射对象设置可访问标志。flag为true表面屏蔽Java语言的访问检查，使得对象的私有属性也可以被查询和是遏制
-public boolean isAccessible()  //返回反射对象可访问标志的值
-public static void setAccessible(AccessibleObject[] array, boolean flag) 
-
-
-
-java.lang.Class
-
-public Field getField(String name)  //返回指定名称的公有域
-public Field[] getFields()
-Field getDeclaredField(String name) //返回类中给定名称的域。
-public Field[] getDeclaredFields()
-
-
-java.lang.reflect.Field
-
-public Object get(Object obj)  //返回obj对象中表示的域值
-public void set(Object obj, Object value) //用newValue设置Obj对象中Field对象表示的域
-
-使用反射编写泛型数组代码
-
-动态扩建数组Demo
-
-public static Object[] badCopyOf(Object[] a , int newLength){
-    Object[] newArray = new Object[newLength];
-    System.arraycopy(a,0,newArray,0,Math.min(a.length,newLength));
-    return newArray;
-}
-这种转换有一个问题，一个对象数组不能转换为雇员数组（Employee[]）。Java数组会记住每个元素的类型，即创建数组时new表达式使用的元素类型。将一个Employee[]临时地转换成Object[]数组，然后再把它转换回来是可以的，但从一个开始就是Object[]的数组却永远不能转换成Employee[]数组。
-
-以下的Demo可以适用于任何类型的数组扩建
-
-public static Object goodCopyOf(Object a , int newLength){
-    Class cl = a.getClass();
-    if(!cl.isArray()){
-        return null;
-    }
-    Class componentType = cl.getComponentType();
-    int length = Array.getLength(a);
-    Object newArray = Array.newInstance(componentType,newLength);
-    System.arraycopy(a,0,newArray,0,Math.min(length,newLength));
-    return newArray;
-}
-
-
-
-java.lang.reflect.Array
-
-public static native Object get(Object array, int index) 
-public static native xxx getXxxx(Object array, int index)  //xxx是8种基本类型种的一种，返回指定位置上的内容
-public static native void set(Object array, int index, Object value)
-public static native void seXxx(Object array, int index, Object value)
-public static native int getLength(Object array)
-public static Object newInstance(Class<?> componentType, int length)
-public static Object newInstance(Class<?> componentType, int... dimensions) //返回一个具有指定类型，指定维数的新数组
-
-调用任意方法
-假设用m1代表Employee类的getName方法，下面这条语句显示了如何调用这个方法：
-
-String n = (String)m1.invoke(harry);
-
-
-下面说明了如何获得Employee类的getName方法和raiseSalary方法的方法指针。
-
-Method m1 = Employee.class.getMethod("getName");
-Method m2 = Employee.class.getMethod("raiseSalary",double.class);
-
-
-使用反射获得方法指针的代码要比仅仅直接调用方法明显慢一下。
-
-
-
-
-
-
-
-
-
-
