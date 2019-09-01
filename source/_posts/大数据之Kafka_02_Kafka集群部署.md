@@ -71,6 +71,7 @@ log.segment.bytes=1073741824
 zookeeper.connect=hadoop102:2181 , hadoop103:2181 , hadoop104:2181
 ```
 > 黑科技：可以用sublime text直接连上服务器的文件修改。（安装sftp插件）
+> **问题**：kafka配置文件中没有指定kafka的集群配置，只指定了zk的集群配置。这其中是怎么实现kafka集群的？
 
 **5、配置环境变量**
 （这步其实可以不用配置，只是方便而已，但是可以了解一下配置环境变量的步骤）
