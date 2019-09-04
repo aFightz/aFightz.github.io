@@ -55,9 +55,6 @@ bin/kafka-console-consumer.sh --zookeeper hadoop102:2181 --from-beginning --topi
 新版本的kafka会把offset**维护在本地**（`consumer_offsets`这个topic）而不是zk。
 consumer在消费时如果**没指定组id，则随机分配一个组Id**。
 
-> **问题：** 
-为什么发送消息与消费消息不用指定分区？是有默认的吗？
-
 **6、查看某个Topic的详情**
 ```
 bin/kafka-topics.sh --zookeeper hadoop102:2181 --describe --topic first
