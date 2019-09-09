@@ -259,9 +259,8 @@ public class Employee {
 `static int hash(Object... objects)`:
 返回一个散列码，由提供的所有对象的散列码组合而成。
 
-Equals与hashCode的定义必须一致：如果x.equals(y)返回true，那么x.hashCode()就必须与y.hashCode()具有相同的值。 如果equals方法返回false，hashcode可以相等，但是这样不利于哈希表的性能。
-hashcode相等的对象未必相等。因为hashcode是取余得出的。
-哈希表判断对象是否相同的依据是equals与hashCode都相同。
+Equals与hashCode的定义必须一致：如果x.equals(y)返回true，那么x的hashIndex就必须等于y的hashIndex(hashcode也可以不一样)。 如果equals方法返回false，hashcode可以相等，但是这样不利于哈希表的性能。
+哈希表判断对象是否相同的依据是equals与hashIndex都相同。
 如果存在数组类型的域，那么可以使用静态的`Arrays.hashCode`方法计算一个散列码，这个散列码由数组元素的散列码组成。
 
 #### <center><font color = "#36648B">✎✎✎✎✎</font><br/><font color = "#36648B">toString方法</font></center>
