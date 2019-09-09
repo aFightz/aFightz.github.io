@@ -261,5 +261,101 @@ Arrays.sort(employees, comparing(Employee::geteFlag,(s,t)->t-s));
 - 非静态内部类不能有静态方法也不能有静态变量。
 
 **3、内部类是否有用、必要和安全**
-编译器会将内部类翻译成用$(美元符号)分隔外部类名与内部类名的常规类文件，而虚拟机则对此一无所知。
+编译器会将内部类翻译成用**$**(美元符号)分隔外部类名与内部类名的常规类文件，而虚拟机则对此一无所知。
+假设现在将Outer定义为常规类，将Inner定义为Outer的内部类，那么Inner在创建的时候，Outer的对象会传给Inner，但是即使是这样，Inner也访问不了Outer私有域，那么内部类是如何管理这些额外的访问特权呢？
 
+用反射的方法去查看Outer类会发现
+```java
+class Outer{
+   private int interval;
+   private boolean beep;
+   
+   public Outer(int , boolean);
+   static boolean access$0(Outer);
+   public void start();
+}
+```
+
+access$0将返回beep。（方法名可能稍有不同，如access$000，这取决于你的编译器。）
+
+**4、局部内部类**
+
+Demo
+```java
+public class Outer {
+    public void start(){
+        class Inner implements ActionListener{
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("hello world");
+            }
+        }
+
+        ActionListener listener = new Inner();
+        Timer t = new Timer(1,listener);
+        t.start();
+    }
+}
+```
+局部内部类不能用public或private访问说明符进行声明。
+
+局部类有一个优势，除了start方法之外，没有任何类知道Inner方法的存在。
+
+
+**5、由外部方法访问变量**
+与其他内部类相比，局部内部类还有一个优点。它们不仅能够访问包含它们的外部类，还可以访问局部变量。不过那些局部变量不可以被改变。（Java 8之前这些局部变量必须声明为final）。
+
+Demo
+```java
+public class Outer {
+    public void start(int interval , boolean beep){
+        class Inner implements ActionListener{
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("hello world");
+                if(beep){
+                    System.out.println("beep");
+                }
+            }
+        }
+        //beep = false;    //如果加上这句编译会错误
+        ActionListener listener = new Inner();
+        Timer t = new Timer(interval,listener);
+        t.start();
+    }
+}
+```
+在创建Inner类时有保存interval与beep两个参数的局部副本。
+
+
+**6、匿名内部类**
+```java
+public void start(int interval , boolean beep){
+
+    ActionListener listener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.out.println("hello world");
+            if(beep){
+                //do nothing
+            }
+        }
+    };
+    Timer t = new Timer(interval,listener);
+    t.start();
+}
+```
+如果构造参数的括号后面跟一个大括号，正在定义的就是匿名内部类。
+
+**7、双括号初始化**
+```java
+invite(new ArrayList<String>(){{add("Harry");add("Tony");}});
+```
+
+**8、静态内部类**
+只有内部类可以声明为static。
+在内部类不需要访问外围类对象的时候，应该使用静态内部类。
+与常规内部类不同，静态内部类可以有静态域和方法。
+**声明在接口中的内部类自动成为static和public类**。
+静态内部类可以直接new。
