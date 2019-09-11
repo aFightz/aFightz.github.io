@@ -145,18 +145,47 @@ if (a instanceof Pair<String>) // Error
 if (a instanceof Pair<T>) // Error
 if (a instanceof Pair) //true
 ```
-//这一句不理解
-Pair<String> p = (Pair<String>) a; // Warning-can only test that a is a Pair
 
-发现一个不理解的地方：
-
+值得注意的点：
+```java
 Pair pair = new Pair<Employee>();
 pair.setData("aa");
 System.out.println(pair.getData().getClass()); //class java.lang.String
+```
 
-
-
+```java
 Pair<String> stringPair = . .
 Pair<Employee〉employeePair = . .
 if (stringPair.getClassO == employeePair.getClassO) // true
-两次调用 getClass 都将返回 Pair.class。
+```
+两次调用getClass都将返回Pair.class。
+
+
+**3、不能创建参数化类型的数组**、
+```
+Pair<String>[] table = new Pair<String>[10]; // Error
+```
+
+不能创建参数化类型数组的原因:
+- 假设这是合法的:
+```java
+Pair<String>[] table = new Pair<String>[10];
+```
+   擦除之后，table的类型是Pair[]。
+
+- 那么可以把它转换为Object[]: 
+```java
+Object[] objarray = table；
+```
+- 数组会记住它的元素类型（Pair），如果试图存储其他类型的元素，就会抛出一个ArrayStoreException异常（但是编译可以通过）：
+```java
+objarray[0] = "Hello"; // Error component type is Pair
+```
+
+- 不过对于泛型类型， 擦除会使这种机制无效。以下赋值： 
+```java
+objarray[0] = new Pair<Employee>;
+```
+   能够通过数组存储检査，不过这是一个类型错误。所以不允许这样子创建。
+
+> 注意：只是不允许创建这些数组， 而声明类型为`Pair<String>[]`的变量仍是合法的。只是不能用`new Pair<String>[10]`初始化这个变量。
