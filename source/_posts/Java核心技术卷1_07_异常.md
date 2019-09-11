@@ -38,3 +38,45 @@ try{
 ```
 只有当捕获的异常类型彼此之间不存在子类关系时才需要这个特性。
 捕获多个异常时， 异常变量隐含为**final变量**。
+
+
+**2、再次抛出异常与异常链**
+在catch子句中可以抛出一个异常，这样做的目的是改变异常的类型，
+```java
+try{
+    ...
+}catch (SQLException e){
+    throw new IOException(e.getMessage());
+}
+```
+可以有一种更好的处理方法，并且将原始异常设置为新异常的“原因”：
+```java
+try{
+    ...
+}catch (SQLException e){
+    Throwable se = new IOException("Exception 转换");
+    se.initCause(e);
+    throw se;
+}
+```
+当捕获到异常时， 就可以使用下面这条语句重新得到原始异常：
+```java
+Throwable se = se.getCause();
+```
+如果在一个方法中发生了一个受查异常，而不允许抛出它，那么包装技术就十分有用。我们可以捕获这个受查异常，并将它包装成一个运行时异常。
+
+**3、finally块抛异常**
+假设在try语句块中的代码抛出了一些非IOException的异常，并throw了出去。最后执行finally语句块，并调用close方法。而close方法本身也有可能抛出IOException异常。当出现这种情况时，原始的异常将会丢失，转而抛出close方法的异常。
+
+**4、带资源的 try语句**
+资源如果实现了`AutoCloseable`接口或者`Closeable`接口（Closeable是AutoCloseable的子接口），可以用如下方法关闭资源：
+```java
+try(PrintWriter writer = new PrintWriter("/");PrintWriter writer1 = new PrintWriter("/")){
+    writer...
+    writer1...
+} catch (FileNotFoundException e) {
+    e.printStackTrace();
+}
+```
+无论这个块是否正常退出，writer都会自动关闭。
+如果关闭的时候抛出异常，这些异常将自动捕获，并由`addSuppressed`方法增加到原来的异常。可以调用`getSuppressed`方法，它会得到从close方法抛出的异常列表。
