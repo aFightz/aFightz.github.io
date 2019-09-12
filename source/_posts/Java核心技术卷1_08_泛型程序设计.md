@@ -189,3 +189,120 @@ objarray[0] = new Pair<Employee>;
    能够通过数组存储检査，不过这是一个类型错误。所以不允许这样子创建。
 
 > 注意：只是不允许创建这些数组， 而声明类型为`Pair<String>[]`的变量仍是合法的。只是不能用`new Pair<String>[10]`初始化这个变量。
+
+**解决方法：可以声明通配类型的数组，然后进行类型转换：**
+```java
+Pair<String>[] table = (Pair<String>[]) new Pair<?>[10];
+```
+> 为什么加个通配符就可以了？
+
+**4、不能实例化类型变置**
+```java
+public Pair() { 
+    data = new T(); 
+} // Error
+```
+
+通过反射调用`Class.newlnstance`方法来构造泛型对象。
+```java
+public Pair(T t) {
+    this.data = t;
+}
+
+public static <T> Pair<T> makePair(Class<T> cl) throws Exception {
+    return new Pair<>(cl.newInstance());
+}
+Pair<String> p = Pair.makePair(String.class);
+```
+
+
+**5、不能构造泛型数组**
+```java
+public static <T extends Comparable> T[] minmax(T[] a){
+    T[] mm = new T[2];    //Error
+}
+```
+> 类型擦除会让这个方法永远构造 Comparable[2] 数组。
+
+如果数组仅仅作为一个类的私有实例域， 就可以将这个数组声明为Object[]，并且在获取元素时进行类型转换。例如,ArrayList类可以这样实现：
+```java
+public class ArrayList<E>{
+    private Object[] elements;
+    
+    @SupressWarning("unchecked")
+    public E get(int n){
+        return (E)elements[n];
+    }
+
+    public void set(int n , E e){
+        elements[n] = e;
+    }
+}
+```
+
+下面这个例子中，编译时不会有任何警告。但当Object引用强转为Comparable时，将会发生ClassCastException异常。
+```java
+public static <T extends Comparable> T[] minmax(T... a){
+    Object[] mm = new Object[2];
+    ...
+    return (T[])mm;
+}
+```
+
+可以用如下方法解决（通过constr构造相符类型的数组）
+```java
+public static <T extends Comparable> T[] minmax(IntFunction<T[]> constr , T... a){
+    T[] mm = constr.apply(2);
+    ...
+}
+
+String[] ss = minmax(String[]::new , "Tom" , "Dick", "Harry");
+```
+用这种函数式接口，和匿名内部类的思想一样。重点要理解“延迟执行”（在这里把new数组的操作放到了方法内部）
+
+还可以利用反射（老式）
+```java
+public static <T extends Comparable> T[] minmax(T... a){
+    T[] mm = (T[])Array.newInstance(a.getClass().getComponentType() , 2);
+    ...
+}
+```
+
+**6、不能在静态域或方法中引用类型变量**
+```java
+public class Singleton<T>{
+    private static T singleInstance;//Error 
+    public static T getSingleInstance(){ //Error     
+        ...
+    }
+    
+}
+```
+
+**7、泛型类扩展Throwable是不合法的**
+```java
+public class Problem<T> extends Exception {/*...*/}//Error--can't extend Throwable
+```
+
+**8、catch 子句中不能使用类型变量**
+```java
+public static <T extends Throwable> void doWork(Class<T> t){
+    try {
+       //do work 
+    } catch(T e){
+        //Error--can't catch type variable
+    }
+}
+```
+
+**9、在异常规范中使用类型变量是允许的**
+```java
+public static <T extends Throwable> void doWork(T t) throws T{ //0K 
+    try{
+        //do work
+    } catch (Throwable realCause){
+        t.initCause(realCause);
+        throw t;
+    }
+}
+```
