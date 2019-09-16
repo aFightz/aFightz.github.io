@@ -24,7 +24,7 @@ bin/kafka-topics.sh --zookeeper hadoop102:2181 --create --replication-factor 2 -
 
 > **问题：**
 为什么跟topic有关的操作指定的是zk而不是kafka broker的IP:PORT?但日常在用JAVA API 操作TOPIC的时候，是不需要连接zk的。
-broker数量与zk的数量有关系吗？
+broker数量与zk的数量有关系吗？ 无。
 
 logs文件夹不仅仅存日志，还存topic的分区。
 上面的命令会在102的logs/目录下新建first-0和first-1的分区文件目录，会在103上新建first-0副本，在104上新建first-1副本。（因为有2个副本）

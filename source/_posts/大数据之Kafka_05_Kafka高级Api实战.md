@@ -1,5 +1,5 @@
 ---
-title: 05 | 大数据之Kafka_05_Kafka Api实战
+title: 05 | 大数据之Kafka_05_Kafka高级Api实战
 date: 2019-08-09 14:41:04
 tags: [Kafka]
 categories :
