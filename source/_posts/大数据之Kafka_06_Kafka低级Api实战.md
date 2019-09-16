@@ -88,7 +88,7 @@ private void getData(List<String> brokers, int port, String topic, int partition
     //解析返回值
     ByteBufferMessageSet messageAndoffsets = fetchResponse.messageSet(topic，partition);
     
-    for（MessageAndOffset messageAndOffset : messageAndOffsets）{
+    for(MessageAndOffset messageAndOffset : messageAndOffsets){
         long offset1 = messageAndOffset.offset();
         ByteBuffer payload = messageAndOffset.message().payload();
         byte[] bytes = new byte[payload.limit()];
