@@ -25,3 +25,5 @@ Kafka在ZooKeeper中动态维护了一个**ISR（In-sync Replica）**，即保�
 #### <center><font color = "#36648B">✎✎✎✎</font><br/><font color = "#36648B">高吞吐量的实现</font></center>
 - Kafka充分利用磁盘的顺序读写，将数据写到磁盘。
 - 同时，Kafka在数据写入及数据同步采用了`零拷贝（zero-copy）技术`，采用`sendFile()`函数调用，`sendFile()函数`是在两个文件描述符之间直接传递数据，完全在**内核**中操作。
+
+
