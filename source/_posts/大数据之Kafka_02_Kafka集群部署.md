@@ -61,10 +61,10 @@ num.partitions=1
 #用来恢复和清理 data下数据的线程数量
 num.recovery.threads.per.data.dir=1
 
-#segment文件保留的最长时间，超时将被删除，单位是小时，即是7天。
+#已关闭segment文件保留的最长时间，超时将被删除，单位是小时，即是7天。
 log.retention.hours=168
 
-#segment文件超过这个大小就会被删除（1个G）
+#segment文件超过这个大小就会被关闭，等待删除（1个G）
 log.segment.bytes=1073741824
 
 #配置连接Zookeeper集群地址
