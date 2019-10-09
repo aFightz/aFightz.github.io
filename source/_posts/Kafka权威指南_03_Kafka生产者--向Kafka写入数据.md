@@ -15,7 +15,7 @@ categories :
 #### <center><font color = "#36648B">✎✎</font><br/><font color = "#36648B">生产者配置参数</font></center>
 **1、bootstrap.servers**
 指定broker地址，建议设置两个以上。不必要设置全部broker，因为只要连上一个broker，就能查找到其他broker的信息。
-
+njk
 **2、acks**
 这个参数指定了**必须要有多少个分区副本收到消息**，生产者才会认为消息写入是成功的。
 

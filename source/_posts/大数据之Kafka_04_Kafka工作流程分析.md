@@ -25,7 +25,7 @@ producer采用push模式将消息发布到broker，每条消息都被append到pa
   - 方便在集群中扩展，每个Partition可以通过调整以适应它所在的机器，而一个topic又可以有多个Partition组成，因此整个集群就可以适应任意大小的数据了。
   - 可以提高并发，因为可以以Partition为单位读写。
 
-- 分区的原则
+- 分区的原则（使用默认分区器）
   - 指定了patition，则直接使用。
   - 未指定patition但指定key，通过对key的value进行hash出一个patition。
   - patition和key都未指定，使用轮询选出一个patition。
