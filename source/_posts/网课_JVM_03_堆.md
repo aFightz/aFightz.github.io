@@ -63,7 +63,6 @@ Runtime.getRuntime().maxMemory()/1024/1024)
 **2、java1.8**
 ![](网课_JVM_03_堆\堆的配置与GC2.png)
 
-> full gc又是什么？
 
 
 #### <center><font color = "#36648B">✎✎✎✎✎</font><br/><font color = "#36648B">堆内存调优</font></center>
