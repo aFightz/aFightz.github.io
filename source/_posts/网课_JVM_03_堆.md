@@ -19,9 +19,11 @@ categories :
 - **幸存者区（Survivor pace）**。
 
 新生区进行的是**Minor GC**。
+Eden:Survivor0:Survivor1的比例默认是`8:1:1`。
 
 **2、养老区**
 养老区进行的是**Full GC（Major GC）**。
+> Full GC偶尔会对新生代、永久代进行GC。
 **连接池对象**一般都在这个区活跃。
 
 **3、永久区**
