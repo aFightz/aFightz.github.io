@@ -26,7 +26,7 @@ categories :
 **2、fetch.min.bytes与fetch.max.wait.ms**
 fetch.min.bytes表示消费者从服务器获取记录的最小字节数。
 fetch.max.wait.ms表示获取数据时的等待时间，默认为500ms。
-两者哪个先被满足就会发送消息。
+两者哪个先被满足就会接收消息。
 
 **3、max.partition.fetch.bytes**
 该属性指定了服务器从每个分区里返回给消费者的最大字节数。它的默认值是1MB。
@@ -37,16 +37,16 @@ heartbeat.interval.ms指定了poll()方法向协调器发送心跳的频率。�
 
 **5、auto.offset.reset**
 该属性指定了消费者在读取一个没有偏移量的分区或者偏移量无效的情况下（因消费者长时间失效，包含偏移量的记录已经过时并被删除）该作何处理。
-- latest。默认值，从最新的记录开始读。
-- earliest。从起始的记录开始读。
+- `latest`。默认值，从最新的记录开始读。
+- `earliest`。从起始的记录开始读。
 
 **6、enable.auto.commit**
-是否自动提交偏移量。默认值为true。可以通过auto.commit.interval.ms（默认为5S）来控制自动提交的频率。 
+是否自动提交偏移量。默认值为true。可以通过`auto.commit.interval.ms`（默认为5S）来控制自动提交的频率。 
 
 **7、partition.assignment.strategy**
 分区分配的策略：
-- Range：把主题的若干个连续的分区分配给消费者。
-- RoundRobin：把主题的所有分区逐个分配给消费者。
+- `Range`：把主题的若干个连续的分区分配给消费者。
+- `RoundRobin`：把主题的所有分区逐个分配给消费者。
 
 **8、client.id**
 客户端Id。
@@ -85,16 +85,16 @@ try{
 
 #### <center><font color = "#36648B">✎✎✎✎</font><br/><font color = "#36648B">再均衡监听器</font></center>
 **1、步骤**
-- 实现ConsumerRebalanceListener这个类。
+- 实现`ConsumerRebalanceListener`这个类。
 - 在subscribe时，传入ConsumerRebalanceListener实现类。
-
+vm.dirty_background_ratio
 **2、作用**
-当发生分区再均衡/分区被分配时，可以通知到消费者，这时我们可以做一些相应的操作（如强制提交偏移量等）。
-还可以结合seek()方法，在本地维护偏移量（将处理消息与保存偏移量放在同一个事务中）。可以实现消息的“零重复/零丢失”。
+当发生`分区再均衡/分区被分配`时，可以通知到消费者，这时我们可以做一些相应的操作（如强制提交偏移量等）。
+还可以结合`seek()`方法，在本地维护偏移量（将处理消息与保存偏移量放在同一个事务中）。可以实现消息的“零重复/零丢失”。
 
 
 #### <center><font color = "#36648B">✎✎✎✎✎</font><br/><font color = "#36648B">安全的退出</font></center>
-可以通过`consumer.wakeup()`方法退出poll()，并且poll()能抛出WakeupException，在退出时最好要调用`consumer.close()`,因为它会主动地像群组协调器发送自己要离开的消息，而不用等到超时触发再均衡。并且还能主动提交任何还未提交的东西。
+可以通过`consumer.wakeup()`方法退出`poll()`，并且`poll()`能抛出`WakeupException`，在退出时最好要调用`consumer.close()`,因为它会主动地像群组协调器发送自己要离开的消息，而不用等到超时触发再均衡。并且还能主动提交任何还未提交的东西。
 
 
 #### <center><font color = "#36648B">✎✎✎✎✎✎</font><br/><font color = "#36648B">读取特定的分区</font></center>
