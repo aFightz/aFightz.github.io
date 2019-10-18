@@ -1,5 +1,5 @@
 ---
-title: 03 | 算法
+title: 04 | 算法
 date: 2019-10-17 00:33:49
 categories :
 - 学习笔记
@@ -39,7 +39,7 @@ Full GC算法是由**标记清除算法（Mark-Sweep）**实现或是**标记清
 - 两次扫描，耗时严重。
 - 会产生内存碎片。
 
-#### <center><font color = "#36648B">✎✎</font><br/><font color = "#36648B">标记整理/font></center>
+#### <center><font color = "#36648B">✎✎✎</font><br/><font color = "#36648B">标记整理</font></center>
 **1、使用场景**
 Full GC算法是由**标记清除算法（Mark-Sweep）**实现或是**标记清除/整理算法**混合实现。
 
