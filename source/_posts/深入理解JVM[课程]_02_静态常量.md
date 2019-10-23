@@ -5,7 +5,7 @@ tags: [JVM]
 categories :
 - 学习笔记
 - JVM
-- 深入理解JVM
+- 深入理解JVM[课程]
 ---
 
 #### <center><font color = "#36648B">✎</font><br/><font color = "#36648B">静态常量的本质含义</font></center>
@@ -42,7 +42,7 @@ public class Test{
 ```java
 class Parent{
     public static final int parent = UUID.randomUUID().toString();
-
+    
     static {
         System.out.println("parent");
     }

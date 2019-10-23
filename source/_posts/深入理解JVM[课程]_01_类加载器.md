@@ -5,7 +5,7 @@ tags: [JVM]
 categories :
 - 学习笔记
 - JVM
-- 深入理解JVM
+- 深入理解JVM[课程]
 ---
 
 #### <center><font color = "#36648B">✎</font><br/><font color = "#36648B">类的加载、连接、初始化</font></center>
@@ -34,7 +34,7 @@ categories :
 - Java虚拟机启动时被标明为启动类的类（带有main方法的类）。
 - JDK1.7开始提供的动态语言支持：**java.lang.invoke.MethodHandle**实例的解析结果REF_getStatic，REF_putStatic，REF_invokeStatic句柄对应的类如果没有初始化，则初始化。
 
-Demo
+**Demo**
 ```java
 class Parent{
     public static int parent = 1;
@@ -72,6 +72,43 @@ public static void main(String[] args) {
     System.out.println(Child.parent);
 }
 ```
+
+类的初始化顺序是**从上往下**的，如下Demo可以说明：
+```java
+public class MyTest6 {
+    
+    public static void main(String[] args){
+        Singleton singleton = Singleton.getInstance(); 
+        System.out.println("counter1: "+Singleton.counter1);
+        System.out.printin("counter2: "+Singleton.counter2);
+        /**
+        *  输出的结果是:
+        *  1
+        *  0
+        */
+    } 
+}
+
+class Singleton {
+    public static int counter1; 
+    private static Singleton singleton = new Singleton(); 
+    private Singleton(){
+        counter1++;
+        counter2++;      
+    }
+
+    public static int counter2 = 0;
+    
+    public static singleton getInstance(){
+        return singleton;
+    }
+}
+```
+当singleton类被加载完连接完后，counter1与counter2都被赋为了0，Singleton被赋为了null，此时的调用getInstance()这个静态方法（主动使用），Singleton将被初始化，从上往下赋值：
+- singleton变量被赋值，触发构造方法Singleton()，此时counter1为1，counter2为1。
+- counter2被赋值为0。
+
+
 > 注：类被加载进内存后，也可以被卸载。
 
 
