@@ -1,5 +1,5 @@
 ---
-title: 01 | 类加载器
+title: 03 | 类的初始化
 date: 2019-10-20 16:19:55
 tags: [JVM]
 categories :
@@ -8,23 +8,10 @@ categories :
 - 深入理解JVM[课程]
 ---
 
-#### <center><font color = "#36648B">✎</font><br/><font color = "#36648B">类的加载、连接、初始化</font></center>
-在Java代码中，类型的加载、连接与初始化过程都是在**程序运行期间**完成的
-
-**1、类的加载**
-类的加载指的是将类的.class文件中的二进制数据读入到内存中，将其放在运行时数据区的方法区内，然后在内存中创建一个**java.lang.Class**对象用来封装类在方法区内的数据结构。
-
-可用`-XX:+TraceClassLoading`这个vm参数打印vm加载类的信息。
-> 规范并未说明Class对象位于哪里，HotSpot虚拟机将其放在了方法区中。
-
-**2、类的连接**
-- 验证：确保被加载的类的正确性。
-- 准备：为类的**静态变量**分配内存，并将其初始化为**默认值**。
-- 解析：把类中的符号引用转换为直接引用。
-
-**3、类的初始化**
+#### <center><font color = "#36648B">✎</font><br/><font color = "#36648B">初始化的功能</font></center>
 为类的**静态变量**赋予正确的初始值。
 
+#### <center><font color = "#36648B">✎✎</font><br/><font color = "#36648B">初始化的时机</font></center>
 每个类或接口在被Java程序“**首次主动使用**”时才被初始化，首次使用分为以下7种情况：
 - 创建类的实例。
 - 访问某个类或接口的静态变量，或者对该静态变量赋值。
@@ -34,7 +21,9 @@ categories :
 - Java虚拟机启动时被标明为启动类的类（带有main方法的类）。
 - JDK1.7开始提供的动态语言支持：**java.lang.invoke.MethodHandle**实例的解析结果REF_getStatic，REF_putStatic，REF_invokeStatic句柄对应的类如果没有初始化，则初始化。
 
-**Demo**
+>调用**ClassLoader**类的`loadClass`方法加载一个类，并不是对类的主动使用，不会导致类的初始化。
+
+**1、初始化Demo**
 ```java
 class Parent{
     public static int parent = 1;
@@ -73,6 +62,8 @@ public static void main(String[] args) {
 }
 ```
 
+
+#### <center><font color = "#36648B">✎✎✎</font><br/><font color = "#36648B">初始化顺序</font></center>
 类的初始化顺序是**从上往下**的，如下Demo可以说明：
 ```java
 public class MyTest6 {
@@ -110,11 +101,3 @@ class Singleton {
 
 
 > 注：类被加载进内存后，也可以被卸载。
-
-
-
-
-#### <center><font color = "#36648B">✎✎</font><br/><font color = "#36648B">vm参数设置方式</font></center>
-- `-XX:+<option>`，表示开启option选项。
-- `-XX:-<option>`，表示关闭option选项。
-- `-XX:<option>=<value>`，表示格option选项的值设置为value。

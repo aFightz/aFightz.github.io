@@ -1,5 +1,5 @@
 ---
-title: 02 | 静态常量
+title: 05 | 静态常量
 date: 2019-10-22 12:33:17
 tags: [JVM]
 categories :
