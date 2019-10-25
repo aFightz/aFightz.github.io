@@ -29,7 +29,7 @@ public class Test{
         /**由于将静态常量存放到了Test的静态常量池中，不触发Test的初始化。所以输出：
          * 1
          * 
-         * 我们甚至可以在编译完之后将Parent.class文件删除也不会影响程序运行结果。
+         * 我们甚至可以在编译完之后将Parent.class文件删除也不会影响程序运行结果(说明不会去加载Parent，更别说去初始化了)。
          */
         System.out.println(Parent.parent);
     }
