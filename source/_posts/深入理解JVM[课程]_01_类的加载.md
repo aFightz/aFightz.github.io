@@ -38,12 +38,35 @@ JVM规范允许类加载器在预料某个类将要被使用时就预先加载�
 #### <center><font color = "#36648B">✎✎✎✎</font><br/><font color = "#36648B">类加载的机制</font></center>
 类加载器用来把类加载到Java虚拟机中。从JDK1.2版本开始，类的加载过程采用**双亲委托机制**，这种机制能更好地保证Java平台的安全。在此委托机制中，**除了Java虚拟机自带的根类加载器**以外，其余的类加载器都有且只有一个父加载器。当Java程序请求加载器loader1加载Sample类时，loader1首先委托自己的父加载器去加载Sample类，若父加载器能加载，则由父加载器完成加载任务，否则才由加载器loader1本身加载Sample类。
 
+#### <center><font color = "#36648B">✎✎✎✎✎</font><br/><font color = "#36648B">获取类加载器的途径</font></center>
+- **获得当前类的ClassLoader**：`clazz.getClassLoader()`。
+- **获得当前线程上下文的ClassLoader**：`Thread.currentThread().getContextClassLoader()`。
+- **获得系统的ClassLoader**：`ClassLoader.getSystemClassLoader()`。
+- **获得调用者的ClassLoader**：`DriverManager.getCallerClassLoader()`。
 
-#### <center><font color = "#36648B">✎✎✎✎✎</font><br/><font color = "#36648B">代码示例</font></center>
+#### <center><font color = "#36648B">✎✎✎✎✎✎</font><br/><font color = "#36648B">代码示例</font></center>
 
-**1、输出ClassLoader**
+**1、获取当前类的ClassLoader**
 ```java
-Class<?> clazz = Class.forName("java.lang.String"); 
-System.out.println(clazz. getclassLoader());
+public class Test{
+    public static void main(String[] args){
+       Class<?> clazz = Class.forName("java.lang.String");
+       //获得String类的加载器
+       ClassLoader classLoader = clazz.getClassLoader();
+    }    
+}
 ```
 加载java.lang.String的类加载器是根类加载器，所以HotSpot虚拟机输出为null。（但是有些虚拟机不是输出为Null，并没有严格的规定）
+
+**2、获取父加载器**
+```java
+public class Test{
+    public static void main(String[] args){
+       //获得系统类加载器（AppClassLoader）
+       ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+       //获得系统类加载器的父加载器，也就是拓展类加载器（ExtClassLoader）
+       classLoader = classLoader.getParent();
+    }    
+}
+```
+

@@ -23,7 +23,7 @@ categories :
 
 >调用**ClassLoader**类的`loadClass`方法加载一个类，并不是对类的主动使用，不会导致类的初始化。
 
-**1、初始化Demo**
+**1、子类与父类初始化Demo**
 ```java
 class Parent{
     public static int parent = 1;
@@ -39,29 +39,62 @@ class Child extends Parent{
         System.out.println("child");
     }
 }
-```
 
-```java
-public static void main(String[] args) {
-    /**此时使用到了Child的静态变量，所以Child被初始化了，进而Child的父类也被初始化了。输出：
-     * parent
-     * child
-     * 1
-     */
-    System.out.println(Child.child);
+public class Test{
+    static {
+            System.out.println("main");
+    }
+    public static void main(String[] args) {
+        /**首先会初始化main方法所在的类，之后使用到了Child的静态变量，所以Child需要被初始化，Child被初始化之前Child的父类也必须被初始化。输出：
+         * main
+         * parent
+         * child
+         * 1
+         */
+        System.out.println(Child.child);
+    }
 }
 ```
+> 上述例子中的类加载顺序和类初始化顺序其实是一样的，可以通过开启VM参数去观察一下这三个类的加载顺序。
     
 ```java
-public static void main(String[] args) {
-    /**此时没有直接使用到Child的静态变量而使用了Parent的静态变量，所以Child没有被初始化而Parent被初始化了。输出：
-     * parent
-     * 1
-     */
-    System.out.println(Child.parent);
+public class Test2{
+    public static void main(String[] args) {
+        /**此时没有直接使用到Child的静态变量而使用了Parent的静态变量，所以Child没有被初始化而Parent被初始化了。输出：
+         * parent
+         * 1
+         */
+        System.out.println(Child.parent);
+    }
 }
 ```
 
+**2、反射与类加载器初始化Demo**
+```java
+public class Test {
+
+    public static void main(String[] args) throws ClassNotFoundException {
+        ClassLoader loader = ClassLoader.getSystemClassLoader();
+        loader.loadClass("CL");
+        System.out.println("-----------");
+        Class.forName("CL");
+        /**
+        *  输出：
+        *  -----------
+        *  CL
+        *  
+        *  说明类加载器加载类不会去初始化类，而反射会去初始化类。
+        */
+    }
+
+}
+
+class CL {
+    static {
+        System.out.println("CL");
+    }
+}
+```
 
 #### <center><font color = "#36648B">✎✎✎</font><br/><font color = "#36648B">初始化顺序</font></center>
 类的初始化顺序是**从上往下**的，如下Demo可以说明：
