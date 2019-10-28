@@ -21,4 +21,12 @@ broker启动的时候会在创建一个**临时节点**，把自己的id注册�
 当控制器发现若一个broker离开后(通过监听`/brokers/ids`这个节点可知)，若这个broker又是分区leader，那么控制器就会在剩余的分区副本列表里面选出一个leader，并通知副本列表。
 
 
+#### <center><font color = "#36648B">✎✎✎</font><br/><font color = "#36648B">复制</font></center>
+如果Follower在一定时间内（这个时间由`replica.Lag.time.max.ms`配置，默认为10S）没有向Leader请求同步数据，那么这个Follower就被认为是**不同步**的，当分区Leader失去连接触发重新选举时，**未同步的Follower将不会被选举**。
+
+每一个分区都有一个**首选Leader**，它由以下两种方式指定：
+- **创建主题时选定的Leader分区**就是首选Leader。
+- 手动进行副本分配，**第一个指定的副本**就是首选Leader。
+
+当`auto.leader.rebalance.enable`设为true时，它会去检查首选Leader是不是当前Leader，如果不是，且首选Leader是同步的那么就会触发选举，**让首选Leader成为当前Leader**。
 
