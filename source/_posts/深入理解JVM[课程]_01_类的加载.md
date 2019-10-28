@@ -44,7 +44,12 @@ JVM规范允许类加载器在预料某个类将要被使用时就预先加载�
 - **获得系统的ClassLoader**：`ClassLoader.getSystemClassLoader()`。
 - **获得调用者的ClassLoader**：`DriverManager.getCallerClassLoader()`。
 
-#### <center><font color = "#36648B">✎✎✎✎✎✎</font><br/><font color = "#36648B">代码示例</font></center>
+
+#### <center><font color = "#36648B">✎✎✎✎✎✎</font><br/><font color = "#36648B">数组的类加载器</font></center>
+数组的Class对象不是由类加载器加载的，而是由虚拟机**动态生成**的。
+如果数组元素是原生类型，那么调用数组的`getClassLoader()`方法将会返回**null**（表示没有类加载器），否则返回的是**加载元素的类加载器**。
+
+#### <center><font color = "#36648B">✎✎✎✎✎✎✎</font><br/><font color = "#36648B">代码示例</font></center>
 
 **1、获取当前类的ClassLoader**
 ```java
