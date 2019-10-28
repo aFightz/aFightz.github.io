@@ -75,3 +75,33 @@ public class Test{
 }
 ```
 
+**3、自定义ClassLoader**
+```java
+public class MyClassLoader extends ClassLoader{
+
+    private String classLoaderName;
+
+    public MyClassLoader(String classLoaderName) {
+        super();//将AppClassLoader作为父加载器
+        this.classLoaderName = classLoaderName;
+    }
+
+    public MyClassLoader(ClassLoader parent, String classLoaderName) {
+        super(parent);//将parent作为父加载器
+        this.classLoaderName = classLoaderName;
+    }
+
+    public Class<?> findClass(String className) throws ClassNotFoundException {
+        //byte [] bytes = ...  通过className读取到字节数组
+        return this.defineClass(className , bytes , 0 ,bytes.length);
+    }
+    
+    public static void main(String[] args) throws Exception {
+        MyClassLoader classLoader = new MyClassLoader("MyClassLoader");
+        Class<?> clazz =classLoader.loadClass("MyClassLoader");
+        Object object =clazz.newInstance();
+    }
+}
+```
+> 问题1：jvm在启动时，会根据.class文件创建相应的Class对象，如果后续通过LoadClass手动生成Class对象，这两个Class对象有无联系？
+  问题2：假设有对象TT，首先`new TT()`（也就是首次主动调用），后续通过LoadClass手动生成TT的Class对象，再通过`newInstance()`方法生成一个TT对象，那么后者还算是首次主动调用吗？
