@@ -105,3 +105,6 @@ public class MyClassLoader extends ClassLoader{
 ```
 > 问题1：jvm在启动时，会根据.class文件创建相应的Class对象，如果后续通过LoadClass手动生成Class对象，这两个Class对象有无联系？
   问题2：假设有对象TT，首先`new TT()`（也就是首次主动调用），后续通过LoadClass手动生成TT的Class对象，再通过`newInstance()`方法生成一个TT对象，那么后者还算是首次主动调用吗？
+  答：通过代码实验可知，这已经不算是“首次主动使用”了。
+  问题3：上述代码要怎么体现双亲委托机制？如果用MyClassLoader去加载类，因为它的Parent ClassLoader是AppClassLoader（默认情况下），从而会一直往上委托，那么实际上加载类的应该是BootStrap ClassLoader？
+  问题4：在什么情况下ClassLoader才会判断自己无法加载类？
