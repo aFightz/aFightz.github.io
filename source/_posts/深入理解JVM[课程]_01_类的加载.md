@@ -75,7 +75,7 @@ public class Test{
 }
 ```
 
-**3、自定义ClassLoader**
+**3、自定义ClassLoaderDemo1**
 ```java
 public class MyClassLoader extends ClassLoader{
 
@@ -98,14 +98,27 @@ public class MyClassLoader extends ClassLoader{
     
     public static void main(String[] args) throws Exception {
         MyClassLoader classLoader = new MyClassLoader("MyClassLoader");
-        Class<?> clazz =classLoader.loadClass("MyClassLoader");
+        Class<?> clazz =classLoader.loadClass("LoaderTest");
         Object object =clazz.newInstance();
     }
 }
+class LoaderTest{
+    
+}
 ```
+**loadClass的流程**：
+- 若已经加载过此class，则直接返回内存里的Class对象。
+- 否则用父加载器去加载此class。
+- 若还是加载不成功，则调用findClass方法去加载class。
+
 > **问题1**：jvm在启动时，会根据.class文件创建相应的Class对象，如果后续通过LoadClass手动生成Class对象，这两个Class对象有无联系？
+  答：LoadClass在加载类的时候，会判断此类是不是已经被加载过，如果已经被加载过，则直接返回Class对象。所以这两个Class对象其实是指向同一个地址的。
   **问题2**：假设有对象TT，首先`new TT()`（也就是首次主动调用），后续通过LoadClass手动生成TT的Class对象，再通过`newInstance()`方法生成一个TT对象，那么后者还算是首次主动调用吗？
   答：通过代码实验可知，这已经不算是“首次主动使用”了。
   **问题3**：上述代码要怎么体现双亲委托机制？如果用MyClassLoader去加载类，因为它的Parent ClassLoader是AppClassLoader（默认情况下），从而会一直往上委托，那么实际上加载类的应该是BootStrap ClassLoader？
   **问题4**：在什么情况下ClassLoader才会判断自己无法加载类？
   **问题5**：发现一个很严重的问题：上述的Demo中findClass方法没有被调用。
+  答：因为LoadClass这个方法会先调用父加载器（本例中为AppCladdLoader）去加载class。而不会往下走（执行findClass方法）。把上述例子中的class文件放到classpath外,就会调用findClass方法了。
+  **问题6**：`Class<?> clazz = TT.class`这段代码会导致类的加载吗？
+  **问题7**：如果新建两个MyClassLoader实例去加载classpath外的.class文件，会调用findClass两次（说明“类只加载一次”的说法不成立）。
+  
