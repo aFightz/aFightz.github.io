@@ -121,6 +121,8 @@ class LoaderTest{
   答：因为LoadClass这个方法会先调用父加载器（本例中为AppCladdLoader）去加载class。而不会往下走（执行findClass方法）。把上述例子中的class文件放到classpath外,就会调用findClass方法了。
   **问题6**：`Class<?> clazz = TT.class`这段代码会导致类的加载吗？
   **问题7**：如果新建两个MyClassLoader实例去加载classpath外的.class文件，会调用findClass两次（说明“类只会加载一次”的说法不成立？）。
+  **问题8**：如果系统加载器与自定义加载器均加载了同样的类（内存中存在两个Class对象），那么`Class<?> clazz = TT.class`这样子调用的流程又会是怎么样？
+  **问题9**：自定义加载器加载的类可以引用系统加载器加载的类吗？
 
 #### <center><font color = "#36648B">✎✎✎✎✎✎✎✎</font><br/><font color = "#36648B">命名空间</font></center>
 **1、定义**
