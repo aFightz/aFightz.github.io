@@ -27,15 +27,16 @@ JVM规范允许类加载器在预料某个类将要被使用时就预先加载�
 
 #### <center><font color = "#36648B">✎✎</font><br/><font color = "#36648B">类加载器的类型</font></center>
 - Java虚拟机自带的加载器
-  - **根类加载器（Bootstrap）**：该加载器没有父加载器，它负责加载虚拟机的核心类库，如java.lang.*等。根类加载器从系统属性`sun.boot.class.path`所指定的目录中加载类库。根类加载器的实现依赖于底层操作系统，属于虚拟机的实现的一部分，它并**没有继承**`java.lang.ClassLoader`类
+  - **根类加载器（Bootstrap）**：该加载器没有父加载器，它负责加载虚拟机的核心类库，如java.lang.*等。根类加载器从系统属性`sun.boot.class.path`所指定的目录中加载类库。根类加载器的实现依赖于底层操作系统（由C++编写），属于虚拟机的实现的一部分，它并**没有继承**`java.lang.ClassLoader`类
   - **扩展类加载器（Extension）**:它的父加载器为**根类加载器**。它从`java.ext.dirs`系统属性所指定的目录中加载类库，或者从JDK的安装目录的`jre\lib\ext`子目录（扩展目录）下加载类库，如果把用户创建的JAR文件放在这个目录下，也会自动由扩展类加载器加载。扩展类加载器是纯Java类，**是java.lang.ClassLoader类的子类**。
   > 扩展类加载器只会去加载.jar结尾的文件，而不会去加载.class结尾的文件。
   - **系统/应用类加载器（System）**（AppClassLoader）:也称为应用类加载器，它的父加载器为**扩展类加载器**。它从环境变量`classpath`或者系统属性`java.class.path`所指定的目录中加载类，它是**用户自定义的类加载器的默认父加载器**。系统类加载器是纯Java类，**是java.lang.ClassLoader类的子类**。
 - 用户自定义的类加载器
   - **用户自己定制的java.lang.ClassLoader的子类。**
 
-> 类加载器并不需要等到某个类被“首次主动使用”时再加载它。
 > **根类加载器 > 扩展类加载器 > 系统/应用类加载器 > 自定义的类加载器**(箭头左边为箭头右边的父加载器，但是它们之间的关系并不是继承)
+  拓展类加载器与应用加载器是由根类加载器去加载的。
+  
 
 
 #### <center><font color = "#36648B">✎✎✎</font><br/><font color = "#36648B">加载信息的打印</font></center>
@@ -149,3 +150,12 @@ class LoaderTest{
 #### <center><font color = "#36648B">✎✎✎✎✎✎✎✎✎✎</font><br/><font color = "#36648B">双亲委托机制的好处</font></center>
 - 因为所有的类加载的上层加载器中都**必然会有bootstrap classloader**。所以能确保java核心类库（`sun.boot.class.path`下的类）是由bootstrap classloader 所加载的，确保了核心库的安全。
 - 除了`sun.boot.class.path`下的类，我们可以通过自定义的加载器创建其他类的独立命名空间。
+
+#### <center><font color = "#36648B">✎✎✎✎✎✎✎✎✎✎✎</font><br/><font color = "#36648B">Launcher</font></center>
+Launcher是由**根类加载器**去加载的。
+
+**1、自定义系统类加载器**
+根据`java.lang.ClassLoader#getSystemClassLoader`的描述可知，我们执行以下步骤指定自定义的类加载器为系统类加载器。
+- 自定义类加载器必须要有一个构造方法，它的参数是ClassLoader。（用来指定自定义类加载器的parent classloader）。
+  > 自定义类加载器由原来默认的系统类加载器加载。且它的parent classloader是默认的系统类加载器。
+- 通过`java.system.class.loader'属性指定自己实现的加载器为系统类加载器。
