@@ -174,4 +174,22 @@ Thread类的类加载器是BootStrap ClassLoader。
 
 在双亲委托机制下，父加载器是不能使用子加载器所加载的类的。但是如果父加载器设置线程上下文加载器为子加载器，就可以解决这个问题了。
 > 这在SPI（Service Provider Interface）中很常见，比如说JDBC等。对于SPI来说，有些接口是Java核心库所提供的，而Java核心库是由启动类加载器来加载的，而这些接口的实现却来自于不同的jar包（厂商提供），Java的启动类加载器是不会加载其他来源的jar包，这样传统的双亲委托模型就无法满足SPI的要求。而通过给当前线程设置上下文类加载器，就可以由设置的上下文类加载器来实现对于接口实现类的加载。
+> 这种场景如果用spring去实现是不是也能很好的解决呢？只关注实例bean，而不关注类。
+
+1、线程上下文器的使用
+```java
+public class Test{
+    public void use(){
+        Claastoader originClassloader = Thread.currentehread().getcontextclaastoader();
+        try{
+            //设置为目标类加载器
+            Thread.currentThread().setcontextclassloader(targetClassLoader);
+            //dosomething  做一些类加载的操作
+        }finally{
+            Thread.currentThread().setcontextclassloader(originClassloader);
+        }
+    }
+}
+```
+
 
