@@ -69,6 +69,8 @@ public class Test{
 }
 ```
 加载java.lang.String的类加载器是根类加载器，所以HotSpot虚拟机输出为null。（但是有些虚拟机不是输出为Null，并没有严格的规定）
+Class.forName的类加载器默认是调用者的类加载器。且所加载的类默认会被初始化。
+> `Reflection.getcallerClass()`可以知道调用者是哪个类。
 
 **2、获取父加载器**
 ```java
@@ -130,6 +132,9 @@ class LoaderTest{
   **问题7**：如果新建两个MyClassLoader实例去加载classpath外的.class文件，会调用findClass两次（说明“类只会加载一次”的说法不成立？）。
   **问题8**：如果系统加载器与自定义加载器均加载了同样的类（内存中存在两个Class对象），那么`Class<?> clazz = TT.class`这样子调用的流程又会是怎么样？
   **问题9**：自定义加载器加载的类可以引用系统加载器加载的类吗？
+
+> 若有两个jar包，两个包都存在全类名相同的类，那么会加载路径在前的jar包。
+
 
 #### <center><font color = "#36648B">✎✎✎✎✎✎✎✎</font><br/><font color = "#36648B">命名空间</font></center>
 **1、定义**
