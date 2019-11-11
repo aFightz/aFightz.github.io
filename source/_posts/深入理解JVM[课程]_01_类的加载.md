@@ -206,4 +206,21 @@ public class Test{
 }
 ```
 
+#### <center><font color = "#36648B">✎✎✎✎✎✎✎✎✎✎✎✎✎</font><br/><font color = "#36648B">jar hell问题的定位</font></center>
+```java
+public class Test {
 
+    public static void main(String[] args) throws  IOException {
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        String resourceName = "Test.class";
+        Enumeration<URL> urls = cl.getResources(resourceName);
+
+        while (urls.hasMoreElements()){
+            URL url = urls.nextElement();
+            System.out.println(url);
+        }
+    }
+
+}
+```
+上述demo可以打印出Test.class存在哪几个jar包中。
