@@ -11,6 +11,7 @@ categories :
 在Java代码中，类型的加载、连接与初始化过程都是在**程序运行期间**完成的
 
 #### <center><font color = "#36648B">✎</font><br/><font color = "#36648B">相关定义</font></center>
+
 类的加载指的是将类的.class文件中的二进制数据读入到内存中，将其放在运行时数据区的方法区内，然后在内存中创建一个**java.lang.Class**对象用来封装类在方法区内的数据结构。
 > 规范并未说明Class对象位于哪里，HotSpot虚拟机将其放在了方法区中。
 
@@ -30,13 +31,15 @@ JVM规范允许类加载器在预料某个类将要被使用时就预先加载�
   - **根类加载器（Bootstrap）**：该加载器没有父加载器，它负责加载虚拟机的核心类库，如java.lang.*等。根类加载器从系统属性`sun.boot.class.path`所指定的目录中加载类库。根类加载器的实现依赖于底层操作系统（由C++编写），属于虚拟机的实现的一部分，它并**没有继承**`java.lang.ClassLoader`类
   - **扩展类加载器（Extension）**:它的父加载器为**根类加载器**。它从`java.ext.dirs`系统属性所指定的目录中加载类库，或者从JDK的安装目录的`jre\lib\ext`子目录（扩展目录）下加载类库，如果把用户创建的JAR文件放在这个目录下，也会自动由扩展类加载器加载。扩展类加载器是纯Java类，**是java.lang.ClassLoader类的子类**。
   > 扩展类加载器只会去加载.jar结尾的文件，而不会去加载.class结尾的文件。
+  
   - **系统/应用类加载器（System）**（AppClassLoader）:也称为应用类加载器，它的父加载器为**扩展类加载器**。它从环境变量`classpath`或者系统属性`java.class.path`所指定的目录中加载类，它是**用户自定义的类加载器的默认父加载器**。系统类加载器是纯Java类，**是java.lang.ClassLoader类的子类**。
 - 用户自定义的类加载器
+  
   - **用户自己定制的java.lang.ClassLoader的子类。**
 
 > **根类加载器 > 扩展类加载器 > 系统/应用类加载器 > 自定义的类加载器**(箭头左边为箭头右边的父加载器，但是它们之间的关系并不是继承)
   拓展类加载器与应用加载器是由根类加载器去加载的。
-  
+
 
 
 #### <center><font color = "#36648B">✎✎✎</font><br/><font color = "#36648B">加载信息的打印</font></center>
@@ -138,7 +141,7 @@ class LoaderTest{
   答：如果是加载了此全类名相同的类，那么说明自定义加载器与系统加载器没有任何关系。那么这一句代码使用的类加载器将会是线程上下文类加载器。
   **问题9**：自定义加载器加载的类可以引用系统加载器加载的类吗？
   答：如果自定义加载器与系统加载器无任何关系，那么两者的类是完全隔离的。
-    
+
 > 若有两个jar包，两个包都存在全类名相同的类，那么会加载路径在前的jar包。
 
 
@@ -153,7 +156,7 @@ class LoaderTest{
 > 比如，如果A引用了B类，假设A类的定义类加载器是a，那么此时B类也会被a去加载（前提是a未被加载）。
 
 > **问题1**：如果.class（全类名名相同）由两个不同的类加载器加载，生成两个Class对象，那么由这两个Class对象生成的实例会有什么不同？
-  答：1、既然全类名相同的两个.class能被两个不同的类加载器加载，说明这两个加载器不存在任何关系，否则在委托加载的机制下，其中一个加载器肯定会委托另外一个加载器加载的。
+  1、既然全类名相同的两个.class能被两个不同的类加载器加载，说明这两个加载器不存在任何关系，否则在       委托加载的机制下，其中一个加载器肯定会委托另外一个加载器加载的。
   2、由这两个全类名相同的Class对象生成的实例实际上**不是同一个类型**。
   3、所以实际上**类型 = classloader实例 + 全类名**。
   **问题2**：如果用同一个classloader实例去加载全类名相同的两个类（存放路径不同），那么结果会是如何？
@@ -161,24 +164,29 @@ class LoaderTest{
 
 
 
-#### <center><font color = "#36648B">✎✎✎✎✎✎✎✎✎✎</font><br/><font color = "#36648B">双亲委托机制的好处</font></center>
+<center> <h4><font color = "#36648B">✎✎✎✎✎✎✎✎✎✎</br>双亲委托机制的好处</center>
+
 - 因为所有的类加载的上层加载器中都**必然会有bootstrap classloader**。所以能确保java核心类库（`sun.boot.class.path`下的类）是由bootstrap classloader 所加载的，确保了核心库的安全。
 - 除了`sun.boot.class.path`下的类，我们可以通过自定义的加载器创建其他类的独立命名空间。
 
-#### <center><font color = "#36648B">✎✎✎✎✎✎✎✎✎✎✎</font><br/><font color = "#36648B">Launcher</font></center>
+
+
+<center> <h4><font color = "#36648B">✎✎✎✎✎✎✎✎✎✎✎</br>Launcher</center>
+
 Launcher是由**根类加载器**去加载的。
 
 **1、自定义系统类加载器**
 根据`java.lang.ClassLoader#getSystemClassLoader`的描述可知，我们执行以下步骤指定自定义的类加载器为系统类加载器。
+
 - 自定义类加载器必须要有一个构造方法，它的参数是ClassLoader。（用来指定自定义类加载器的parent classloader）。
+  
   > 自定义类加载器由原来默认的系统类加载器加载。且它的parent classloader是默认的系统类加载器。
 - 通过`java.system.class.loader`  属性指定自己实现的加载器为系统类加载器。
 
 **2、Launcher的构造**
 在Launcher的构造方法中，构造了**ExtClassLoader**与**AppClassLoader**。
 
-
-#### <center><font color = "#36648B">✎✎✎✎✎✎✎✎✎✎✎✎</font><br/><font color = "#36648B">线程上下文类加载器</font></center>
+<center> <h4><font color = "#36648B">✎✎✎✎✎✎✎✎✎✎✎✎</br>线程上下文类加载器</center>
 
 Thread类的类加载器是**BootStrap ClassLoader**。
 
@@ -206,7 +214,10 @@ public class Test{
 }
 ```
 
-#### <center><font color = "#36648B">✎✎✎✎✎✎✎✎✎✎✎✎✎</font><br/><font color = "#36648B">jar hell问题的定位</font></center>
+
+
+<center> <h4><font color = "#36648B">✎✎✎✎✎✎✎✎✎✎✎✎✎</br>jar hell问题的定位</center>
+
 ```java
 public class Test {
 
@@ -223,4 +234,5 @@ public class Test {
 
 }
 ```
-上述demo可以打印出Test.class存在哪几个jar包中。
+上述demo可以打印出`Test.class`存在哪几个jar包中。
+
