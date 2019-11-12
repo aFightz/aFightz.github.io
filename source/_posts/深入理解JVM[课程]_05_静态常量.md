@@ -57,6 +57,7 @@ Paren类将会被初始化，输出“parent”。
 **1、反编译命令**
 ```javap -c [.class path]```
 > 反编译上面的Test.class文件，会发现Test的字节码文件中确实没有引用到到Parent，而是使用下述的助记符直接推静态常量。
+> `javap -verbose` 能打印更详细的信息。
 
 **2、助记符**
 - **ldc**：表示将int，float或是string类型的静态常量值从静态常量池中推送至栈顶。
