@@ -15,19 +15,16 @@ categories :
 
 
 <center> <h4><font color = "#36648B">✎✎</br>魔数（Magic Number）</center>
-
 所有的.class字节码文件的前4个字节都是魔数，魔数值为固定值：**0xCAFEBABE**。
 
 
 
 <center> <h4><font color = "#36648B">✎✎✎</br>版本号（Version）</center>
-
 魔数之后的4个字节为版本信息，前两个字节表示minor version（次版本号），后两个字节表示major version（主版本号）。
 
 
 
 <center> <h4><font color = "#36648B">✎✎✎✎</br>常量池（Constant Pool）</center>
-
 紧接着主版本号之后的就是常量池入口。一个Java类中定义的很多信息都是由常量地来维护和描述的，比如说Java类中定义的方法与变量信息，都是存储在常量池中。
 
 常量池中主要存储两类常量：
@@ -42,7 +39,6 @@ Java类所对应的常量池主要由**常量池数量**（其实就是数组的
 
 
 <center> <h4><font color = "#36648B">✎✎✎✎✎</br>访问标志信息（Access Flags）</center>
-
 访问标志信息包括该Class文件是类还是接口，是否被定义成public，是否是abstract，如果是类，是否被声明成final。
 
 
@@ -50,10 +46,15 @@ Java类所对应的常量池主要由**常量池数量**（其实就是数组的
 
 
 <center> <h4><font color = "#36648B">✎✎✎✎✎✎</br>字段表集合（Fields）</center>
-
 字段表用于描述类和接口中声明的变量。这里的字段包含了类级别变量以及实例变量，但是**不包括**方法内部声明的局部变量。
 
 字段表结构如下：
 
 ![](深入理解JVM[课程]_09_Java字节码\字段表结构.png)
+
+
+
+<center> <h4><font color = "#36648B">✎✎✎✎✎✎✎</br>方法表集合（Fields）</center>
+
+![](深入理解JVM[课程]_09_Java字节码\方法表结构.png)
 
