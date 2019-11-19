@@ -40,3 +40,61 @@ JVM对异常的处理方式
 栈帧本身是一种数据结构，封装了方法的局部变量表、动态链接信息、方法的返回地址以及操作数栈等信息。
 
 有些符号引用是在类加载阶段或是第一次使用时就会转换为直接引用，这种转换叫做静态解析；另外一些符号引用则是在每次运行期转换为直接引用，这种转换叫做动态链接，这体现为Java的多态性。
+
+静态解析的4种情形：
+1.静态方法
+2.父类方法
+3.构造方法
+4.私有方法（无法被重写）
+以上4类方法称作非虚方法，他们是在类加载阶段就可以将符号引用转换为直接引用的。
+> 公有方法有可能被overwrite，所以不能被静态解析。
+
+方法的静态分派Demo
+```java
+public class Test6 {
+    public void test(Grandpa grandpa){
+        System.out.println("Grandpa");
+    }
+
+    public void test(Father father){
+        System.out.println("Father");
+    }
+
+    public void test(Son son){
+        System.out.println("Son");
+    }
+
+    public static void main(String[] args) {
+        Grandpa p1 = new Father();
+        Grandpa p2 = new Son();
+        Test6 test6 = new Test6();
+        test6.test(p1); //输出Grandpa
+        test6.test(p2); //输出Grandpa
+    }
+}
+
+class Grandpa{
+
+}
+
+class Father extends Grandpa{
+
+}
+
+class Son extends Father{
+
+}
+```
+以上代码，g1的静态类型是Grandpa，而g1的实际类型（真正指向的类型）是Father。
+变量的静态类型是不会发生变化的，而变量的实际类型则是可以发生变化的（多态的一种体现），实际类型是在运行期方可确定。
+方法重载，是一种静态的行为，编译期就可以完全确定。
+
+
+
+
+方法调用
+1.invokeinterface：调用接口中的方法，实际上是在运行期决定的，决定到底调用实现该接口的哪个对象的特定方法。
+2.invokestatic：调用静态方法。
+3.invokespecial：调用自己的私有方法、构造方法（<init>）以及父类的方法。
+4.invokevirtual：调用虚方法，运行期动态查找的过程。
+5.invokedynamic：动态调用方法。
