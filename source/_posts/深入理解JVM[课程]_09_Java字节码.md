@@ -53,6 +53,7 @@ categories :
 
 <center> <h4><font color = "#36648B">✎✎✎✎✎</br>静态解析与动态链接</center>
 **1、静态解析的4种情形**
+
 - 静态方法
 - 父类方法
 - 构造方法
@@ -78,11 +79,11 @@ public class Test6 {
     }
 
     public static void main(String[] args) {
-        Grandpa p1 = new Father();
-        Grandpa p2 = new Son();
+        Grandpa g1 = new Father();
+        Grandpa g2 = new Son();
         Test6 test6 = new Test6();
-        test6.test(p1); //输出Grandpa
-        test6.test(p2); //输出Grandpa
+        test6.test(g1); //输出Grandpa
+        test6.test(g2); //输出Grandpa
     }
 }
 
@@ -102,6 +103,39 @@ class Son extends Father{
 变量的静态类型是**不会发生变化**的，而变量的实际类型则是可以发生变化的（多态的一种体现），实际类型是在运行期方可确定。
 **方法重载，是一种静态的行为**，编译期就可以完全确定。
 
+**3、方法动态分派Demo**
+```java
+public class Test {
+    public static void main(String[] args) {
+        Fruit f1 = new Apple();
+        Fruit f2 = new Banana();
+        f1.test(); //输出Apple
+        f2.test(); //输出Banana
+    }
 
+}
 
+class Fruit{
+    public void test(){
+        System.out.println("Fruit");
+    }
+}
 
+class Apple extends Fruit{
+    public void test(){
+        System.out.println("Apple");
+    }
+}
+
+class Banana extends Fruit{
+    public void test(){
+        System.out.println("Banana");
+    }
+}
+```
+
+**方法重写是一种动态的行为**，在运行期才可以决定。
+
+> 总的来说就是：
+调用哪个方法（重载导致有多个同名方法），是由所传入的引用类型决定的。
+确定完调用方法之后，再去寻找调用这个方法的实例，这是由实际类型所决定的。
