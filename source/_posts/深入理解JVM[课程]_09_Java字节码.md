@@ -139,3 +139,23 @@ class Banana extends Fruit{
 > 总的来说就是：
 调用哪个方法（重载导致有多个同名方法），是由所传入的引用类型决定的。
 确定完调用方法之后，再去寻找调用这个方法的实例，这是由实际类型所决定的。
+
+
+
+
+
+
+
+
+
+<center> <h4><font color = "#36648B">✎✎✎✎✎✎</br>操作数栈</center>
+
+java运算的详细过程。。。
+
+<center> <h4><font color = "#36648B">✎✎✎✎✎✎✎</br>动态代理</center>
+
+
+
+sun.misc.ProxyGenerator.saveGeneratedFiles  设置这个参数为true可让java动态代理类生成.class文件
+
+Object的方法中，除了hashCode,equals,tosString这三个方法会被代理，其他方法都不会被代理。
