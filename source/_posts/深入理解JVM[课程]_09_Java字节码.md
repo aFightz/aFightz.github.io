@@ -42,7 +42,7 @@ categories :
 <center> <h4><font color = "#36648B">✎✎✎✎</br>栈帧（stack frame）</center>
 栈帧是一种用于帮助虚拟机执行方法调用与方法执行的数据结构,封装了方法的局部变量表、动态链接信息、方法的返回地址以及操作数栈等信息。
 
-有些符号引用是在类加载阶段或是第一次使用时就会转换为直接引用，这种转换叫做静态解析；另外一些符号引用则是在每次运行期转换为直接引用，这种转换叫做动态链接，这体现为Java的多态性。
+
 
 <center> <h4><font color = "#36648B">✎✎✎✎✎</br>方法调用</center>
 - **invokeinterface**：调用接口中的方法，实际上是在运行期决定的，决定到底调用实现该接口的哪个对象的特定方法。
@@ -52,6 +52,8 @@ categories :
 - **invokedynamic**：动态调用方法。
 
 <center> <h4><font color = "#36648B">✎✎✎✎✎</br>静态解析与动态链接</center>
+有些符号引用是在类加载阶段或是第一次使用时就会转换为直接引用，这种转换叫做静态解析；另外一些符号引用则是在每次运行期转换为直接引用，这种转换叫做动态链接，这体现为Java的多态性。
+
 **1、静态解析的4种情形**
 
 - 静态方法
@@ -64,6 +66,7 @@ categories :
 > 公有方法有可能被重写，所以不能被静态解析。
 
 **2、方法的静态分派Demo**
+
 ```java
 public class Test6 {
     public void test(Grandpa grandpa){
@@ -145,17 +148,40 @@ class Banana extends Fruit{
 
 
 
-
-
-
 <center> <h4><font color = "#36648B">✎✎✎✎✎✎</br>操作数栈</center>
+```java
+public class Test {
+    public static void main(String[] args) {
+        int a = 1;
+        int b = 2;
+        int c = 3;
+        int max = a+b+c;
+    }
 
-java运算的详细过程。。。
+}
+```
 
-<center> <h4><font color = "#36648B">✎✎✎✎✎✎✎</br>动态代理</center>
+如上代码显示了一个很简单的相加运算，用jclasslib打开它的.class文件，展示的字节码逻辑如下：
 
 
+```
+0 iconst_1
+1 istore_1
+2 iconst_2
+3 istore_2
+4 iconst_3
+5 istore_3
+6 iload_1
+7 iload_2
+8 iadd
+9 iload_3
+10 iadd
+11 istore 4
+13 return
+```
 
-sun.misc.ProxyGenerator.saveGeneratedFiles  设置这个参数为true可让java动态代理类生成.class文件
+iconst_1表示将1入栈，istore_1表示将栈顶元素存储到局部变量表index为1的地方，以此类推。
+iload_1表示读取局部变量表index为1的变量，压入栈。
+iadd表示连续两次将栈顶弹出，并将弹出的元素相加，得出的结果压入栈。
+istore 4表示将栈顶元素赋值给局部变量表中index为4的变量。
 
-Object的方法中，除了hashCode,equals,tosString这三个方法会被代理，其他方法都不会被代理。
