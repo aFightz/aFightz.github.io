@@ -31,7 +31,6 @@ jdk1.6中，String的`intern()`方法会把“**首次遇到**”的字符串实
 > str.itern()与str = ""这种方式赋值的区别是？
 > 如果大量使用intern或者 str = ""这种写法，是不是会容易造成OOM？
 
-demo编写
 
 <center> <h4><font color = "#36648B">✎✎✎✎</br>堆</center>
 **1、创建对象时，分配内存的方式有如下两种：**
