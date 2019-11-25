@@ -24,9 +24,26 @@ categories :
 
 同一个类，如果被不同的类加载器加载两次，那么在栈中也就会存在两份Class对象。
 
+
 <center> <h4><font color = "#36648B">✎✎✎</br>常量池</center>
 jdk1.6中，String的`intern()`方法会把“**首次遇到**”的字符串实例复制到常量池中，并返回这个实例引用。
 而在jdk1.7中，不再复制实例，而是记录这个实例的引用。(也就是说把实例放到了堆中)
+
+demo
+```java
+public class Test {
+
+    public static void main(String[] args) throws InterruptedException {
+
+        String str =  new StringBuilder("A").toString();
+        System.out.println(str.intern() == str);  //false 非常量池的对象
+
+        String str2 =  new StringBuilder("B").append("C").toString();
+        System.out.println(str4.intern() == str4);//true 为常量池对象
+    }
+}
+```
+上面的例子有点意思，在编译期间A、B、C就已经放入常量池了，所以新建值为A的实例与常量池值为A的实例肯定不同。而常量池没有值为BC的实例，所以当执行itern()方法时，自然就会把新建的“BC”实例给“放入”常量池，所以两只的引用指向的是同一个实例。
 
 > str.itern()与str = ""这种方式赋值的区别是？
 > 如果大量使用intern或者 str = ""这种写法，是不是会容易造成OOM？
