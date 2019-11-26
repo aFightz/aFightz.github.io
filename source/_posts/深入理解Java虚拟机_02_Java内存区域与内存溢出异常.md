@@ -47,6 +47,7 @@ public class Test {
 
 > str.itern()与str = ""这种方式赋值的区别是？
 > 如果大量使用intern或者 str = ""这种写法，是不是会容易造成OOM？
+> 常量是否也会被回收？
 
 
 <center> <h4><font color = "#36648B">✎✎✎✎</br>堆</center>
