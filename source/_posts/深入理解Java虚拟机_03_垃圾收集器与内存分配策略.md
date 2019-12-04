@@ -42,7 +42,7 @@ GC Root包括以下4种对象：
 可用`-Xnoclassgc`控制JVM是否对Class对象进行回收。
 
 
-<center> <h4><font color = "#36648B">✎</br>HotSpot的算法实现</center>
+<center> <h4><font color = "#36648B">✎✎</br>HotSpot的算法实现</center>
 **1、枚举根节点**
 
 HotSpot使用的是准确GC，使用一组称为**OopMap的数据结构**存储使用到的**引用以及引用的有效范围**。在枚举根节点时，只需要关注OopMap的信息即可。
@@ -67,7 +67,7 @@ HotSpot使用的是准确GC，使用一组称为**OopMap的数据结构**存储�
 当程序执行到安全区域时，会标识自己已经进入了安全区域，若此时JVM要发起GC时，就会忽略这个线程。当线程要离开安全区域时，要检查JVM是否完成了根节点枚举，如果没有完成，则要接收到“可以离开安全区域”的信号后，程序才会往下执行。
 
 
-<center> <h4><font color = "#36648B">✎</br>垃圾收集器</center>
+<center> <h4><font color = "#36648B">✎✎✎</br>垃圾收集器</center>
 |       名称        |   算法    | 是否并发 | 是否并行 | 是否需要STW | 作用区域 |
 | :---------------: | :-------: | :------: | :------: | :---------: | :------: |
 |      Serial       |   复制    |    否    |    否    |     是      |  新生代  |
@@ -132,3 +132,15 @@ G1会优先回收**价值最大**的Region。
 - 最终标记。
 - 筛选回收。
 
+
+<center> <h4><font color = "#36648B">✎✎✎✎</br>内存分配</center>
+一般来说，Full GC前都会经过Minor GC，但并非绝对，在Parallel Scavenge收集策略里就有直接进行Full GC的策略。
+Full GC的速度一般会比Minor GC慢10倍以上。
+
+1、直接进入老年代的大对象
+设置`-XX:PretenureSize Threshold`这个参数在分配内存空间时可令大于它的对象直接进入老年代。
+> 这个参数只对Serial和ParNew两款收集器有效。
+
+2、新生代对象何时进入老年代
+- 存活年龄达到阈值。
+- 
