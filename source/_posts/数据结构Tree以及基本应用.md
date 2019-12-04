@@ -80,6 +80,7 @@ public void orderTraverse(Node t){
 - 若p是子节点，则直接删除。
 - 若p只有一个孩子节点，则删除p，让孩子节点顶替p的位置。
 - 若p有两个孩子节点，那么删除p，并寻找p的后继顶替p。（p的后继是p的右子树的最左节点。）
+  
   > 寻找p的前继应该也可以？p的前继是p的左节点，或是p的左节点的右节点。
 
 **6、查找算法（假设根节点为p，需要查找的元素为a）**
@@ -96,8 +97,11 @@ public void orderTraverse(Node t){
 
 
 
-平衡二叉树(AVL Tree)
+<center> <h4><font color = "#36648B">✎✎✎</br>平衡二叉树(AVL Tree)</center>
+1、定义
+平衡二叉树
 
+平衡二叉树的查找、删除、遍历算法都与
 
 B树
 
