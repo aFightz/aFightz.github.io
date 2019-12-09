@@ -194,7 +194,8 @@ private Node rotateRight(Node h) {
 
 ![](数据结构Tree以及基本应用\2-3树插入过程.png)
 
-
 <center> <h4><font color = "#36648B">✎✎✎</br>B树</center>
+
 <center> <h4><font color = "#36648B">✎✎✎</br>B+树</center> 
+
 <center> <h4><font color = "#36648B">✎✎✎</br>红黑树</center>
