@@ -98,11 +98,83 @@ public void orderTraverse(Node t){
 
 
 <center> <h4><font color = "#36648B">✎✎✎</br>平衡二叉树(AVL Tree)</center>
-1、定义
-平衡二叉树
+**1、定义**
 
-平衡二叉树的查找、删除、遍历算法都与
+任意一节点的左子树与右子树高度相差不超过1。
 
-B树
+**2、查找、删除、遍历算法**
 
-B+树
+平衡二叉树的查找、删除、遍历算法都与二叉搜索树的步骤一样，只是在树结构变化了之后（增加节点或删除节点），需要判断是否需要**再平衡**。尤其是删除节点，需要**递归往上检查父节点**是否处于平衡状态。
+
+**3、再平衡**
+
+当结构处于失衡状态时，就需要再均衡。判断是否处于失衡状态的逻辑是：判断**此节点的左右子树高度是否相差超过1**，如果是，则处于失衡状态，此节点为失衡点。之后需要判断是处于哪种失衡结构：
+
+- **LL失衡**。需要对结构进行右旋操作。
+  伪代码实现的实现的简单逻辑为：
+  
+  ```java
+  /**
+   * @param h    h为失衡点
+   */
+private Node rotateRight(Node h) {
+      Node x = h.left;
+      h.left = x.right;
+      x.right = h;
+      //省略更新高度、更新父节点等。
+      return x;
+  }
+  ```
+  
+  如下图所示：
+  ![](数据结构Tree以及基本应用\右旋.jpg)
+  节点3为失衡点。
+  
+  
+  
+- **RR失衡**。需要进行左旋操作。与右旋操作类似，只是操作的“方向”是反的。
+
+  伪代码实现的实现的简单逻辑为：
+
+  ```java
+  private Node rotateLeft(Node h) {
+      Node x = h.right;
+      h.right = x.left;
+      x.left = h;
+      //省略更新高度、更新父节点等。
+      return x;
+   }
+  ```
+
+- **LR失衡**。先执行左旋再执行右旋。
+
+  伪代码实现的实现的简单逻辑为：
+
+  ```java
+  private Node rotateLeftRight(Node h) {
+      h.left = rotateLeft(h.left);
+      return rotateRight(h);
+  }
+  ```
+  >对平衡点的左节点进行左旋，再对平衡点进行右旋。
+
+  如下图示：
+
+  ![](数据结构Tree以及基本应用\左旋右旋.jpg)
+
+
+
+- **RL失衡**。先执行右旋再执行左旋。
+
+> 第一个字母表示高度较高的子树位置，第二个字母表示锁挂载节点所处于的子树位置。
+
+
+
+
+
+
+
+
+<center> <h4><font color = "#36648B">✎✎✎</br>B树</center>
+<center> <h4><font color = "#36648B">✎✎✎</br>B+树</center>
+<center> <h4><font color = "#36648B">✎✎✎</br>红黑树</center>
