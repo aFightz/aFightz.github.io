@@ -78,3 +78,23 @@ public class Test {
 编译器可以为接口生成`<clinit>()`类构造器。其实初始化阶段就是执行`<clinit>()`方法的过程。
 > `<init>()`是实例构造器。
 
+静态块语句只能访问到定义在静态块语句之前的变量，但是可以给之前的变量赋值。如下：
+```java
+public class Test {
+    static{
+        i = 0; //赋值可以编译通过
+        System.out.println(i);  //访问则编译不通过 illegal forward reference
+    } 
+    static int i = 1;
+}
+```
+`<clinit>()`在多线程情况下只会被调用一次。
+
+bootstrap classloader只会加载虚拟机识别的文件，若随便放个自定义的jar文件到对应目录下，bootstrap classloader也不会去加载。
+
+破坏双亲委托模型的办法：
+- 重写loadClass()方法。
+- 指定线程上下文类加载器。
+- OSGI实现的模块化热部署。
+
+
