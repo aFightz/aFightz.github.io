@@ -93,7 +93,9 @@ public class Test {
 bootstrap classloader只会加载虚拟机识别的文件，若随便放个自定义的jar文件到对应目录下，bootstrap classloader也不会去加载。
 
 破坏双亲委托模型的办法：
-- 重写loadClass()方法。
+- 重写loadClass()方法。（不建议使用）
+> loadClass()的大致逻辑就是：若父类加载器加载失败，则调用findClass()方法。所以我们自定义类加载器的时候，都是重写findClass()方法以符合双亲委托模型。
+
 - 指定线程上下文类加载器。
 - OSGI实现的模块化热部署。
 
