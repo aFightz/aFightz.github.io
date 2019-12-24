@@ -55,3 +55,5 @@ jvm保证下面8种操作是原子的：
 
 <center> <h4><font color = "#36648B">✎✎✎</br>synchronized</center>
 synchronized编译成字节码就是monitorenter与monitorexit。
+
+<center> <h4><font color = "#36648B">✎✎✎✎</br>happens-before</center>
