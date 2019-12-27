@@ -10,6 +10,7 @@ categories :
 
 
 <center> <h4><font color = "#36648B">✎</br>类的生命周期</center>
+
 - 加载。
 - 连接。
   - 验证。
@@ -92,7 +93,10 @@ public class Test {
 
 bootstrap classloader只会加载虚拟机识别的文件，若随便放个自定义的jar文件到对应目录下，bootstrap classloader也不会去加载。
 
-破坏双亲委托模型的办法：
+
+<center> <h4><font color = "#36648B">✎✎✎</br>双亲委托模型</center>
+
+**破坏双亲委托模型的办法**：
 - 重写loadClass()方法。（不建议使用）
 > loadClass()的大致逻辑就是：若父类加载器加载失败，则调用findClass()方法。所以我们自定义类加载器的时候，都是重写findClass()方法以符合双亲委托模型。
 
