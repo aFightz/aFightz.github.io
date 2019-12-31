@@ -73,7 +73,7 @@ public class Score {
 
 volatile不会执行加锁操作，所以开销会比synchronized更小。
 
-#### 内部类导致的线程不安全
+#### 内部类导致的线程不安全（this引用逸出）
 ```java
     public class ThisEscape{
         public ThisEscape(EventSource source){
@@ -114,6 +114,7 @@ public class SafeListener{
 总的思路就是，在构造完对象之前,不能让this逸出。
 
 
+
 #### 使用ThreadLocal保证线程安全
 ```java
     public static ThreadLocal<Integer> value = new ThreadLocal<Integer>(){
@@ -129,10 +130,10 @@ public class SafeListener{
 ```
 
 ThreadLocal内部用Map结构保存了当前线程（Thread.currentThread()）对应的值。所以每一个线程都有属于自己的value。
-
+ThreadLocal变量类似于全局变量，它能降低代码的可重用性。例如将某个全局变量作为ThreadLocal对象。
 
 #### final
-final能保证初始化过程中的安全性。
+final能保证初始化过程中的安全性（如果this引用逸出还能保证安全性吗）。
 volatile不仅能保证初始化过程中的安全性，还能保证可见性。
 
 ##### final的重排序规则
@@ -182,11 +183,13 @@ public static class CacheUtil{
 CacheUtil的cache变量使用了volatile。volatile保证cache不会失效，以及保证cache的初始化是线程安全的。
 
 
-#### 创建一个可以让其他线程访问的可变对象的四种模式
+#### 安全发布一个对象的四种模式
 - 在静态初始化函数中初始化一个对象引用。
 - 将对象的引用保存到volatile或AtomicReferance对象中。
 - 用final修饰对象的引用
 - 将对象的引用保存到一个由锁保护的域中
+> 即使this引用逸出，volatile、Atomic、final也会是线程安全的吗？
+
 
 
 
