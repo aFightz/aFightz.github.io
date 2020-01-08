@@ -13,6 +13,7 @@ categories :
 
 
 <center> <h4><font color = "#36648B">✎</br>内存间交互操作</center>
+
 **1、jvm保证下面8种操作是原子的**：
 - **lock**（锁定）：作用于主内存的变量，它把一个变量标识为一条线程独占的状态。
 - **unlock**（解锁）：作用于主内存的变量，它把一个处于锁定状态的变量释放出来，释放后的变量才可以被其他线程锁定。
@@ -25,7 +26,7 @@ categories :
 
 2、**执行上述8种操作时必须满足下面的规则**：
 
-- read->load，assign->store->write这两组操作是固定的，不会少，顺序也不会变。
+- `read->load`，`assign->store->write`这两组操作是固定的，不会少，顺序也不会变。
 - 在use的前面一定会有初始化（load或assign）的操作。
 - 一个变量在同一个时刻只允许一条线程对其进行lock操作，但lock操作可以被同一条线程重复执行多次，多次执行lock后，只有执行相同次数的unlock操作，变量才会被解锁。
 - 如果对一个变量执行lock操作，那将会清空工作内存中此变量的值，在执行引擎使用这个变量前，需要重新执行load或assign操作初始化变量的值。
@@ -36,6 +37,7 @@ categories :
 答：事实上并不会如此，这个对象的引用、对象中某个在线程访问到的字段是存可能存在拷的，但不会有虚拟机实现成把整个对象拷一次。
 
 <center> <h4><font color = "#36648B">✎✎</br>volatile</center>
+
 在JDK1.5之前，volatile的不能完全避免重排序，所以不能安全地使用DDL（双锁检测）来实现单例模式。
 
 在对volatile变量进入赋值操作时，紧跟在后面会插入一条内存屏障指令（从汇编代码上体现的是一条lock前缀的指令）。
@@ -46,15 +48,17 @@ categories :
 
 
 读写volatile变量要满足以下规则：
-- read->load->use（读）、assign->store->write(写)一定会是连续一起出现的。
+- `read->load->use`（读）、`assign->store->write`(写)一定会是连续一起出现的。
 - 假设有volatile类型变量A与B，从代码角度上来看先对A进行读/写，再对B进行读/写，那么这两者不会被重排序。
-
+> 如果对读取两个volatile变量，那么这两次读取会被重排序吗？
 
 
 <center> <h4><font color = "#36648B">✎✎✎</br>synchronized</center>
-synchronized编译成字节码就是monitorenter与monitorexit。
+
+synchronized编译成字节码就是**monitorenter**与**monitorexit**。
 
 <center> <h4><font color = "#36648B">✎✎✎✎</br>happens-before</center>
+
 - **程序次序规则**。在一个线程中，按照控制流的顺序，书写在前面的操作先行发生于书写在后面的操作。
 - **管程锁定规则**。一个unlock操作先行发生于后面对同一个锁的lock操作。这里所说的“后面”是指时间上的后面。
 - **volatile变量规则**。对一个volatile变量的写操作先行发生于后面对这个变量的读操作。这里所说的“后面”是指时间上的后面。
