@@ -8,7 +8,7 @@ categories :
 - Java并发编程实战
 ---
 
-#### <center><font color = "#36648B">✎</font><br/><font color = "#36648B">私有锁与对象锁</font></center>
+<center> <h4><font color = "#36648B">✎</br>私有锁与对象锁</center>
 
 *<font color = "#36648B">对象锁会暴露给外部，而私有锁不会。</font>*
 
@@ -55,7 +55,7 @@ public class Test7 {
 
 任何的线程问题都可以从这个角度出发：<font color = "red">**内存是否一致**</font>。
 
-**由于锁不一样导致的问题**
+<center> <h4><font color = "#36648B">✎✎</br>由于锁不一样导致的问题</center>
 
 ```java
 public class ListHelper<E> {
@@ -80,8 +80,9 @@ synchronizedList这个方法提供了同步的方法，但是锁的对象是内�
 
 解决这个问题也很简单：
 将list修改为private修饰，不让外界访问它的get/set方法，或者将它的get/set用ListHelper这个对象锁保护，保证与putIfAbsent使用的是同一个锁。（当然，这样就没必要用synchronizedList了）
-让putIfAbsent使用synchronizedList所使用的锁，本质上也是保持使用锁的一致。
+以下Demo中，让putIfAbsent使用synchronizedList所使用的锁，（本质上也是保持使用锁的一致）：
 
+```java
 public class ListHelper<E> {
     public List<E> list = Collections.synchronizedList(new ArrayList<>());
 
@@ -95,8 +96,10 @@ public class ListHelper<E> {
         }
     }
 }
-书上用这种方法保持锁的一致性。
+```
+
 synchronizedList的构造方法中，如果没有传锁对象，则会把本对象(list)，作为锁对象。
+```java
 SynchronizedCollection(Collection<E> c) {
     this.c = Objects.requireNonNull(c);
     mutex = this;
@@ -106,9 +109,12 @@ SynchronizedCollection(Collection<E> c, Object mutex) {
     this.c = Objects.requireNonNull(c);
     this.mutex = Objects.requireNonNull(mutex);
 }
+```
 
+> 是否会存在这种情况：对象创建时引用已经赋值给变量了，但是对象方法还未被初始化？
+答：如果不是final类型或volatile类型的对象初始化，确实会有这样的情况。
 
-是否会存在这种情况：对象创建时引用已经赋值给变量了，但是对象方法还未被初始化？
+> ListHelper应该也是会有线程安全问题？
 
 使用`装饰器方法`保护非线程安全的类：
 > e.g 使用**Collections.synchronizedList**保护ArrayList。

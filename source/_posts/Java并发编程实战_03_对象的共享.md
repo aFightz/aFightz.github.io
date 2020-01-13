@@ -8,7 +8,8 @@ categories :
 - Java并发编程实战
 ---
 
-#### 未同步的情况下使用共享变量带来的问题
+<center> <h4><font color = "#36648B">✎</br>未同步的情况下使用共享变量带来的问题</center>
+
 ```java
 public class NoVisibility {
     private static boolean ready;
@@ -42,10 +43,8 @@ public class NoVisibility {
 - volatile防止重排序
 
 
+<center> <h4><font color = "#36648B">✎✎</br>volatile与synchronized</center>
 
-#### volatile
-
-##### volatile与synchronized
 ```java
 public class Score {
     public int value;
@@ -73,7 +72,8 @@ public class Score {
 
 volatile不会执行加锁操作，所以开销会比synchronized更小。
 
-#### 内部类导致的线程不安全（this引用逸出）
+<center> <h4><font color = "#36648B">✎✎</br>内部类导致的线程不安全（this引用逸出）</center>
+
 ```java
     public class ThisEscape{
         public ThisEscape(EventSource source){
@@ -89,8 +89,7 @@ volatile不会执行加锁操作，所以开销会比synchronized更小。
     }
 ```
 上述例子中，ThisEscape有可能还没被创建完成，doSomething方法就被调用了。
-所以不要在构造函数中，启动线程或者创建内部类。
-若一定要这么做，可以使用工厂方法避免不必要的错误。
+可以使用工厂方法避免这种的错误，如下：
 
 ```java
 public class SafeListener{
@@ -112,10 +111,11 @@ public class SafeListener{
 }
 ```
 总的思路就是，在构造完对象之前,不能让this逸出。
+> 如果listener对象不是final类型或者volatile类型的，也是属于不安全发布的。
 
 
+<center> <h4><font color = "#36648B">✎✎✎</br>使用ThreadLocal保证线程安全</center>
 
-#### 使用ThreadLocal保证线程安全
 ```java
     public static ThreadLocal<Integer> value = new ThreadLocal<Integer>(){
         @Override
@@ -132,18 +132,18 @@ public class SafeListener{
 ThreadLocal内部用Map结构保存了当前线程（Thread.currentThread()）对应的值。所以每一个线程都有属于自己的value。
 ThreadLocal变量类似于全局变量，它能降低代码的可重用性。例如将某个全局变量作为ThreadLocal对象。
 
-#### final
+<center> <h4><font color = "#36648B">✎✎✎✎</br>final</center>
 final能保证初始化过程中的安全性（如果this引用逸出还能保证安全性吗）。
 volatile不仅能保证初始化过程中的安全性，还能保证可见性。
 
-##### final的重排序规则
+**final的重排序规则**
 - 在构造函数内对一个final域的写入，与随后把这个被构造对象的引用赋值给一个引用变量，这两个操作之间不能重排序。
 - 初次读一个包含final域的对象的引用，与随后初次读这个final域，这两个操作之间不能重排序。
 
-<font color = "#7EC0EE">总的来说就是final在写之前不会被读。</font>
+> <font color = "#7EC0EE">总的来说就是final在写之前不会被读。</font>
 
 
-##### 对“使用不可变类来实现线程安全”的分析
+<center> <h4><font color = "#36648B">✎✎✎✎✎</br>对“使用不可变类来实现线程安全”的分析</center>
 ```java
 public static class Cache{
     private final Integer value;
@@ -179,11 +179,11 @@ public static class CacheUtil{
 }
 ```
 
-在这个Demo里，线程安全是指Cache类里的value变量与factors变量要保持同步一致，也就是说这两者要能同步初始化，同步更新。由于没有使用DML，所以可能会出现初始化两次的情况，但是这没关系，因为逻辑就是只保存最新的因式分解结果。
+在这个Demo里，线程安全是指Cache类里的value变量与factors变量要保持同步一致，也就是说这两者要能同步初始化，同步更新。由于没有使用DCL，所以可能会出现初始化两次的情况，但是这没关系，因为逻辑就是只保存最新的因式分解结果。
 CacheUtil的cache变量使用了volatile。volatile保证cache不会失效，以及保证cache的初始化是线程安全的。
 
 
-#### 安全发布一个对象的四种模式
+<center> <h4><font color = "#36648B">✎✎✎✎✎</br>安全发布一个对象的四种模式</center>
 - 在静态初始化函数中初始化一个对象引用。
 - 将对象的引用保存到volatile或AtomicReferance对象中。
 - 用final修饰对象的引用
