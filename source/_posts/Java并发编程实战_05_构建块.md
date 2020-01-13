@@ -8,10 +8,11 @@ categories :
 - Java并发编程实战
 ---
 
-Iterator与for-each在循环的过程中，会监听一个计数器，如果计数器被修改（集合被修改），则会抛出ConcurrentModificationException。
-值得一提的是修改计数器并不是一个线程安全的操作，所以有可能线程A在迭代，线程B修改了集合，但是线程A没抛出则会抛出ConcurrentModificationException。
+<center> <h4><font color = "#36648B">✎</br>在并发中迭代</center>
+`Iterator`与`for-each`在循环的过程中，会监听一个计数器，如果计数器被修改（集合被修改），则会抛出`ConcurrentModificationException`。
+值得一提的是修改计数器并不是一个线程安全的操作，所以有可能线程A在迭代，线程B修改了集合，但是线程A没抛出则会抛出`ConcurrentModificationException`。
 
-
+```java
 public class HiddenIterator {
     private final Set<Integer> set = new HashSet<>();
 
@@ -31,39 +32,43 @@ public class HiddenIterator {
         System.out.println(set);
     }
 }
+```
 上面的代码中，由于迭代（println会打印toString的内容，而hashSet的toString方法就是使用Iterator拼接Set的所有元素）与容器内元素的改变（HiddenIterator#get/set）没有使用同一个锁，所以在迭代时候有可能会出现ConcurrentModificationException。
 解决的方法很简单，保持这两者的锁一致即可。
 
-常用的并发类
-Map
-ConcurrentHashMap：非独占锁，在并发情况下用来代替HashMap。
-提供不抛出ConcurrentModificationException的迭代器，这个迭代器拥有“弱一致性”而不是“及时失败”，允许并发修改。
-它的size()方法与empty()方法是估算值，并不完全准确。
+<center> <h4><font color = "#36648B">✎✎</br>常用的并发类</center>
 
-ConcurrentSkipListMap：在并发情况下用来代替SortedMap。(这个是什么锁？)
-Hashtable：独占锁。
-Collecitons.synchronizedMap：独占锁。
+**1、Map**
+- **ConcurrentHashMap**：非独占锁，在并发情况下用来代替`HashMap`。提供不抛出ConcurrentModificationException的迭代器，这个迭代器拥有“弱一致性”而不是“及时失败”，允许并发修改。它的`size()`方法与`empty()`方法是估算值，并不完全准确。
+> 这个迭代器是怎么实现的？
+- **ConcurrentSkipListMap**：在并发情况下用来代替`SortedMap`。
+> SortedMap是什么形式的Map？
+- **Hashtable**：独占锁。
+- **Collections.synchronizedMap**：独占锁。
 
-List
-CopyOnWriteList：在并发情况下用来代替List。
-容器的迭代器保留一个底层基础数组，这个数组的元素永远不会被修改，所以在迭代进行读取时，不需要加锁。迭代时，也不会抛出ConcurrentModificationException。
+
+**2、List**
+- **CopyOnWriteList**：在并发情况下用来代替List。
+容器的迭代器保留一个底层基础数组，这个数组的元素永远不会被修改，所以在迭代进行读取时，不需要加锁。迭代时，也不会抛出`ConcurrentModificationException`。
 当需要修改元素时，会复制一个数组并对这个数组进行修改，然后直接替换基础数组。
 
-Set
-ConcurrentSkipListSet：在并发情况下用来代替SortedSet。
-CopyOnWriteArraySet：在并发情况下用来代替Set。
+**3、Set**
+- **ConcurrentSkipListSet**：在并发情况下用来代替SortedSet。
+- **CopyOnWriteArraySet**：在并发情况下用来代替Set。
 
 
-Queue
-Queue的框架图
+<center> <h4><font color = "#36648B">✎✎✎</br>Queue</center>
+
+**1、Queue的框架图**
 
 ![](Java并发编程实战_05_构建块\Queue框架图.png)
-实现了BlockingQueue的都是阻塞队列（支持并发）。阻塞队列需要catch IterruptionException。
-带有Priority的都是优先级队列。
-ConcurrentLinkedQueue、LinkedBlockingQueue、ArrayListBlockingQueue是FIFO队列。
 
-BlockingQueue
+实现了BlockingQueue的都是阻塞队列（支持并发）。阻塞队列需要`catch InterruptionException`。
+带有Priority的都是优先级队列。
+`ConcurrentLinkedQueue`、`LinkedBlockingQueue`、`ArrayListBlockingQueue`是**FIFO队列**。
+
+**2、BlockingQueue**
 可以是有界的也可以是无界的。
-非定时阻塞的方法：put、take。
-可定时阻塞的方法：offer、poll。
+非定时阻塞的方法：`put`、`take`。
+可定时阻塞的方法：`offer`、`poll`。
 
