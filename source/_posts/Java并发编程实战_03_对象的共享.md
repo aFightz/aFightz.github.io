@@ -186,17 +186,22 @@ CacheUtil的cache变量使用了volatile。volatile保证cache不会失效，以
 <center> <h4><font color = "#36648B">✎✎✎✎✎</br>安全发布一个对象的四种模式</center>
 - 在静态初始化函数中初始化一个对象引用。
 - 将对象的引用保存到volatile或AtomicReferance对象中。
-- 用final修饰对象的引用
-- 将对象的引用保存到一个由锁保护的域中
+- 用final修饰对象的引用。
+- 将对象的引用保存到一个由锁保护的域中。
 > 即使this引用逸出，volatile、Atomic、final也会是线程安全的吗？
-
+> 锁与AtomicReferance是如何保证安全发布的？
+> 线程安全的容器类也属于锁保护的域。
 
 
 
 #### 疑惑
 - NoVisibilityDemo实际运行的时候，如果加上Thread.yield()，其他线程ready会拿到最新值，而如果去掉Thread.yield()让while无限循环，那么ready则不会取到最新值，这是为什么？
+- volatile类型能保证long、double的get/set是原子的吗？
+- 进制volatile的重排序意义是什么？因为其他类型应该都不是共享的。
 
 
+锁
+假设有锁M，那么在M上调用unlock之前的所有操作结果，对于在M上调用lock之后的线程都是可见的。
 
 
 
