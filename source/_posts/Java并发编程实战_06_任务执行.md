@@ -24,8 +24,26 @@ Timer不会捕获异常，如果任务抛出异常时，Timer不会恢复线程�
 > DelayQueue实现BlockingQueue，并为ScheduledThreadPoolExecutor提供了调度功能。
 
 
-ExecutorService提交一组任务并获取对应的结果
+ExecutorService提交任务
+先完成的先返回
 executorService.submit(一组任务)
 循环{
    executorService.take()//哪个任务优先完成则先返回。
 }
+
+等待任务全部结束或中断、超时
+```java
+List<Future<TravelQuote>> futures = exec.invokeAll(tasks, time, unit); 
+List<TravelQuote> quotes = new ArrayList<TravelQuote>(tasks.size()); 
+Iterator<QuoteTask> taskIter = tasks.iterator(); 
+for(Future<TravelQuote> f : futures){
+    QuoteTask task = taskIter.next(); 
+    try{
+        quotes.add(f.get());
+    } catch(ExecutionException e){
+        quotes.add(task.getFailureQuote(e, getCause()));
+    } catch(CancellationException e){
+        quotes.add(task.getTimeoutQuote(e));
+    }
+}
+```        
