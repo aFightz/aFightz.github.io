@@ -133,6 +133,7 @@ ThreadLocal内部用Map结构保存了当前线程（Thread.currentThread()）�
 ThreadLocal变量类似于全局变量，它能降低代码的可重用性。例如将某个全局变量作为ThreadLocal对象。
 
 <center> <h4><font color = "#36648B">✎✎✎✎</br>final</center>
+
 final能保证初始化过程中的安全性（如果this引用逸出还能保证安全性吗）。
 volatile不仅能保证初始化过程中的安全性，还能保证可见性。
 
@@ -144,6 +145,7 @@ volatile不仅能保证初始化过程中的安全性，还能保证可见性。
 
 
 <center> <h4><font color = "#36648B">✎✎✎✎✎</br>对“使用不可变类来实现线程安全”的分析</center>
+
 ```java
 public static class Cache{
     private final Integer value;
@@ -184,23 +186,24 @@ CacheUtil的cache变量使用了volatile。volatile保证cache不会失效，以
 
 
 <center> <h4><font color = "#36648B">✎✎✎✎✎</br>安全发布一个对象的四种模式</center>
+
 - 在静态初始化函数中初始化一个对象引用。
 - 将对象的引用保存到volatile或AtomicReferance对象中。
 - 用final修饰对象的引用。
 - 将对象的引用保存到一个由锁保护的域中。
-> 即使this引用逸出，volatile、Atomic、final也会是线程安全的吗？
-> 锁与AtomicReferance是如何保证安全发布的？
+> 即使this引用逸出，volatile、Atomic、final也会是线程安全的吗？答：逸出绝对是线程不安全的。
 > 线程安全的容器类也属于锁保护的域。
+> 在构造函数内对一个变量（属于上面4种模式模之一）的写入，与随后把这个被构造对象的引用赋值给一个引用变量，这两个操作之间不能重排序。
 
 
 
 #### 疑惑
 - NoVisibilityDemo实际运行的时候，如果加上Thread.yield()，其他线程ready会拿到最新值，而如果去掉Thread.yield()让while无限循环，那么ready则不会取到最新值，这是为什么？
 - volatile类型能保证long、double的get/set是原子的吗？
-- 进制volatile的重排序意义是什么？因为其他类型应该都不是共享的。
+- 禁止volatile的重排序意义是什么？因为其他类型应该都不是共享的。
 
 
-锁
+<center> <h4><font color = "#36648B">✎✎✎✎✎✎</br>锁</center>
 假设有锁M，那么在M上调用unlock之前的所有操作结果，对于在M上调用lock之后的线程都是可见的。
 
 
