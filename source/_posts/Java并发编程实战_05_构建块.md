@@ -10,7 +10,7 @@ categories :
 
 <center> <h4><font color = "#36648B">✎</br>在并发中迭代</center>
 `Iterator`与`for-each`在循环的过程中，会监听一个计数器，如果计数器被修改（集合被修改），则会抛出`ConcurrentModificationException`。
-值得一提的是修改计数器并不是一个线程安全的操作，所以有可能线程A在迭代，线程B修改了集合，但是线程A没抛出则会抛出`ConcurrentModificationException`。
+值得一提的是修改计数器并不是一个线程安全的操作，所以有可能线程A在迭代，线程B修改了集合，但是线程A没抛出`ConcurrentModificationException`。
 
 ```java
 public class HiddenIterator {
@@ -83,6 +83,7 @@ SynchronousQueue没有存储功能，因此put和take会一直阻塞，直到有
 如果一个消费者完成了自己双端队列中的全部工作，那么它可以从其他消费者双端队列末尾秘密地获取工作。
 
 <center> <h4><font color = "#36648B">✎✎✎✎</br>中断</center>
+
 中断并不是强制另外一个线程立刻停下来，只能要求另外一个线程在可以暂停的地方停止正在执行的工作。（当然被中断的线程也可以恢复中断，继续执行）
 > 其实就是try catch Interruption的应用。
 
