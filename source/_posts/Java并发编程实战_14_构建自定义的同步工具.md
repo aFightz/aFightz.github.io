@@ -43,14 +43,15 @@ public synchronized void put(V v) throws InterruptedException{
 
 
 
-Lock的Condition对象
+<center> <h4><font color = "#36648B">✎✎</br>Lock的Condition对象</center>
 每个Lock，可以有任意数量的Condition对象。Condition对象继承了相关的Lock对象的公平性。
 
-- Object.wait：await
-- Object.notify：signal
-- Object.notifyAll：signalAll
+**1、对应关系**
+- Object.wait：Lock.await
+- Object.notify：Lock.signal
+- Object.notifyAll：Lock.signalAll
 
-唤醒特定对象Demo
+**2、唤醒特定对象Demo**
 ```java
 @ThreadSafe
 public class ConditionBoundedBuffer <T> {
@@ -93,8 +94,8 @@ public class ConditionBoundedBuffer <T> {
 ```
 
 UnSafe类中的park()与unPark()实际上就是相当于wait与notify。
-> 这两者有什么不同。
->
+> 这两者有什么不同？
+
 Java的多数安全的方法类都有一个共同的基类：AbstractQueueSynchronizer(AQS)，它实际上上用UnSafe类中的park()与unPark()来实现等待与唤醒。涉及到变量的累加修改则用CAS实现。
 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            

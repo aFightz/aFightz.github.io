@@ -32,37 +32,5 @@ ReentrantLock的非块结构特性仍然意味着，获取锁的操作不能与�
 一个资源可以被多个读操作访问，或者被一个写操作访问，但两者不能同时进行。
 
 
-<center> <h4><font color = "#36648B">✎</br>阻塞队列的实现</center>
-
-用wait()、notifyAll()实现阻塞put、take方法的标准格式
-```java
-//阻塞并直到：not-full 
-public synchronized void put(V v) throws InterruptedException{
-   while(isFull())
-      wait();
-   doPut(v);
-   notifyA11();
-}
-//阻塞并直到：not-empty 
-public synchronized V take() throws InterruptedException{
-   while(isEmpty())
-      wait();
-   V v = doTake();
-   notifyAll();
-   return v;
-}
-```
-
-可对上面的进行优化：仅当缓存从空变为非空，或者从满转为非满时，才需要去通知（其他状态不会有线程阻塞）
-```java
-public synchronized void put(V v) throws InterruptedException{
-   while(isFull())
-      wait(); 
-   boolean wasEmpty = isEmpty(); 
-   doPut(v); 
-   if(wasEmpty) 
-      notifyAll();
-}
-```
 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
