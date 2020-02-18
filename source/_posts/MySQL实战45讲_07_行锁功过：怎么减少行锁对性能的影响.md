@@ -12,10 +12,11 @@ MySQL 的行锁是在引擎层由各个引擎自己实现的，不是所有引�
 
 
 <center> <h4><font color = "#36648B">✎</br>两阶段锁</center>
+
 在InnoDB事务中，行锁是在需要的时候才加上的，但要等到事务结束后才释放。这个就是两阶段锁协议。
 
 innodb行级锁是通过锁索引记录实现的。如果update的列没建索引，即使只update一条记录也会锁定整张表。
->比如说`update t set t.name='abc' where t.name='cde';`这条语句，就会造成表锁，防止update的同时又新插入name为'cde'的记录。但是`update t set t.name='abc' where t.name='cde' limit 1;`这样就变成行锁了。
+> 比如说`update t set t.name='abc' where t.name='cde';`这条语句，就会造成表锁，防止update的同时又新插入name为'cde'的记录。但是`update t set t.name='abc' where t.name='cde' limit 1;`这样就变成行锁了。
 
 如果事务中需要锁多个行，要把最可能引起锁冲突、最可能影响并发度的锁尽量往后放。
 > 总的来说就是尽量减少持有行锁的时间。
