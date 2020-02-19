@@ -87,7 +87,7 @@ try{
 **1、步骤**
 - 实现`ConsumerRebalanceListener`这个类。
 - 在subscribe时，传入ConsumerRebalanceListener实现类。
-vm.dirty_background_ratio
+
 **2、作用**
 当发生`分区再均衡/分区被分配`时，可以通知到消费者，这时我们可以做一些相应的操作（如强制提交偏移量等）。
 还可以结合`seek()`方法，在本地维护偏移量（将处理消息与保存偏移量放在同一个事务中）。可以实现消息的“零重复/零丢失”。
