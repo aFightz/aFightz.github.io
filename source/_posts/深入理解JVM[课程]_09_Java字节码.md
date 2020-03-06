@@ -9,6 +9,7 @@ categories :
 ---
 
 <center> <h4><font color = "#36648B">✎</br>字节码文件结构</center>
+
 |       名称       | 所占空间(字节) |
 | :--------------: | :------------: |
 |   Magic Number   |       4        |
