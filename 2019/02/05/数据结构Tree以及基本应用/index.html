@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="✎树的基本知识1、树的定义从大体上来说，树可以分为二叉树与N叉树。这两者的区别可以从字面上就能理解出来。二叉树的所有孩子节点小于等于2，而N叉树的所有孩子节点中至少有一个是大于2的。2、树的实现12345678910public class Tree &amp;#123;    //根节点    private Node head;&amp;#125;public class Node &amp;#123;    pu">
+<meta name="keywords" content="数据结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构Tree的基本应用">
+<meta property="og:url" content="http://yoursite.com/2019/02/05/数据结构Tree以及基本应用/index.html">
+<meta property="og:site_name" content="aFightz">
+<meta property="og:description" content="✎树的基本知识1、树的定义从大体上来说，树可以分为二叉树与N叉树。这两者的区别可以从字面上就能理解出来。二叉树的所有孩子节点小于等于2，而N叉树的所有孩子节点中至少有一个是大于2的。2、树的实现12345678910public class Tree &amp;#123;    //根节点    private Node head;&amp;#125;public class Node &amp;#123;    pu">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/数据结构Tree以及基本应用/右旋.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/数据结构Tree以及基本应用/左旋右旋.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/02/05/数据结构Tree以及基本应用/2-3树插入过程.png">
+<meta property="og:updated_time" content="2020-01-07T08:21:41.487Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据结构Tree的基本应用">
+<meta name="twitter:description" content="✎树的基本知识1、树的定义从大体上来说，树可以分为二叉树与N叉树。这两者的区别可以从字面上就能理解出来。二叉树的所有孩子节点小于等于2，而N叉树的所有孩子节点中至少有一个是大于2的。2、树的实现12345678910public class Tree &amp;#123;    //根节点    private Node head;&amp;#125;public class Node &amp;#123;    pu">
+<meta name="twitter:image" content="http://yoursite.com/2019/02/05/数据结构Tree以及基本应用/右旋.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/02/05/数据结构Tree以及基本应用/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>数据结构Tree的基本应用 | aFightz</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">aFightz</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/05/数据结构Tree以及基本应用/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aFightz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aFightz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">数据结构Tree的基本应用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-02-05 17:55:43" itemprop="dateCreated datePublished" datetime="2019-02-05T17:55:43+08:00">2019-02-05</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-07 16:21:41" itemprop="dateModified" datetime="2020-01-07T16:21:41+08:00">2020-01-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/个人分享/" itemprop="url" rel="index"><span itemprop="name">个人分享</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/个人分享/数据结构/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/个人分享/数据结构/树/" itemprop="url" rel="index"><span itemprop="name">树</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <center> <h4><font color="#36648B">✎<br>树的基本知识</font></h4></center><br><strong>1、树的定义</strong><br>从大体上来说，树可以分为二叉树与N叉树。这两者的区别可以从字面上就能理解出来。<br>二叉树的所有孩子节点小于等于2，而N叉树的所有孩子节点中至少有一个是大于2的。<br><br><br><br><strong>2、树的实现</strong><br><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Tree</span> </span>&#123;</span><br><span class="line">    <span class="comment">//根节点</span></span><br><span class="line">    <span class="keyword">private</span> Node head;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> element;</span><br><span class="line">    <span class="keyword">public</span> Node left;</span><br><span class="line">    <span class="keyword">public</span> Node right;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><br><strong>3、相关专业术语</strong><br>- 叶子节点：没有子节点（孩子节点）的节点。<br>- 高度/深度：树的最大层次。<br><br><br><br><strong>4、树的遍历：先序/中序/后序遍历</strong><br><br>后序遍历Demo<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">orderTraverse</span><span class="params">(Node t)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(t == <span class="keyword">null</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//System.out.println(t.element); 如果在这里（前面）访问元素则是先序遍历</span></span><br><span class="line">    orderTraverse(t.left);</span><br><span class="line">    <span class="comment">//System.out.println(t.element); 如果在这里（中间）访问元素则是中序遍历</span></span><br><span class="line">    orderTraverse(t.right);</span><br><span class="line">    System.out.println(t.element);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><br><center> <h4><font color="#36648B">✎✎<br>哈夫曼树</font></h4></center><br><center> <h4><font color="#36648B">✎✎✎<br>二叉搜索树</font></h4></center><br><strong>1、定义</strong><br>若其左子树存在，则其左子树中每个节点的值都不大于该节点值；<br>若其右子树存在，则其右子树中每个节点的值都不小于该节点值。<br><br><strong>2、复杂度</strong><br><br>二叉搜索树的搜索复杂度与树的深度有关，范围是O(n) ~ O(log n)之间。<br><br><strong>3、遍历算法</strong><br>可使用中序遍历输出一组有序的值。<br><br><strong>4、插入算法（假设将元素a插入树B中）</strong><br><br>- 如果B为空树，则将元素a作为树的根节点。<br>- 否则，比较根节点与a的值，a若比较小则往左子树走，否则往右子树走，递归重复此节点比较过程，直至将a以叶子节点的形式插入到B（a与节点相等时可根据实际情况看作是小于或大于或者直接丢弃都可）<br><br><strong>5、删除算法（假设删除节点p）</strong><br><br>- 若p是子节点，则直接删除。<br>- 若p只有一个孩子节点，则删除p，让孩子节点顶替p的位置。<br>- 若p有两个孩子节点，那么删除p，并寻找p的后继顶替p。（p的后继是p的右子树的最左节点。）<br><br>  &gt; 寻找p的前继应该也可以？p的前继是p的左节点，或是p的左节点的右节点。<br><br><strong>6、查找算法（假设根节点为p，需要查找的元素为a）</strong><br><br>- 若p = a，则直接返回p。<br>- 若p &lt; a，则往左子树走，否则往右子树走，递归调用此流程。<br><br><br><br><br><br><br><br><br><br><br><center> <h4><font color="#36648B">✎✎✎<br>平衡二叉树(AVL Tree)</font></h4></center><br><strong>1、定义</strong><br><br>任意一节点的左子树与右子树高度相差不超过1。<br><br><strong>2、查找、删除、遍历算法</strong><br><br>平衡二叉树的查找、删除、遍历算法都与二叉搜索树的步骤一样，只是在树结构变化了之后（增加节点或删除节点），需要<strong>递归判断</strong>是否需要<strong>再平衡</strong>。<br><br><strong>3、再平衡</strong><br><br>当结构处于失衡状态时，就需要再均衡。判断是否处于失衡状态的逻辑是：判断<strong>此节点的左右子树高度是否相差超过1</strong>，如果是，则处于失衡状态，此节点为失衡点。之后需要判断是处于哪种失衡结构：<br><br>- <strong>LL失衡</strong>。需要对结构进行右旋操作。<br>  伪代码实现的实现的简单逻辑为：<br><br>  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> h    h为失衡点</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Node <span class="title">rotateRight</span><span class="params">(Node h)</span> </span>&#123;</span><br><span class="line">      Node x = h.left;</span><br><span class="line">      h.left = x.right;</span><br><span class="line">      x.right = h;</span><br><span class="line">      <span class="comment">//省略更新高度、更新父节点等。</span></span><br><span class="line">      <span class="keyword">return</span> x;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure><br><br><br>  如下图所示：<br>  <img src="/2019/02/05/数据结构Tree以及基本应用/右旋.jpg" alt=""><br>  节点3为失衡点。<br><br><br><br>- <strong>RR失衡</strong>。需要进行左旋操作。与右旋操作类似，只是操作的“方向”是反的。<br><br>  伪代码实现的实现的简单逻辑为：<br><br>  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Node <span class="title">rotateLeft</span><span class="params">(Node h)</span> </span>&#123;</span><br><span class="line">    Node x = h.right;</span><br><span class="line">    h.right = x.left;</span><br><span class="line">    x.left = h;</span><br><span class="line">    <span class="comment">//省略更新高度、更新父节点等。</span></span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure><br><br>- <strong>LR失衡</strong>。先执行左旋再执行右旋。<br><br>  伪代码实现的实现的简单逻辑为：<br><br>  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Node <span class="title">rotateLeftRight</span><span class="params">(Node h)</span> </span>&#123;</span><br><span class="line">    h.left = rotateLeft(h.left);</span><br><span class="line">    <span class="keyword">return</span> rotateRight(h);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><br>  &gt;对平衡点的左节点进行左旋，再对平衡点进行右旋。<br><br>  如下图示：<br><br>  <img src="/2019/02/05/数据结构Tree以及基本应用/左旋右旋.jpg" alt=""><br><br><br><br>- <strong>RL失衡</strong>。先执行右旋再执行左旋。<br><br>&gt; 第一个字母表示高度较高的子树位置，第二个字母表示锁挂载节点所处于的子树位置。<br><br><br><br><br><br><br><br><center> <h4><font color="#36648B">✎✎✎<br>2-3树</font></h4></center><br>1、定义<br><br>&gt; 假设父节点为P，左节点为L，中间节点为M，右节点为R。<br><br>- 所有叶子节点都在同一层。<br>- 2节点：父节点存储一个值，最多有左右两个子树。且<code>L&lt; P &lt; R</code>。<br>- 3节点：父节点存储两个值，最多有左中右三个子树。且<code>L &lt; P1 &lt; M &lt; P2 &lt; R</code>。<br>- 子节点要么为0个，要么大于等于2个。<br><br><br><br>2、插入<br><br>永远都是在叶子节点处新增节点，插入过程如下图<br><br><br><br><img src="/2019/02/05/数据结构Tree以及基本应用/2-3树插入过程.png" alt=""><br><br>3、删除<br><br>如果是删除非叶子节点时，那么可以找到它的后继节点（一定会是叶子节点），将后继节点与之交换，再删除（此时就是删除叶子节点了），所以2-3树的删除总归还是会演变成删除叶子节点。<br><br>删除叶子节点时，如果并没有造成叶子节点在不同层的情况（譬如说删除一个3-节点时），那就直接删除即可。<br><br>否则就需要用调整树的结构，平衡树保持平衡的做法是，如果是左边比较“矮”，那么就可以把右边的元素往左边挪，反之一样。2-3树的做法以合并父节点的方式、右旋、左旋的方式保持各节点在同一层。以下是几个例子。<br><br><br><br><br><br><center> <h4><font color="#36648B">✎✎✎<br>B树</font></h4></center><br><center> <h4><font color="#36648B">✎✎✎<br>B+树</font></h4></center><br><center> <h4><font color="#36648B">✎✎✎<br>红黑树</font></h4></center>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/22/深入理解计算机系统_01_计算机系统漫游/" rel="next" title="01 | 计算机系统漫游">
+                <i class="fa fa-chevron-left"></i> 01 | 计算机系统漫游
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/22/Java并发编程实战_03_对象的共享/" rel="prev" title="03 | 对象的共享">
+                03 | 对象的共享 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">aFightz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">98</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">✎树的基本知识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">✎✎哈夫曼树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">✎✎✎二叉搜索树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">✎✎✎平衡二叉树(AVL Tree)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">5.</span> <span class="nav-text">✎✎✎2-3树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">6.</span> <span class="nav-text">✎✎✎B树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">7.</span> <span class="nav-text">✎✎✎B+树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">8.</span> <span class="nav-text">✎✎✎红黑树</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aFightz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.5.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

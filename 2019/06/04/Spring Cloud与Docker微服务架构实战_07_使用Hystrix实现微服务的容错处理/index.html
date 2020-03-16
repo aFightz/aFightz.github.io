@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="✎断路器状态转换图 ✎✎整合Hystrix 引入spring-cloud-starter-netflix-hystrix 在启动类上添加@EnableCircuitBreaker或@EnbaleHystrix 在Mapping方法上添加注解: 1@HystrixCommand(fallbackMethod = &quot;findByIdFallback&quot;)  findByIdFallback是一个自定义方">
+<meta name="keywords" content="Spring Cloud">
+<meta property="og:type" content="article">
+<meta property="og:title" content="07 | 使用Hystrix实现微服务的容错处理">
+<meta property="og:url" content="http://yoursite.com/2019/06/04/Spring Cloud与Docker微服务架构实战_07_使用Hystrix实现微服务的容错处理/index.html">
+<meta property="og:site_name" content="aFightz">
+<meta property="og:description" content="✎断路器状态转换图 ✎✎整合Hystrix 引入spring-cloud-starter-netflix-hystrix 在启动类上添加@EnableCircuitBreaker或@EnbaleHystrix 在Mapping方法上添加注解: 1@HystrixCommand(fallbackMethod = &quot;findByIdFallback&quot;)  findByIdFallback是一个自定义方">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/06/04/Spring%20Cloud与Docker微服务架构实战_07_使用Hystrix实现微服务的容错处理/断路器状态转换图.png">
+<meta property="og:updated_time" content="2020-01-07T08:21:41.440Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="07 | 使用Hystrix实现微服务的容错处理">
+<meta name="twitter:description" content="✎断路器状态转换图 ✎✎整合Hystrix 引入spring-cloud-starter-netflix-hystrix 在启动类上添加@EnableCircuitBreaker或@EnbaleHystrix 在Mapping方法上添加注解: 1@HystrixCommand(fallbackMethod = &quot;findByIdFallback&quot;)  findByIdFallback是一个自定义方">
+<meta name="twitter:image" content="http://yoursite.com/2019/06/04/Spring%20Cloud与Docker微服务架构实战_07_使用Hystrix实现微服务的容错处理/断路器状态转换图.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/06/04/Spring Cloud与Docker微服务架构实战_07_使用Hystrix实现微服务的容错处理/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>07 | 使用Hystrix实现微服务的容错处理 | aFightz</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">aFightz</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/04/Spring Cloud与Docker微服务架构实战_07_使用Hystrix实现微服务的容错处理/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aFightz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aFightz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">07 | 使用Hystrix实现微服务的容错处理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-06-04 17:35:40" itemprop="dateCreated datePublished" datetime="2019-06-04T17:35:40+08:00">2019-06-04</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-07 16:21:41" itemprop="dateModified" datetime="2020-01-07T16:21:41+08:00">2020-01-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/Spring/Spring-Cloud与Docker微服务架构实战/" itemprop="url" rel="index"><span itemprop="name">Spring Cloud与Docker微服务架构实战</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="✎断路器状态转换图"><a href="#✎断路器状态转换图" class="headerlink" title="✎断路器状态转换图"></a><center><font color="#36648B">✎</font><br><font color="#36648B">断路器状态转换图</font></center></h4><p><img src="/2019/06/04/Spring Cloud与Docker微服务架构实战_07_使用Hystrix实现微服务的容错处理/断路器状态转换图.png" alt=""></p>
+<h4 id="✎✎整合Hystrix"><a href="#✎✎整合Hystrix" class="headerlink" title="✎✎整合Hystrix"></a><center><font color="#36648B">✎✎</font><br><font color="#36648B">整合Hystrix</font></center></h4><ul>
+<li>引入<code>spring-cloud-starter-netflix-hystrix</code></li>
+<li>在启动类上添加<code>@EnableCircuitBreaker</code>或<code>@EnbaleHystrix</code></li>
+<li><p>在Mapping方法上添加注解:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@HystrixCommand</span>(fallbackMethod = <span class="string">"findByIdFallback"</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong><font color="#CD5555">findByIdFallback</font></strong>是一个自定义方法，若业务发生异常则则回调用此方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">findByIdFallback</span><span class="params">(Long id)</span></span>&#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>@HystrixCommand</code>下的<code>commandProperties</code>可配置<font color="#CD5555">超时</font>等属性。</p>
+</li>
+<li><p>findByIdFallback的参数与Mapping注解下的方法参数需<font color="#CD5555">一致</font>，若想对异常进行一些处理，可以再加上<font color="#CD5555">Throwable</font>参数，如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">findByIdFallback</span><span class="params">(Long id ,Throwable e)</span></span>&#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>若在某些异常情况下，不回调findByIdFallback方法，可以通过<code>@HystrixCommand</code>下的<code>ignoreExceptions</code>属性去设置。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="✎✎✎Hystrix与Actuator"><a href="#✎✎✎Hystrix与Actuator" class="headerlink" title="✎✎✎Hystrix与Actuator"></a><center><font color="#36648B">✎✎✎</font><br><font color="#36648B">Hystrix与Actuator</font></center></h4><p>可以通过Actuator去监控Hystrix状态。服务正常时，状态是up，但是当我们关闭服务时再访问，Hystrix会由于业务失败执行回退逻辑，此时Hystrix的状态仍旧是up，<font color="#CD5555">这是由于失败率还没达到阈值，断路器还未被打开</font>（默认是<font color="#CD5555">5S内20次失败</font>）。</p>
+<h4 id="✎✎✎✎Hystrix线程隔离策略"><a href="#✎✎✎✎Hystrix线程隔离策略" class="headerlink" title="✎✎✎✎Hystrix线程隔离策略"></a><center><font color="#36648B">✎✎✎✎</font><br><font color="#36648B">Hystrix线程隔离策略</font></center></h4><ul>
+<li>Hystrix线程隔离策略有两种：<ul>
+<li><code>THREAD</code>：HystrixCommand将在将在<font color="#CD5555">单独的线程</font>执行。</li>
+<li><code>SEMAPHORE</code>：HystrixCommand将在<font color="#CD5555">调用线程</font>上执行。</li>
+</ul>
+</li>
+<li>Hystrix<font color="#CD5555">默认的策略</font>是<code>THREAD</code>。</li>
+<li>在同一个线程，才能访问request上下文，所以使用THREAD策略会出现访问不到上下文的情况。</li>
+<li>可通过<code>execution.isolation.strategy</code>属性指定隔离策略。</li>
+</ul>
+<h4 id="✎✎✎✎✎Feign使用Hystrix"><a href="#✎✎✎✎✎Feign使用Hystrix" class="headerlink" title="✎✎✎✎✎Feign使用Hystrix"></a><center><font color="#36648B">✎✎✎✎✎</font><br><font color="#36648B">Feign使用Hystrix</font></center></h4><p>Srping Cloud默认已经为Feign整合了Hystrix。</p>
+<p><strong>1、feign开启hystrix</strong></p>
+<ul>
+<li>设置<code>feign.hystrix.enbaled=true</code></li>
+<li>为FeignClient接口创建一个实现类。</li>
+<li><p>然后在FeignClient接口上使用<code>@FeignClient</code>的<code>fallback</code>属性指定<font color="#CD5555">实现类</font>，即可实现hystrix的回滚功能。</p>
+</li>
+<li><p>如果需要知道回退错误类型，则：</p>
+<ul>
+<li><p>实现<code>FallbackFactory&lt;FeignClient&gt;</code>类，复写create方法:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> FeignClient <span class="title">create</span><span class="params">(Throwable cause)</span></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在FeignClient接口上使用<code>@FeignClient</code>的<code>fallbackFactory</code>属性指定实现类。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>2、为指定Feign禁用Hystrix</strong><br>FeignClient默认是不开启Hystrix的，只是我们之前在全局加了开启Hystrix配置。所以要为指定Feign禁用Hystrix，只需要为特定的Feign注入一个初始的FeignClient(没开启Hystrix)而不注入全局的FeignClient即可。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">xxxConfiguration</span></span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Feign.<span class="function">Builder <span class="title">feignBulider</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Feign.builder();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>之后在FeignClient的<code>configuration</code>属性指定这个配置即可。</p>
+<h4 id="✎✎✎✎✎✎Hystrix的监控"><a href="#✎✎✎✎✎✎Hystrix的监控" class="headerlink" title="✎✎✎✎✎✎Hystrix的监控"></a><center><font color="#36648B">✎✎✎✎✎✎</font><br><font color="#36648B">Hystrix的监控</font></center></h4><ul>
+<li>只要添加了actuator模块，就能通过<code>/hystrix.stream</code>看到相应的监控信息。</li>
+<li>可使用<code>Hystrix Dashborad</code>可视化监控数据。</li>
+<li>可使用<code>Turbine</code>聚合监控数据。</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring-Cloud/" rel="tag"># Spring Cloud</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/06/04/Spring Cloud与Docker微服务架构实战_06_使用Feign实现声明式REST调用/" rel="next" title="06 | 使用Feign实现声明式REST调用">
+                <i class="fa fa-chevron-left"></i> 06 | 使用Feign实现声明式REST调用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/05/Spring Cloud与Docker微服务架构实战_08_使用Zuul构建微服务网关/" rel="prev" title="08 | 使用Zuul构建微服务网关">
+                08 | 使用Zuul构建微服务网关 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">aFightz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">98</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#✎断路器状态转换图"><span class="nav-number">1.</span> <span class="nav-text">✎断路器状态转换图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎整合Hystrix"><span class="nav-number">2.</span> <span class="nav-text">✎✎整合Hystrix</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎Hystrix与Actuator"><span class="nav-number">3.</span> <span class="nav-text">✎✎✎Hystrix与Actuator</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎✎Hystrix线程隔离策略"><span class="nav-number">4.</span> <span class="nav-text">✎✎✎✎Hystrix线程隔离策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎✎✎Feign使用Hystrix"><span class="nav-number">5.</span> <span class="nav-text">✎✎✎✎✎Feign使用Hystrix</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎✎✎✎Hystrix的监控"><span class="nav-number">6.</span> <span class="nav-text">✎✎✎✎✎✎Hystrix的监控</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aFightz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.5.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

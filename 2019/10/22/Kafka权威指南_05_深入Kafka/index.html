@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="✎集群成员关系broker启动的时候会在创建一个临时节点，把自己的id注册到zk上（/brokers/ids/#这样的形式）。Kafka组件会监听/brokers/ids这个路径，当集群中有broker退出或新增时，组件都会知悉。将一个broker完全关闭之后，启动另外一个拥有相同id的broker，那么它会拥有与旧broker相同的分区与主题。 ✎✎控制器集群中的broker在加入集群时，都会尝">
+<meta name="keywords" content="Kafka">
+<meta property="og:type" content="article">
+<meta property="og:title" content="05 | 深入Kafka">
+<meta property="og:url" content="http://yoursite.com/2019/10/22/Kafka权威指南_05_深入Kafka/index.html">
+<meta property="og:site_name" content="aFightz">
+<meta property="og:description" content="✎集群成员关系broker启动的时候会在创建一个临时节点，把自己的id注册到zk上（/brokers/ids/#这样的形式）。Kafka组件会监听/brokers/ids这个路径，当集群中有broker退出或新增时，组件都会知悉。将一个broker完全关闭之后，启动另外一个拥有相同id的broker，那么它会拥有与旧broker相同的分区与主题。 ✎✎控制器集群中的broker在加入集群时，都会尝">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/10/22/Kafka权威指南_05_深入Kafka/kafka处理请求的内部流程.png">
+<meta property="og:image" content="http://yoursite.com/2019/10/22/Kafka权威指南_05_深入Kafka/客户端获取分区leader所在的broker的过程.png">
+<meta property="og:updated_time" content="2020-01-07T08:21:41.406Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="05 | 深入Kafka">
+<meta name="twitter:description" content="✎集群成员关系broker启动的时候会在创建一个临时节点，把自己的id注册到zk上（/brokers/ids/#这样的形式）。Kafka组件会监听/brokers/ids这个路径，当集群中有broker退出或新增时，组件都会知悉。将一个broker完全关闭之后，启动另外一个拥有相同id的broker，那么它会拥有与旧broker相同的分区与主题。 ✎✎控制器集群中的broker在加入集群时，都会尝">
+<meta name="twitter:image" content="http://yoursite.com/2019/10/22/Kafka权威指南_05_深入Kafka/kafka处理请求的内部流程.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/10/22/Kafka权威指南_05_深入Kafka/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>05 | 深入Kafka | aFightz</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">aFightz</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/22/Kafka权威指南_05_深入Kafka/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aFightz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aFightz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">05 | 深入Kafka
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-22 19:42:45" itemprop="dateCreated datePublished" datetime="2019-10-22T19:42:45+08:00">2019-10-22</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-07 16:21:41" itemprop="dateModified" datetime="2020-01-07T16:21:41+08:00">2020-01-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Kafka/" itemprop="url" rel="index"><span itemprop="name">Kafka</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Kafka/Kafka权威指南/" itemprop="url" rel="index"><span itemprop="name">Kafka权威指南</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="✎集群成员关系"><a href="#✎集群成员关系" class="headerlink" title="✎集群成员关系"></a><center><font color="#36648B">✎</font><br><font color="#36648B">集群成员关系</font></center></h4><p>broker启动的时候会在创建一个<strong>临时节点</strong>，把自己的id注册到zk上（<code>/brokers/ids/#</code>这样的形式）。Kafka组件会监听<code>/brokers/ids</code>这个路径，当集群中有broker退出或新增时，组件都会知悉。<br>将一个broker完全关闭之后，启动另外一个拥有相同id的broker，那么它会拥有与旧broker相同的分区与主题。</p>
+<h4 id="✎✎控制器"><a href="#✎✎控制器" class="headerlink" title="✎✎控制器"></a><center><font color="#36648B">✎✎</font><br><font color="#36648B">控制器</font></center></h4><p>集群中的broker在加入集群时，都会尝试创建临时节点<code>/controller</code>，但是只有一个可以创建成功，那么它将成为控制器。其他竞争失败的broker将会监听这个临时节点，以便当节点变更时（比如说控制器挂了），它们可以知悉。当控制器挂了，剩余的broker又会开始竞争流程。<br>新的broker在成为控制器后，通过zk的递增操作获得数值更大的epoch。其他broker会忽略掉比当前epoch小的消息（这些消息也就是从旧的控制器发出的），从而避免了“脑裂”。</p>
+<blockquote>
+<p>如果控制器在断开后重连，当发现创建<code>/controller</code>失败后，它应该就知道自己不是控制器了，那么之前比较小的epoch又是怎么发出的呢？</p>
+</blockquote>
+<p>当控制器发现若一个broker离开后(通过监听<code>/brokers/ids</code>这个节点可知)，若这个broker又是分区leader，那么控制器就会在剩余的分区副本列表里面选出一个leader，并通知副本列表。</p>
+<h4 id="✎✎✎复制"><a href="#✎✎✎复制" class="headerlink" title="✎✎✎复制"></a><center><font color="#36648B">✎✎✎</font><br><font color="#36648B">复制</font></center></h4><p>如果Follower在一定时间内（这个时间由<code>replica.Lag.time.max.ms</code>配置，默认为10S）没有向Leader请求同步数据，或者在一定时间内（默认是6S）没有向zk发送心跳消息，那么这个Follower就被认为是<strong>不同步</strong>的，当分区Leader失去连接触发重新选举时，<strong>未同步的Follower将不会被选举</strong>。</p>
+<p>每一个分区都有一个<strong>首选Leader</strong>，它由以下两种方式指定：</p>
+<ul>
+<li><strong>创建主题时选定的Leader分区</strong>就是首选Leader。</li>
+<li>手动进行副本分配，<strong>第一个指定的副本</strong>就是首选Leader。</li>
+</ul>
+<p>当<code>auto.leader.rebalance.enable</code>设为true时，它会去检查首选Leader是不是当前Leader，如果不是，且首选Leader是同步的那么就会触发选举，<strong>让首选Leader成为当前Leader</strong>。</p>
+<p>在复制还未完成的时候，如果此时leader崩溃，那么就会导致数据丢失。</p>
+<p>若一个同步副本滞后，会使生产者与消费者变慢。副本滞后则意味着副本肯定不会同步最新的消息，因为同步也是按消息顺序来的。若生产者若设置了ack = all，那么它会一直等待此消息被副本同步，而生产者也只会消费被同步了的消息。<br>滞后的原因会有两个：</p>
+<ul>
+<li>副本崩溃且没有重启，在经过指定时间后，leader就不会再等待它同步了。</li>
+<li>副本崩溃在一定时间后重启了，此时若崩溃的时间过长，有大量的数据没有被同步，此时生产者与消费者在此副本同步完之前皆会被“卡”住。<blockquote>
+<p>临时增加分区应该也有同步副本滞后的效果。<br>这个要怎么解决？</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="✎✎✎✎请求"><a href="#✎✎✎✎请求" class="headerlink" title="✎✎✎✎请求"></a><center><font color="#36648B">✎✎✎✎</font><br><font color="#36648B">请求</font></center></h4><p><strong>1、Kafka处理请求的内部流程</strong><br><img src="/2019/10/22/Kafka权威指南_05_深入Kafka/kafka处理请求的内部流程.png" alt=""><br>broker会在它所监听的每一个端口上运行一个<strong>Acceptor线程</strong>，这个线程会创建一个连接，并把它交给<strong>Processor线程</strong>去处理。Processor线程的数量是可配置的。Processor线程把客户端请求的消息放进请求队列，然后从响应队列获取响应消息，把它们发送给客户端。</p>
+<p><strong>2、客户端获取分区leader所在的broker的过程</strong><br><img src="/2019/10/22/Kafka权威指南_05_深入Kafka/客户端获取分区leader所在的broker的过程.png" alt=""><br>客户端对<strong>任意broker</strong>（因为每个broker都缓存了这部分数据）发送<strong>元数据请求</strong>，然后将返回的数据（包括表明分区leader在哪个broker的信息）缓存起来，之后需要间隔一定的时间去重新缓存这部分数据（时间间隔可以由<code>metadata.max.age.ms</code>来配置）。</p>
+<p>当客户端将数据发送到一个不是分区leader的broker的时候，会接收到一个“<strong>非分区首领</strong>”的错误，然后客户端会重新缓存元数据，再重新发送数据到相应的Borker。</p>
+<p><strong>3、生产请求</strong><br>如果<code>acks=0</code>，那么生产者在把消息发出去之后，完全<strong>不需要等待broker的响应</strong>。<br>在消息被写入分区的首领之后，broker开始检查acks配置参数</p>
+<ul>
+<li>如果acks被设为0或1，那么broker立即返回响应。</li>
+<li>如果acks被设为all，那么请求会被保存在一个叫作<strong>炼狱</strong>的缓冲区里，直到首领发现所有跟随者副本都复制了消息，响应才会被返回给客户端。</li>
+</ul>
+<p><strong>4、获取请求</strong><br>Kafka使用<strong>零复制技术</strong>向客户端发送消息。<br><strong>零复制技术</strong>的意思就是直接把消息从文件（或者更确切地说是Linux文件系统缓存）里发送到网络通道，而不需要经过任何中间缓冲区。这项技术避免了字节复制，也不需要管理内存缓冲区，从而获得更好的性能。</p>
+<h4 id="✎✎✎✎✎物理存储"><a href="#✎✎✎✎✎物理存储" class="headerlink" title="✎✎✎✎✎物理存储"></a><center><font color="#36648B">✎✎✎✎✎</font><br><font color="#36648B">物理存储</font></center></h4><p><strong>1、集群中分区的分配规则</strong><br>假设有5个broker（broker0 ~ broker4），5个分区（分区0 ~ 分区4），每个分区有3个副本。</p>
+<ul>
+<li><p>若没有配置机架信息。首先会随机选择一个broker，假设选择了broker3，那么分区0首领副本会被分在broker3，分区1首领副本会被分在broker4，依次类推。首领副本分完之后，再分配跟随者副本，分区1的第一个跟随者副本会被分配在broker4上，第二个跟随者副本会被分配在broker0。以此类推。</p>
+</li>
+<li><p>若配置了机架的信息，那么broker就根据机架信息分组。选择的顺序会是机架A、机架B……以此类推。</p>
+</li>
+</ul>
+<p><strong>2、broker内分区的分配规则</strong><br><code>log.dirs</code>指定了分区目录（可多个）<br>计算每个目录的分区数量，新的分区总是被添加到数量最小的那个目录里。</p>
+<p><strong>3、文件管理</strong><br>broker会为分区里的每个片段打开一个文件句柄，哪怕片段是不活跃的。这样会导致打开过多的文件句柄，所以操作系统必须根据实际情况做一些调优。</p>
+<p><strong>4、文件格式</strong><br>保存在磁盘上的数据格式与从生产者发送过来或者发送给消费者的消息格式是一样的。<br>使用了压缩算法后，同一批次的消息会被压缩到一起。<br>DumpLogSegment工具可以查看片段内容。</p>
+<p><strong>5、索引</strong><br>为了帮助broker更快地定位到指定的偏移量，Kafka为每个分区维护了一个索引。删除索引后，kafka会自动重新生成索引。</p>
+<p><strong>6、清理重复的消息</strong><br>假设有这样一个场景，对于key相同的消息，kafka内部只需要保存最新的一条。<br>对于这种场景，可以为主题设置compact策略来实现。如果设置<code>log.cleaner.enabled</code>为true，那么kafka就会启用清理功能来实现上述场景。</p>
+<blockquote>
+<p>如果不启用清理功能，那么设置了compact策略似乎也没意义？</p>
+</blockquote>
+<p>每个Broker会启动一个清理管理器线程和多个清理线程。线程会选择污浊率较高的分区进行清理。</p>
+<blockquote>
+<p>污浊消息表示的是还未被清理的。<br>污浊率 = 污浊消息大小/分区大小</p>
+</blockquote>
+<p>线程会新建一个map，然后将污浊消息的key存入这个map中，其实也就是去重操作。清理完后就会用这个map替换原来的片段。</p>
+<p>如果需要删除某个key的所有消息，则需要push一个key -&gt; null 这样的形式的消息（墓碑消息），清理线程会保留墓碑消息一段时间（这个时间可配置），消费者在监听到value为null时，作忽略处理即可。</p>
+<blockquote>
+<p>但是也有隐患，如果在保留的这段时间内，刚好消费者离线，那么消费者就有可能检测不到这个墓碑消息。</p>
+</blockquote>
+<p>compact策略也不会去清理仍在活跃的片段。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Kafka/" rel="tag"># Kafka</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/22/深入理解JVM[课程]_05_静态常量/" rel="next" title="05 | 静态常量">
+                <i class="fa fa-chevron-left"></i> 05 | 静态常量
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/23/深入理解JVM[课程]_06_接口/" rel="prev" title="06 | 接口">
+                06 | 接口 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">aFightz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">98</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#✎集群成员关系"><span class="nav-number">1.</span> <span class="nav-text">✎集群成员关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎控制器"><span class="nav-number">2.</span> <span class="nav-text">✎✎控制器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎复制"><span class="nav-number">3.</span> <span class="nav-text">✎✎✎复制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎✎请求"><span class="nav-number">4.</span> <span class="nav-text">✎✎✎✎请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎✎✎物理存储"><span class="nav-number">5.</span> <span class="nav-text">✎✎✎✎✎物理存储</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aFightz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.5.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

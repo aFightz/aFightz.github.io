@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="✎分布式安装部署1.集群规划A、B和C三个节点上部署Zookeeper。 2.解压安装。  在A的服务器解压安装zk。 同步zk到B、C。1xsync [ZK_PATH]/    xsync是怎么同步A到B和C上的，在其他地方是否有相关设置？  3.配置服务器编号。  创建目录[dataDir_path]。 在[dataDir_path]目录下创建一个myid的文件。 编辑myid文件，在文件中添">
+<meta name="keywords" content="Zookeeper">
+<meta property="og:type" content="article">
+<meta property="og:title" content="04 | Zookeeper实战">
+<meta property="og:url" content="http://yoursite.com/2019/07/15/大数据之Zookeeper_04_Zookeeper实战/index.html">
+<meta property="og:site_name" content="aFightz">
+<meta property="og:description" content="✎分布式安装部署1.集群规划A、B和C三个节点上部署Zookeeper。 2.解压安装。  在A的服务器解压安装zk。 同步zk到B、C。1xsync [ZK_PATH]/    xsync是怎么同步A到B和C上的，在其他地方是否有相关设置？  3.配置服务器编号。  创建目录[dataDir_path]。 在[dataDir_path]目录下创建一个myid的文件。 编辑myid文件，在文件中添">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-01-07T08:21:41.470Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="04 | Zookeeper实战">
+<meta name="twitter:description" content="✎分布式安装部署1.集群规划A、B和C三个节点上部署Zookeeper。 2.解压安装。  在A的服务器解压安装zk。 同步zk到B、C。1xsync [ZK_PATH]/    xsync是怎么同步A到B和C上的，在其他地方是否有相关设置？  3.配置服务器编号。  创建目录[dataDir_path]。 在[dataDir_path]目录下创建一个myid的文件。 编辑myid文件，在文件中添">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/07/15/大数据之Zookeeper_04_Zookeeper实战/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>04 | Zookeeper实战 | aFightz</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">aFightz</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/15/大数据之Zookeeper_04_Zookeeper实战/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aFightz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aFightz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">04 | Zookeeper实战
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-15 20:02:50" itemprop="dateCreated datePublished" datetime="2019-07-15T20:02:50+08:00">2019-07-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-07 16:21:41" itemprop="dateModified" datetime="2020-01-07T16:21:41+08:00">2020-01-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Zookeeper/" itemprop="url" rel="index"><span itemprop="name">Zookeeper</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Zookeeper/大数据之Zookeeper/" itemprop="url" rel="index"><span itemprop="name">大数据之Zookeeper</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="✎分布式安装部署"><a href="#✎分布式安装部署" class="headerlink" title="✎分布式安装部署"></a><center><font color="#36648B">✎</font><br><font color="#36648B">分布式安装部署</font></center></h4><p><strong>1.集群规划</strong><br>A、B和C三个节点上部署Zookeeper。</p>
+<p><strong>2.解压安装。</strong></p>
+<ul>
+<li>在A的服务器解压安装zk。</li>
+<li>同步zk到B、C。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xsync [ZK_PATH]/</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>xsync是怎么同步A到B和C上的，在其他地方是否有相关设置？</p>
+</blockquote>
+<p><strong>3.配置服务器编号。</strong></p>
+<ul>
+<li>创建目录<code>[dataDir_path]</code>。</li>
+<li>在<code>[dataDir_path]</code>目录下创建一个<code>myid</code>的文件。</li>
+<li>编辑<code>myid文件</code>，在文件中添加与server对应的唯一编号<code>[SERVER_ID]</code>。</li>
+<li>拷贝配置好的zookeeper到其他机器上。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xsync myid</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>并分别在B、C上修改myid文件中内容为自己的<code>[SERVER_ID]</code>。</p>
+<p><strong>4.配置 zoo.cfg文件</strong></p>
+<ul>
+<li>修改配置文件为zoo.cfg。</li>
+<li>修改数据存储路径配置dataDir为<code>[dataDir_path]</code>。</li>
+<li><p>增加如下配置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">server.[A_ID]=A:2888:3888</span><br><span class="line">server.[B_ID]=B:2888:3888</span><br><span class="line">server.[C_ID]=C:2888:3888</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>同步zoo.cfg配置文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xsync zoo.cfg</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>这里的A、B、C是怎么映射到IP的？</p>
+</blockquote>
+<h4 id="✎✎配置参数解读"><a href="#✎✎配置参数解读" class="headerlink" title="✎✎配置参数解读"></a><center><font color="#36648B">✎✎</font><br><font color="#36648B">配置参数解读</font></center></h4><p><code>server.A=B:C:D</code></p>
+<ul>
+<li>A是一个数字，表示这个是第几号服务器。集群模式下在dataDir目录下配置一个文件myid，这个文件里面有一个数据就是A的值，Zookeeper启动时读取此文件，拿到里面的数据与zoo.cfg里面的配置信息比较从而判断到底是哪个server。</li>
+<li>B是这个服务器的ip地址。</li>
+<li>C是这个服务器与集群中的Leader服务器交换信息的端口。</li>
+<li>D是用来执行<strong>重新选举</strong>时服务器相互通信的端口。</li>
+</ul>
+<h4 id="✎✎✎集群操作"><a href="#✎✎✎集群操作" class="headerlink" title="✎✎✎集群操作"></a><center><font color="#36648B">✎✎✎</font><br><font color="#36648B">集群操作</font></center></h4><ul>
+<li>分别启动Zookeeper。</li>
+<li>分别查看状态。<br>可从结果中知道这个节点是follower还是leader。</li>
+</ul>
+<h4 id="✎✎✎✎客户端命令行操作"><a href="#✎✎✎✎客户端命令行操作" class="headerlink" title="✎✎✎✎客户端命令行操作"></a><center><font color="#36648B">✎✎✎✎</font><br><font color="#36648B">客户端命令行操作</font></center></h4><p><strong>1、显示所有操作命令</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">help</span><br></pre></td></tr></table></figure></p>
+<p><strong>2、查看znode中所包含的内容</strong></p>
+<ul>
+<li><p>查看当前znode</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls /</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看sanguo znode</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls /sanguo</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>3、查看当前节点详细数据</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls2 /</span><br></pre></td></tr></table></figure></p>
+<p><strong>4、创建普通节点</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create /sanguo &quot;jinlian&quot;</span><br></pre></td></tr></table></figure></p>
+<p>也可创建多级目录：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create /sanguo/shuguo &quot;liubei&quot;</span><br></pre></td></tr></table></figure></p>
+<p><strong>5、获得节点的值</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get /sanguo/shuguo</span><br></pre></td></tr></table></figure></p>
+<p><strong>6、创建短暂节点</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create -e /sanguo/wuguo &quot;zouyu&quot;</span><br></pre></td></tr></table></figure></p>
+<p><strong>7、创建带序号的节点</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create -s /sanguo/weiguo &quot;caocao&quot;</span><br></pre></td></tr></table></figure></p>
+<p><strong>8、修改节点数据值</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set /sanguo/shuguo &quot;diaocan&quot;</span><br></pre></td></tr></table></figure></p>
+<p><strong>9、节点的值变化监听</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get /sanguo watch(只监听一次)</span><br></pre></td></tr></table></figure></p>
+<p><strong>10、节点的子节点变化监听（路径变化）</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls /sanguo watch(只监听一次)</span><br></pre></td></tr></table></figure></p>
+<p><strong>11、删除节点</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete /sanguo/banzhang</span><br></pre></td></tr></table></figure></p>
+<p><strong>12、递归删除节点</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rmr /sanguo</span><br></pre></td></tr></table></figure></p>
+<p><strong>13、查看节点状态</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stat /sanguo</span><br></pre></td></tr></table></figure></p>
+<h4 id="✎✎✎✎API"><a href="#✎✎✎✎API" class="headerlink" title="✎✎✎✎API"></a><center><font color="#36648B">✎✎✎✎</font><br><font color="#36648B">API</font></center></h4><p><strong>1、创建zk客户端</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestZookeeper</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String connectString=<span class="string">"hadoop102:2181,hadoop103:2181,hadoop104:2181"</span>; </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> sessionTimeout=<span class="number">2000</span>; </span><br><span class="line">    <span class="keyword">private</span> Zookeeper zkClient;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Test</span> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span><span class="keyword">throws</span> IOException</span>&#123;</span><br><span class="line">        zkClient=<span class="keyword">new</span> Zookeeper(connectstring,sessionTimeout,<span class="keyword">new</span> Watcher()&#123;</span><br><span class="line">            <span class="meta">@Override</span> </span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(WatchedEvent event)</span></span>&#123;</span><br><span class="line">                <span class="comment">//do something</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>当有数据变化时，process会被调用。</p>
+<p><strong>2、创建一个节点</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span> </span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createNode</span><span class="params">()</span><span class="keyword">throws</span> KeeperException，InterruptedException</span>&#123;</span><br><span class="line">    String path =zkClient.create（</span><br><span class="line">        <span class="string">"/atguiku"</span>,</span><br><span class="line">        <span class="string">"dahaigezuishuai"</span>.getBytes(),</span><br><span class="line">        Ids.OPEN_ACL_UNSAFE,</span><br><span class="line">        CreateMode.PERSISTENT</span><br><span class="line">    );</span><br><span class="line">    System.out.print1n(path);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>3、获取子节点</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; children = zkClient. getchildren(<span class="string">"/"</span>, <span class="keyword">true</span>);</span><br></pre></td></tr></table></figure></p>
+<p>true表示注册监听。</p>
+<p><strong>4、判断节点是否存在</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stat stat=zkclient. exists(<span class="string">"/atguigu"</span>, <span class="keyword">false</span>);</span><br></pre></td></tr></table></figure></p>
+<p><strong>5、监听服务器节点动态上下线</strong><br>流程如下：</p>
+<ul>
+<li>服务端启动时去注册信息（创建都是临时节点）。</li>
+<li>客户端启动就去getChildren，获取到当前在线服务器列表，并且注册监听。</li>
+<li>服务器节点下线。</li>
+<li>服务器节点上下线事件通知。</li>
+<li>process()重新再去获取服务器列表，并注册监听。</li>
+</ul>
+<p>重点在于服务器向zk注册信息时，创建的节点是<strong>临时的且带编号</strong>的。</p>
+<blockquote>
+<p>问题：如果多台机创建的path相同（节点相同），那么如果节点是带编号的，就不会重合，但如果不带编号的，又会是什么状况呢？</p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Zookeeper/" rel="tag"># Zookeeper</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/15/大数据之Zookeeper_03_Zookeeper内部原理/" rel="next" title="03 | Zookeeper内部原理">
+                <i class="fa fa-chevron-left"></i> 03 | Zookeeper内部原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/08/01/大数据之Kafka_01_Kafka概述/" rel="prev" title="01 | Kafka概述">
+                01 | Kafka概述 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">aFightz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">98</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#✎分布式安装部署"><span class="nav-number">1.</span> <span class="nav-text">✎分布式安装部署</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎配置参数解读"><span class="nav-number">2.</span> <span class="nav-text">✎✎配置参数解读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎集群操作"><span class="nav-number">3.</span> <span class="nav-text">✎✎✎集群操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎✎客户端命令行操作"><span class="nav-number">4.</span> <span class="nav-text">✎✎✎✎客户端命令行操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎✎API"><span class="nav-number">5.</span> <span class="nav-text">✎✎✎✎API</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aFightz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.5.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

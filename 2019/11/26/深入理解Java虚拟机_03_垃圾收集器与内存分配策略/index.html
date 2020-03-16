@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="✎对象的死亡1、引用计数法给对象中添加一个引用计数器，每当有一个地方引用它时，计数器值就加1，引用失效时，计数器值就减1。任何时刻计数器为0的对象就是不可能再被使用的。但是引用计数法解决不了相互循环引用的问题。 2、可达性分析算法这个算法就是以一系列的GC Root为起点，从这些节点向下搜索，当一个对象不可达时，则认为这个对象“已死”。 GC Root包括以下4种对象：  虚拟机栈（栈帧中的本地">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="03 | 垃圾收集器与内存分配策略">
+<meta property="og:url" content="http://yoursite.com/2019/11/26/深入理解Java虚拟机_03_垃圾收集器与内存分配策略/index.html">
+<meta property="og:site_name" content="aFightz">
+<meta property="og:description" content="✎对象的死亡1、引用计数法给对象中添加一个引用计数器，每当有一个地方引用它时，计数器值就加1，引用失效时，计数器值就减1。任何时刻计数器为0的对象就是不可能再被使用的。但是引用计数法解决不了相互循环引用的问题。 2、可达性分析算法这个算法就是以一系列的GC Root为起点，从这些节点向下搜索，当一个对象不可达时，则认为这个对象“已死”。 GC Root包括以下4种对象：  虚拟机栈（栈帧中的本地">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-01-07T08:21:41.503Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="03 | 垃圾收集器与内存分配策略">
+<meta name="twitter:description" content="✎对象的死亡1、引用计数法给对象中添加一个引用计数器，每当有一个地方引用它时，计数器值就加1，引用失效时，计数器值就减1。任何时刻计数器为0的对象就是不可能再被使用的。但是引用计数法解决不了相互循环引用的问题。 2、可达性分析算法这个算法就是以一系列的GC Root为起点，从这些节点向下搜索，当一个对象不可达时，则认为这个对象“已死”。 GC Root包括以下4种对象：  虚拟机栈（栈帧中的本地">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/11/26/深入理解Java虚拟机_03_垃圾收集器与内存分配策略/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>03 | 垃圾收集器与内存分配策略 | aFightz</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">aFightz</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/26/深入理解Java虚拟机_03_垃圾收集器与内存分配策略/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aFightz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aFightz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">03 | 垃圾收集器与内存分配策略
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-26 00:11:49" itemprop="dateCreated datePublished" datetime="2019-11-26T00:11:49+08:00">2019-11-26</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-07 16:21:41" itemprop="dateModified" datetime="2020-01-07T16:21:41+08:00">2020-01-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/JVM/深入理解Java虚拟机/" itemprop="url" rel="index"><span itemprop="name">深入理解Java虚拟机</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><center> <h4><font color="#36648B">✎<br>对象的死亡</font></h4></center><br><strong>1、引用计数法</strong><br>给对象中添加一个引用计数器，每当有一个地方引用它时，计数器值就加1，引用失效时，计数器值就减1。任何时刻计数器为0的对象就是不可能再被使用的。<br>但是引用计数法解决不了<strong>相互循环引用</strong>的问题。</p>
+<p><strong>2、可达性分析算法</strong><br>这个算法就是以一系列的<strong>GC Root</strong>为起点，从这些节点向下搜索，当一个对象不可达时，则认为这个对象“已死”。</p>
+<p>GC Root包括以下4种对象：</p>
+<ul>
+<li>虚拟机栈（栈帧中的本地变量表）中引用的对象。</li>
+<li>方法区中类静态属性引用的对象。</li>
+<li>方法区中常量引用的对象。</li>
+<li>本地方法栈中JNI（即一般说的Native方法）引用的对象。</li>
+</ul>
+<p><strong>3、引用的分类</strong><br>引用由强到若可以分为4种引用：</p>
+<ul>
+<li>强引用。这个就是我们平常代码里面new的引用类型。</li>
+<li>软引用。可用<code>SoftReference</code>类实现软引用。对于软引用关联着的对象，在系统将要发生内存溢出异常之前，将会把这些对象列进回收范围之中进行<strong>第二次回收</strong>。如果这次回收还没有足够的内存才会抛出内存溢出异常。</li>
+<li><p>弱引用。可用<code>WeakReference</code>类实现弱引用。被弱引用关联的对象只能生存到<strong>下一次垃圾收集发生之前</strong>。当垃圾收集器工作时，无论当前内存是否足够，都会回收掉只被弱引用关联的对象。</p>
+<blockquote>
+<p>看起来不可达（死亡）对象和弱引用的生存时间是一样的？</p>
+</blockquote>
+</li>
+<li><p>虚引用。可用<code>PhantomReference</code>实现虚引用。一个对象是否有虚引用的存在，完全不会对其生存时间构成影响，也无法通过虚引用来取得一个对象实例。为一个对象设置虚引用关联的唯一目的就是能在这个对象被收集器回收时<strong>收到一个系统通知</strong>。</p>
+</li>
+</ul>
+<p><strong>4、对象被回收的过程</strong></p>
+<ul>
+<li>可达性分析算法标志这个对象不可达（第一次标记）。</li>
+<li>若对象覆盖了<code>finalize()</code>方法并且之前没有执行过这个方法，那么将这个对象放到F-Queue队列中，让Finalizer线程去执行它的<code>finalize()</code>方法。否则直接被回收。（对象的<code>finalize()</code>只可能被调用一次）</li>
+<li>稍后GC会对F-Queue队列的对象进行筛选，若依旧不可达，则将会被回收。</li>
+</ul>
+<blockquote>
+<p>可在<code>finalize()</code>方法中对这个对象进行“拯救”，即重新关联这个对象，让这个对象可达。</p>
+</blockquote>
+<p><strong>5、Class的回收</strong><br>可用<code>-Xnoclassgc</code>控制JVM是否对Class对象进行回收。</p>
+<p><center> <h4><font color="#36648B">✎✎<br>HotSpot的算法实现</font></h4></center><br><strong>1、枚举根节点</strong></p>
+<p>HotSpot使用的是准确GC，使用一组称为<strong>OopMap的数据结构</strong>存储使用到的<strong>引用以及引用的有效范围</strong>。在枚举根节点时，只需要关注OopMap的信息即可。</p>
+<p><strong>2、安全点</strong></p>
+<p>程序执行过程中只有处于安全点时才会停下来进行GC。所以安全点与安全点之间如果存在了非常多的指令变化内容，JVM不必为这些指令都生成oopMap，只需要在第二个安全点之前，生成一个oopMap即可。</p>
+<p>另外，让程序在到达安全点时“停下来”等待GC有两种方案：</p>
+<ul>
+<li><p><strong>抢先式中断</strong>。GC直接让所有线程都中断，如果线程不在安全点上，则恢复它让它跑到安全点上再中断。</p>
+</li>
+<li><p><strong>主动式中断</strong>。线程到达一个安全点时，轮询一个标志，看是否需要GC，如果需要，就主动中断挂起。</p>
+</li>
+</ul>
+<p>现在的JVM基本上都是使用主动式中断策略。</p>
+<blockquote>
+<p>从上面的信息可知，程序每到一个安全点必然会经过GC。（因为到了安全点就需要轮询）但是这样的话效率不会很低吗？</p>
+</blockquote>
+<p><strong>3、安全区域</strong></p>
+<p>如果线程处于“不执行”的状态时，比如说处于Sleep、Blocked状态。那么就永远也跑不到安全点上了。JVM不可能为了等待这些线程跑到安全点上而不进行GC。所以就需要<strong>安全区域</strong>来解决。安全区域是指在一段代码片段之中，引用不会发生任何变化。</p>
+<p>当程序执行到安全区域时，会标识自己已经进入了安全区域，若此时JVM要发起GC时，就会忽略这个线程。当线程要离开安全区域时，要检查JVM是否完成了根节点枚举，如果没有完成，则要接收到“可以离开安全区域”的信号后，程序才会往下执行。</p>
+<p><center> <h4><font color="#36648B">✎✎✎<br>垃圾收集器</font></h4></center><br>|       名称        |   算法    | 是否并发 | 是否并行 | 是否需要STW | 作用区域 |<br>| :—————: | :——-: | :——: | :——: | :———: | :——: |<br>|      Serial       |   复制    |    否    |    否    |     是      |  新生代  |<br>|    Serial Old     | 标记-整理 |    否    |    否    |     是      |  老年代  |<br>|      ParNew       |   复制    |    是    |    否    |     是      |  新生代  |<br>| Parallel Scavenge |   复制    |    是    |    否    |     是       |  新生代  |<br>|   Parallel Old    | 标记-整理 |    是    |    否    |     是        |  老年代  |<br>|        CMS        | 标记-清除 |    是    | 不完全是 |     是        |  老年代  |</p>
+<p><strong>1、Serial收集器</strong><br>虚拟机在Client模式下的默认新生代收集器。</p>
+<p><strong>2、ParNew收集器</strong><br>Serial收集器的多线程版本。</p>
+<p><strong>3、Serial Old收集器</strong><br>CMS收集器的后备预案。<br>可与Parallel Scavenge收集器组合。（已经比较少用）</p>
+<p><strong>4、Parallel Scavenge收集器</strong><br>关注点在总的吞吐量。<br>适用不需要太多交互的用户。<br>一般来说GC的频率较低，所以每次GC导致的用户停顿时间会变长（频率低的话每次GC时新生代的内存空间就会比较大）。  </p>
+<p><strong>5、Parallel Old收集器</strong><br>Parallel Scavenge收集器的老年代版本。</p>
+<p><strong>6、CMS</strong><br>只有ParNew/Serial收集器可以与CMS收集器配合工作。<br>Serial Old收集器可作为CMS收集器的后备预案。</p>
+<p><strong>收集过程：</strong></p>
+<ul>
+<li>初始标记。标记GC Roots能直接关联到的对象。需要STW。</li>
+<li>并发标记。进行GC Roots Tracing的过程。</li>
+<li>重新标记。修正并发标记期间由于用户程序继续运行而导致标记产生变化的那一部分对象的标记记录。</li>
+<li>并发清除。</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li>需要大量CPU资源。</li>
+<li>无法处理浮动垃圾。在并发清除阶段，产生的新的垃圾称为浮动垃圾，这部分垃圾只能等待下次GC清除。同时，因为并发手机时，用户程序还能继续运行，所以老年代要预留空间（预留空间的阈值是可以设置的）给用户程序，如果预留的空间不足以供用户程序运行，那么就会导致“Concurrent Mode Failure”失败。这时虚拟机就会启动后备方案：临时启用Serial Old收集器来对老年代进行垃圾回收。</li>
+<li>由标记-清除算法带来的问题：内存碎片。也可以设置执行了多少次不进行压缩的full gc后，进行一次压缩。</li>
+</ul>
+<p><strong>7、G1收集器</strong><br>特点：</p>
+<ul>
+<li>并行与并发。</li>
+<li>分代收集。</li>
+<li>空间整合。整体上来看是使用标记-整理算法，局部上来说其实是使用了复制算法。</li>
+<li>可预测的停顿。指定在M毫秒的时间段内，消耗的垃圾回收时间不会超过N毫秒。</li>
+</ul>
+<p>G1会优先回收<strong>价值最大</strong>的Region。</p>
+<p>老年代与新生代不再是物理隔离的。整个堆被分为N个Region。每个Region都有一个Remembered Set，记录其对其他Region的引用。</p>
+<p>收集过程：</p>
+<ul>
+<li>初始标记。</li>
+<li>并发标记。</li>
+<li>最终标记。</li>
+<li>筛选回收。</li>
+</ul>
+<p><strong>8、java默认垃圾回收器</strong></p>
+<ul>
+<li>jdk1.7 默认垃圾收集器Parallel Scavenge（新生代）+Parallel Old（老年代）。</li>
+<li>jdk1.8 默认垃圾收集器Parallel Scavenge（新生代）+Parallel Old（老年代）。</li>
+<li>jdk1.9 默认垃圾收集器G1。</li>
+<li>jdk10 默认垃圾收集器G1。</li>
+<li>jdk11 默认垃圾收集器G1。</li>
+</ul>
+<p><center> <h4><font color="#36648B">✎✎✎✎<br>内存分配</font></h4></center><br>一般来说，Full GC前都会经过Minor GC，但并非绝对，在Parallel Scavenge收集策略里就有直接进行Full GC的策略。<br>Full GC的速度一般会比Minor GC慢10倍以上。</p>
+<p><strong>1、直接进入老年代的大对象</strong><br>设置<code>-XX:PretenureSizeThreshold</code>这个参数在分配内存空间时可令大于它的对象直接进入老年代。</p>
+<blockquote>
+<p>这个参数只对Serial和ParNew两款收集器有效。</p>
+</blockquote>
+<p><strong>2、新生代对象何时进入老年代</strong></p>
+<ul>
+<li>存活年龄达到阈值。</li>
+<li>在Sirvivor空间中相同年龄所有对象大小的总和大与Survivor空间的一半，年龄大于或等于该年龄的对象就可以直接进入老年代。</li>
+</ul>
+<p><strong>3、空间分配担保</strong><br>JDK 6 Update 24后，当新生代将要进行Minor GC时，JVM会对老年代进行以下检查：</p>
+<ul>
+<li>老年代的连续空间是否大于新生代对象总大小。</li>
+<li>老年代的连续空间是否大于历次晋升的平均大小。</li>
+</ul>
+<p>如果满足上述其中一条，就会走正常的对象转移流程。（Minor GC - &gt; Full GC）<br>如果都不满足，则会先Full GC再进行Minor GC后再Full GC。</p>
+<blockquote>
+<p>需要注意的是第一个流程有可能不需要进行Full GC（在To 空间有足够内存存放新生代存活对象的时候）<br>不明白为什么要改成这样子，如果走第二种流程的话感觉先Full GC没有什么意义。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/24/深入理解Java虚拟机_02_Java内存区域与内存溢出异常/" rel="next" title="02 | Java内存区域与内存溢出异常">
+                <i class="fa fa-chevron-left"></i> 02 | Java内存区域与内存溢出异常
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/15/深入理解Java虚拟机_07_虚拟机类加载机制/" rel="prev" title="07 | 虚拟机类加载机制">
+                07 | 虚拟机类加载机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">aFightz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">98</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">✎对象的死亡</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">✎✎HotSpot的算法实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">✎✎✎垃圾收集器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">✎✎✎✎内存分配</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aFightz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.5.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

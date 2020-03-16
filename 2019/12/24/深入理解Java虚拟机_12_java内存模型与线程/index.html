@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="✎内存间交互操作  1、jvm保证下面8种操作是原子的：  lock（锁定）：作用于主内存的变量，它把一个变量标识为一条线程独占的状态。 unlock（解锁）：作用于主内存的变量，它把一个处于锁定状态的变量释放出来，释放后的变量才可以被其他线程锁定。 read（读取）：作用于主内存的变量，它把一个变量的值从主内存传输到线程的工作内存中，以便随后的load动作使用。 load（载入）：作用于工作内">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="12 | java内存模型与线程">
+<meta property="og:url" content="http://yoursite.com/2019/12/24/深入理解Java虚拟机_12_java内存模型与线程/index.html">
+<meta property="og:site_name" content="aFightz">
+<meta property="og:description" content="✎内存间交互操作  1、jvm保证下面8种操作是原子的：  lock（锁定）：作用于主内存的变量，它把一个变量标识为一条线程独占的状态。 unlock（解锁）：作用于主内存的变量，它把一个处于锁定状态的变量释放出来，释放后的变量才可以被其他线程锁定。 read（读取）：作用于主内存的变量，它把一个变量的值从主内存传输到线程的工作内存中，以便随后的load动作使用。 load（载入）：作用于工作内">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yoursite.com/2019/12/24/深入理解Java虚拟机_12_java内存模型与线程/轻量级进程与内核线程之间的关系.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/24/深入理解Java虚拟机_12_java内存模型与线程/进程与用户线程之间的关系.png">
+<meta property="og:image" content="http://yoursite.com/2019/12/24/深入理解Java虚拟机_12_java内存模型与线程/用户线程与轻量级进程之间的关系.png">
+<meta property="og:updated_time" content="2020-01-07T11:22:36.751Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="12 | java内存模型与线程">
+<meta name="twitter:description" content="✎内存间交互操作  1、jvm保证下面8种操作是原子的：  lock（锁定）：作用于主内存的变量，它把一个变量标识为一条线程独占的状态。 unlock（解锁）：作用于主内存的变量，它把一个处于锁定状态的变量释放出来，释放后的变量才可以被其他线程锁定。 read（读取）：作用于主内存的变量，它把一个变量的值从主内存传输到线程的工作内存中，以便随后的load动作使用。 load（载入）：作用于工作内">
+<meta name="twitter:image" content="http://yoursite.com/2019/12/24/深入理解Java虚拟机_12_java内存模型与线程/轻量级进程与内核线程之间的关系.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/12/24/深入理解Java虚拟机_12_java内存模型与线程/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>12 | java内存模型与线程 | aFightz</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">aFightz</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/24/深入理解Java虚拟机_12_java内存模型与线程/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aFightz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aFightz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">12 | java内存模型与线程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-24 00:09:34" itemprop="dateCreated datePublished" datetime="2019-12-24T00:09:34+08:00">2019-12-24</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-07 19:22:36" itemprop="dateModified" datetime="2020-01-07T19:22:36+08:00">2020-01-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/JVM/深入理解Java虚拟机/" itemprop="url" rel="index"><span itemprop="name">深入理解Java虚拟机</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <center> <h4><font color="#36648B">✎<br>内存间交互操作</font></h4></center>
+
+<p><strong>1、jvm保证下面8种操作是原子的</strong>：</p>
+<ul>
+<li><strong>lock</strong>（锁定）：作用于主内存的变量，它把一个变量标识为一条线程独占的状态。</li>
+<li><strong>unlock</strong>（解锁）：作用于主内存的变量，它把一个处于锁定状态的变量释放出来，释放后的变量才可以被其他线程锁定。</li>
+<li><strong>read</strong>（读取）：作用于主内存的变量，它把一个变量的值从主内存传输到线程的工作内存中，以便随后的load动作使用。</li>
+<li><strong>load</strong>（载入）：作用于工作内存的变量，它把read操作从主内存中得到的变量值放入工作内存的变量副本中。</li>
+<li><strong>use</strong>（使用）：作用于工作内存的变量，它把工作内存中一个变量的值传递给执行引擎，每当虚拟机遇到一个需要使用到变量的值的字节码指令时将会执行这个操作。</li>
+<li><strong>assign</strong>（赋值）：作用于工作内存的变量，它把一个从执行引擎接收到的值赋给工作内存的变量，每当虚拟机遇到一个给变量赋值的字节码指令时执行这个操作。</li>
+<li><strong>store</strong>（存储）：作用于工作内存的变量，它把工作内存中一个变量的值传送到主内存中，以便随后的write操作使用。</li>
+<li><strong>write</strong>（写入）：作用于主内存的变量，它把store操作从工作内存中得到的变量的值放人主内存的变量中。</li>
+</ul>
+<p>2、<strong>执行上述8种操作时必须满足下面的规则</strong>：</p>
+<ul>
+<li><code>read-&gt;load</code>，<code>assign-&gt;store-&gt;write</code>这两组操作是固定的，不会少，顺序也不会变。</li>
+<li>在use的前面一定会有初始化（load或assign）的操作。</li>
+<li>一个变量在同一个时刻只允许一条线程对其进行lock操作，但lock操作可以被同一条线程重复执行多次，多次执行lock后，只有执行相同次数的unlock操作，变量才会被解锁。</li>
+<li>如果对一个变量执行lock操作，那将会清空工作内存中此变量的值，在执行引擎使用这个变量前，需要重新执行load或assign操作初始化变量的值。</li>
+<li>如果一个变量事先没有被lock操作锁定，那就不允许对它执行unlock操作，也不允许去unlock一个被其他线程锁定住的变量。</li>
+<li>对一个变量执行unlock操作之前，必须先把此变量同步回主内存中（执行store、write操作）。</li>
+</ul>
+<blockquote>
+<p>假设线程中访问一个10MB的对象，也会把这10MB的内存复制二份拷出来吗？<br>答：事实上并不会如此，这个对象的引用、对象中某个在线程访问到的字段是存可能存在拷的，但不会有虚拟机实现成把整个对象拷一次。</p>
+</blockquote>
+<center> <h4><font color="#36648B">✎✎<br>volatile</font></h4></center>
+
+<p>在JDK1.5之前，volatile的不能完全避免重排序，所以不能安全地使用DDL（双锁检测）来实现单例模式。</p>
+<p>在对volatile变量进入赋值操作时，紧跟在后面会插入一条内存屏障指令（从汇编代码上体现的是一条lock前缀的指令）。</p>
+<ul>
+<li>这个指令会使本cpu的cache写入主内存，这个写入动作会导致其他cpu相应的cache无效化。<blockquote>
+<p>无效化意思就是说会重新从主内存读相应的cache？那么volatile的读又起到什么作用？</p>
+</blockquote>
+</li>
+<li>同时这个lock前缀的屏障也会使后续的指令不会重排序到内存屏障前。<blockquote>
+<p>每对volatile写一次就会产生一条内存屏障指令。</p>
+</blockquote>
+</li>
+</ul>
+<p>读写volatile变量要满足以下规则：</p>
+<ul>
+<li><code>read-&gt;load-&gt;use</code>（读）、<code>assign-&gt;store-&gt;write</code>(写)一定会是连续一起出现的。</li>
+<li>假设有volatile类型变量A与B，从代码角度上来看先对A进行读/写，再对B进行读/写，那么这两者不会被重排序。<blockquote>
+<p>如果对读取两个volatile变量，那么这两次读取会被重排序吗？</p>
+</blockquote>
+</li>
+</ul>
+<center> <h4><font color="#36648B">✎✎✎<br>synchronized</font></h4></center>
+
+<p>synchronized编译成字节码就是<strong>monitorenter</strong>与<strong>monitorexit</strong>。</p>
+<center> <h4><font color="#36648B">✎✎✎✎<br>happens-before</font></h4></center>
+
+<ul>
+<li><strong>程序次序规则</strong>。在一个线程中，按照控制流的顺序，书写在前面的操作先行发生于书写在后面的操作。</li>
+<li><strong>管程锁定规则</strong>。一个unlock操作先行发生于后面对同一个锁的lock操作。这里所说的“后面”是指时间上的后面。</li>
+<li><strong>volatile变量规则</strong>。对一个volatile变量的写操作先行发生于后面对这个变量的读操作。这里所说的“后面”是指时间上的后面。</li>
+<li><strong>线程启动规则</strong>。<code>Thread的start()</code>方法先行发生于此线程的每一个动作。</li>
+<li><strong>线程终止规则</strong>。线程中的所有操作都先行发生于对此线程的终止检测。（可以通过<code>Thread.join()</code>、<code>Thread.isAlive()</code>检测线程是否终止）。</li>
+<li><strong>线程中断规则</strong>。对线程<code>interrupt()</code>方法的调用先行发生于被中断线程的代码检测到中断时间的发生(通过<code>Thread.interrupted()</code>等方法检测到是否有中断发生)。</li>
+<li><strong>对象终结规则</strong>。一个对象的初始化完成(构造函数执行结束)先行发生于它的<code>finalize()</code>方法。</li>
+<li><strong>传递性</strong>。如果A先于B、B先于C，那么A先于C。  </li>
+</ul>
+<blockquote>
+<p>先行发生的意思通俗点来说就是：如果A先行发生于B，那么A对B<strong>可见</strong>。即A的操作能被B“观察”到。</p>
+</blockquote>
+<p><center> <h4><font color="#36648B">✎✎✎✎✎<br>线程的实现</font></h4></center><br>线程是比进程更轻量级的调度执行单位。<br>线程是CPU调度的基本单位。</p>
+<p><strong>1、线程的种类</strong></p>
+<ul>
+<li><strong>内核线程</strong>：即由操作系统内核来完成线程切换与线程调度。</li>
+<li><strong>轻量级进程</strong>：作为内核线程的高级接口，轻量级进程与内核线程是1:1的关系，轻量级进程是基于内核线程实现的，所以对线程的操作都要进行系统调用（需要再用户态和内核态相互切换）。</li>
+<li><strong>用户线程</strong>：线程的创建、切换、调度等操作都由用户程序来管理，可以不需要进行系统调用（切换到内核态），所以线程操作是非常快速且低消耗的，可以支持规模更大的线程数量。与进程的关系是1：N。但是无法使用内核的一些功能（如处理器映射等）</li>
+</ul>
+<p><strong>2、线程的实现</strong><br>实现线程主要有3种方式：</p>
+<ul>
+<li>内核线程实现。但是一般不会直接使用线程，而是通过轻量级线程去访问内核线程。<blockquote>
+<p>其实也可以说是1:1的轻量级线程实现。</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="/2019/12/24/深入理解Java虚拟机_12_java内存模型与线程/轻量级进程与内核线程之间的关系.png" alt=""></p>
+<ul>
+<li><p>用户线程实现。<br><img src="/2019/12/24/深入理解Java虚拟机_12_java内存模型与线程/进程与用户线程之间的关系.png" alt=""></p>
+</li>
+<li><p>用户线程加轻量级进程混合实现。</p>
+</li>
+</ul>
+<p><img src="/2019/12/24/深入理解Java虚拟机_12_java内存模型与线程/用户线程与轻量级进程之间的关系.png" alt=""></p>
+<p><strong>2、java线程实现</strong><br>目前java线程是使用一对一线程模型实现的，即<strong>一条java线程映射为一条轻量级进程</strong>。</p>
+<p><strong>3、java线程调度</strong><br>主要调度方式有两种：</p>
+<ul>
+<li><strong>协同式线程调度</strong>：线程的执行时间由线程本身来控制，线程把自己的工作执行完了之后，要主动通知系统切换到另外一个线程上。<ul>
+<li>好处：切换操作对线程自己是可知的，所以没有线程同步的问题。</li>
+<li>坏处：线程执行时间不可控制，容易造成系统阻塞。</li>
+</ul>
+</li>
+<li><strong>抢占式线程调度</strong>：每个线程将由系统来分配执行时间，线程的切换由系统决定。<ul>
+<li>好处：线程的执行时间是系统可控的,不容易造成阻塞。<blockquote>
+<p>Java使用的线程调度方式就是抢占式调度。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>4、线程优先级</strong><br> java本身有10个优先级。但实际上并不是太靠谱，因为原生系统可能并没有那么多优先级。那么在做优先级映射的时候，有可能系统的一个优先级对应java的多个优先级。某些系统在特定情况下也不是完全按照线程优先级来执行线程调用的。</p>
+<p> <strong>5、状态装换</strong><br>java语言定义了5种状态：<br>新建（New）。<br>运行（Runnable）。<br>无限期等待（Waiting）。以下方法会导致线程陷入无限期的等待状态：</p>
+<ul>
+<li>没有设置Timeout参数的Object.wait()方法。</li>
+<li>没有设置Timeout参数的Thread.join()方法。</li>
+<li>LockSupport.park()方法。</li>
+</ul>
+<p>限期等待（Timed Waiting）。以下方法会导致线程陷入限期等待状态：</p>
+<ul>
+<li>Thread.sleep()方法。</li>
+<li>设置了Timeout参数的Object.wait()方法。设置了Timeout参数的Thread.join()方法。</li>
+<li>LockSupport.parkNanos()方法。</li>
+<li>LockSupport.parkUntil()方法。</li>
+</ul>
+<p>阻塞（Blocked）。“阻塞状态”与“等待状态”的区别是：“阻塞状态”在等待着获取到一个排他锁，这个事件将在另外一个线程放弃这个锁的时候发生；而“等待状态”则是在等待一段时间，或者唤醒动作的发生。</p>
+<p>结束（Terminated）。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/15/深入理解Java虚拟机_07_虚拟机类加载机制/" rel="next" title="07 | 虚拟机类加载机制">
+                <i class="fa fa-chevron-left"></i> 07 | 虚拟机类加载机制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/31/Java并发编程实战_01_简介/" rel="prev" title="01 | 简介">
+                01 | 简介 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">aFightz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">98</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">✎内存间交互操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">✎✎volatile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">✎✎✎synchronized</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">✎✎✎✎happens-before</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">5.</span> <span class="nav-text">✎✎✎✎✎线程的实现</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aFightz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.5.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

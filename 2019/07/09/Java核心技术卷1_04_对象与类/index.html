@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="✎对象与对象变量下面代码里deadLine变量与birthDay变量引用的是同一个变量。12Date deadLine = new Date();Date birthDay = deadLine; ✎✎GregorianCalendar类1234567891011121314151617181920Calendar c = new GregorianCalendar(); //Calendar是抽">
+<meta name="keywords" content="Java基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="04 | 对象与类">
+<meta property="og:url" content="http://yoursite.com/2019/07/09/Java核心技术卷1_04_对象与类/index.html">
+<meta property="og:site_name" content="aFightz">
+<meta property="og:description" content="✎对象与对象变量下面代码里deadLine变量与birthDay变量引用的是同一个变量。12Date deadLine = new Date();Date birthDay = deadLine; ✎✎GregorianCalendar类1234567891011121314151617181920Calendar c = new GregorianCalendar(); //Calendar是抽">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-01-07T08:21:41.394Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="04 | 对象与类">
+<meta name="twitter:description" content="✎对象与对象变量下面代码里deadLine变量与birthDay变量引用的是同一个变量。12Date deadLine = new Date();Date birthDay = deadLine; ✎✎GregorianCalendar类1234567891011121314151617181920Calendar c = new GregorianCalendar(); //Calendar是抽">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/07/09/Java核心技术卷1_04_对象与类/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>04 | 对象与类 | aFightz</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">aFightz</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/09/Java核心技术卷1_04_对象与类/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aFightz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aFightz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">04 | 对象与类
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-09 15:01:16" itemprop="dateCreated datePublished" datetime="2019-07-09T15:01:16+08:00">2019-07-09</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-07 16:21:41" itemprop="dateModified" datetime="2020-01-07T16:21:41+08:00">2020-01-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/Java核心技术卷1/" itemprop="url" rel="index"><span itemprop="name">Java核心技术卷1</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="✎对象与对象变量"><a href="#✎对象与对象变量" class="headerlink" title="✎对象与对象变量"></a><center><font color="#36648B">✎</font><br><font color="#36648B">对象与对象变量</font></center></h4><p>下面代码里deadLine变量与birthDay变量引用的是同一个变量。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Date deadLine = <span class="keyword">new</span> Date();</span><br><span class="line">Date birthDay = deadLine;</span><br></pre></td></tr></table></figure></p>
+<h4 id="✎✎GregorianCalendar类"><a href="#✎✎GregorianCalendar类" class="headerlink" title="✎✎GregorianCalendar类"></a><center><font color="#36648B">✎✎</font><br><font color="#36648B">GregorianCalendar类</font></center></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Calendar c = <span class="keyword">new</span> GregorianCalendar(); <span class="comment">//Calendar是抽象类</span></span><br><span class="line">        </span><br><span class="line"><span class="comment">//1.直接设置年月日时分秒</span></span><br><span class="line"><span class="comment">//c.set(2015, Calendar.AUGUST, 2); //2015.08.02</span></span><br><span class="line">        </span><br><span class="line"><span class="comment">//2.通过块分别设置相应的年月日时分秒</span></span><br><span class="line"><span class="comment">//注：可以按这种格式继续设置时分秒，如果省略，则按照本地默认设置</span></span><br><span class="line">c.set(Calendar.YEAR, <span class="number">2015</span>); <span class="comment">//2015年</span></span><br><span class="line">c.set(Calendar.MONTH, <span class="number">1</span>); <span class="comment">//2月，0为1月</span></span><br><span class="line">c.set(Calendar.DAY_OF_MONTH, <span class="number">2</span>); <span class="comment">//Calendar.DATE == Calendar.DAY_OF_MONTH</span></span><br><span class="line">                </span><br><span class="line">Date d = c.getTime();</span><br><span class="line">System.out.println(d); <span class="comment">//Mon Feb 02 21:15:13 CST 2015</span></span><br><span class="line">        </span><br><span class="line"><span class="comment">//获取相应的年月日时分秒</span></span><br><span class="line">System.out.println(c.get(Calendar.YEAR)); <span class="comment">//2015</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">//测试日期计算</span></span><br><span class="line">c.add(Calendar.YEAR, <span class="number">10</span>); <span class="comment">//增加10年,减的话把10变成负的即可</span></span><br><span class="line">System.out.println(c.getTime()); <span class="comment">//Sun Feb 02 21:15:13 CST 2025</span></span><br></pre></td></tr></table></figure>
+<p>不要编写如下的返回引用对象的访问器方法，因为容易被外部修改。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Enployee</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Date hireDay;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Date <span class="title">getHireDay</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> hireDay;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果要返回一个对象的引用，应该首先对它进行克隆。如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Enployee</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Date hireDay = <span class="keyword">new</span> Date();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Date <span class="title">getHireDay</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> hireDay==<span class="keyword">null</span>?<span class="keyword">null</span>:(Date)hireDay.clone();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Date实现了clone方法。</p>
+<h4 id="✎✎✎基于类的访问权限"><a href="#✎✎✎基于类的访问权限" class="headerlink" title="✎✎✎基于类的访问权限"></a><center><font color="#36648B">✎✎✎</font><br><font color="#36648B">基于类的访问权限</font></center></h4><p>一般来说，如果把属性设置为private后，外部在调用的时候是不可以直接通过“点”的方式调用的，但是以下两种例外。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Employee</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Employee other)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name.equals(other.name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>因为other本来就属于Employee，所以可以在这个类中可以直接调用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span> </span>&#123;</span><br><span class="line">        Employee employee = <span class="keyword">new</span> Employee();</span><br><span class="line"></span><br><span class="line">        System.out.println(employee.name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Employee</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Employee other)</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> name.equals(other.name);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为Employee属于Demo的内部类，所以在Demo的方法里可以访问Employee的私有属性。</p>
+<h4 id="✎✎✎✎final-实例域"><a href="#✎✎✎✎final-实例域" class="headerlink" title="✎✎✎✎final 实例域"></a><center><font color="#36648B">✎✎✎✎</font><br><font color="#36648B">final 实例域</font></center></h4><p>对象的final属性在构建对象时必须被初始化。</p>
+<h4 id="✎✎✎✎✎静态常量"><a href="#✎✎✎✎✎静态常量" class="headerlink" title="✎✎✎✎✎静态常量"></a><center><font color="#36648B">✎✎✎✎✎</font><br><font color="#36648B">静态常量</font></center></h4><p><code>System.out</code>是一个静态常量，如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">System</span></span>&#123;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> PrintStream out =  . . . ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>System类里面有有一个setOut方法可以将System.out设置为不同的流，因为setOut是一个本地方法（native），而不是用Java语言实现的。本地方法可以绕过Java语言的存储控制机制，从而对final属性进行修改。自己编写程序时，不应该这样处理。</p>
+<h4 id="✎✎✎✎✎✎静态方法"><a href="#✎✎✎✎✎✎静态方法" class="headerlink" title="✎✎✎✎✎✎静态方法"></a><center><font color="#36648B">✎✎✎✎✎✎</font><br><font color="#36648B">静态方法</font></center></h4><p>当对象里有静态方式时，建议使用类名，而不是通过构建的对象来调用静态方法。</p>
+<p>可以通过调用方法对属性进行初始化（这种方式有点意思 ），如下:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Employee</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> nextId;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id = assignId();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">assignId</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> r = nextId;</span><br><span class="line">        nextId++;</span><br><span class="line">        <span class="keyword">return</span> r;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样写就让assignId相当于一个初始化方法。</p>
+<h4 id="✎✎✎✎✎✎✎调用另一个构造器"><a href="#✎✎✎✎✎✎✎调用另一个构造器" class="headerlink" title="✎✎✎✎✎✎✎调用另一个构造器"></a><center><font color="#36648B">✎✎✎✎✎✎✎</font><br><font color="#36648B">调用另一个构造器</font></center></h4><p>如果构造器的第一个语句如this(…)，这个构造器将调用同一个类的另一个构造器,如下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Employee</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id ;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Employee</span><span class="params">(<span class="keyword">int</span> id)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="✎✎✎✎✎✎✎✎对象析构与finalize方法"><a href="#✎✎✎✎✎✎✎✎对象析构与finalize方法" class="headerlink" title="✎✎✎✎✎✎✎✎对象析构与finalize方法"></a><center><font color="#36648B">✎✎✎✎✎✎✎✎</font><br><font color="#36648B">对象析构与finalize方法</font></center></h4><p>可以为任何一个类添加finalize方法。finalize方法将在垃圾回收器清除对象之前调用。在实际应用中，不要依赖于使用这个方法回收任何短缺的资源，因为很难知道这个方法什么时候才能够调用。</p>
+<h4 id="✎✎✎✎✎✎✎✎✎类的导入"><a href="#✎✎✎✎✎✎✎✎✎类的导入" class="headerlink" title="✎✎✎✎✎✎✎✎✎类的导入"></a><center><font color="#36648B">✎✎✎✎✎✎✎✎✎</font><br><font color="#36648B">类的导入</font></center></h4><p>只能使用星号<code>*</code>导入一个包，而不能使用<code>Import java.*</code>或者<code>Import java.*.*</code>导入以java为前缀的所有包。</p>
+<h4 id="✎✎✎✎✎✎✎✎✎✎包作用域"><a href="#✎✎✎✎✎✎✎✎✎✎包作用域" class="headerlink" title="✎✎✎✎✎✎✎✎✎✎包作用域"></a><center><font color="#36648B">✎✎✎✎✎✎✎✎✎✎</font><br><font color="#36648B">包作用域</font></center></h4><ul>
+<li><strong>private</strong> :      只能被定义它们的类访问。</li>
+<li><strong>default</strong> :      只能被同一包中的类访问。</li>
+<li><strong>protected</strong> : 具有default的权限，并且可以被不同包中所继承的子类访问。</li>
+<li><strong>public</strong> ：     可以被任意类访问。</li>
+</ul>
+<h4 id="✎✎✎✎✎✎✎✎✎✎✎文档注释"><a href="#✎✎✎✎✎✎✎✎✎✎✎文档注释" class="headerlink" title="✎✎✎✎✎✎✎✎✎✎✎文档注释"></a><center><font color="#36648B">✎✎✎✎✎✎✎✎✎✎✎</font><br><font color="#36648B">文档注释</font></center></h4><p>JDK包含一个很有用的工具，叫做javadoc，它可以由源文件生成一个HTML文档。</p>
+<p>javadoc从下面几个特性中抽取信息：</p>
+<ul>
+<li>包</li>
+<li>公共类与接口</li>
+<li>公有的和受保护的构造器及方法</li>
+<li>公有的和受保护的域</li>
+</ul>
+<h4 id="✎✎✎✎✎✎✎✎✎✎✎✎通用注释"><a href="#✎✎✎✎✎✎✎✎✎✎✎✎通用注释" class="headerlink" title="✎✎✎✎✎✎✎✎✎✎✎✎通用注释"></a><center><font color="#36648B">✎✎✎✎✎✎✎✎✎✎✎✎</font><br><font color="#36648B">通用注释</font></center></h4><ul>
+<li><p><code>@author</code>:用在类文档的注释中，表示后作者姓名。可以用多个<code>@author</code>标记。</p>
+</li>
+<li><p><code>@version</code>:对当前版本的描述。</p>
+</li>
+<li><p><code>@since</code>:始于什么版本。</p>
+</li>
+<li><p><code>@deprecated</code>:对类、方法或变量不再使用的标识。</p>
+</li>
+<li><p><code>@see</code>:链接到某个方法或某个超链接。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将链接到Test类的test(double)方法。</span></span><br><span class="line">@see com.huangjunlong.Test#test(double)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>@link</code>:同<code>@see</code>。</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java基础/" rel="tag"># Java基础</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/09/Docker核心技术_08_发布到阿里云/" rel="next" title="08 | 发布到阿里云">
+                <i class="fa fa-chevron-left"></i> 08 | 发布到阿里云
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/09/Java核心技术卷1_05_继承/" rel="prev" title="05 | 继承">
+                05 | 继承 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">aFightz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">98</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#✎对象与对象变量"><span class="nav-number">1.</span> <span class="nav-text">✎对象与对象变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎GregorianCalendar类"><span class="nav-number">2.</span> <span class="nav-text">✎✎GregorianCalendar类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎基于类的访问权限"><span class="nav-number">3.</span> <span class="nav-text">✎✎✎基于类的访问权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎✎final-实例域"><span class="nav-number">4.</span> <span class="nav-text">✎✎✎✎final 实例域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎✎✎静态常量"><span class="nav-number">5.</span> <span class="nav-text">✎✎✎✎✎静态常量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎✎✎✎静态方法"><span class="nav-number">6.</span> <span class="nav-text">✎✎✎✎✎✎静态方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎✎✎✎✎调用另一个构造器"><span class="nav-number">7.</span> <span class="nav-text">✎✎✎✎✎✎✎调用另一个构造器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎✎✎✎✎✎对象析构与finalize方法"><span class="nav-number">8.</span> <span class="nav-text">✎✎✎✎✎✎✎✎对象析构与finalize方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎✎✎✎✎✎✎类的导入"><span class="nav-number">9.</span> <span class="nav-text">✎✎✎✎✎✎✎✎✎类的导入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎✎✎✎✎✎✎✎包作用域"><span class="nav-number">10.</span> <span class="nav-text">✎✎✎✎✎✎✎✎✎✎包作用域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎✎✎✎✎✎✎✎✎文档注释"><span class="nav-number">11.</span> <span class="nav-text">✎✎✎✎✎✎✎✎✎✎✎文档注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎✎✎✎✎✎✎✎✎✎通用注释"><span class="nav-number">12.</span> <span class="nav-text">✎✎✎✎✎✎✎✎✎✎✎✎通用注释</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aFightz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.5.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

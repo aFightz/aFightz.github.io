@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="✎常规配置1、zookeeper.connect该配置参数是用冒号分隔的一组hostname:port/path列表。/path是可选的Zookeeper路径，作为Kafka集群的chroot环境。如果不指定，默认使用根路径。如果指定的chroot路径不存在，broker会在启动的时候创建它。最好是配置/path，那么一个Zookeeper下就可以存在多个kafka集群了而不会发生冲突了。 2、l">
+<meta name="keywords" content="Kafka">
+<meta property="og:type" content="article">
+<meta property="og:title" content="02 | 安装Kafka">
+<meta property="og:url" content="http://yoursite.com/2019/10/08/Kafka权威指南_02_安装Kafka/index.html">
+<meta property="og:site_name" content="aFightz">
+<meta property="og:description" content="✎常规配置1、zookeeper.connect该配置参数是用冒号分隔的一组hostname:port/path列表。/path是可选的Zookeeper路径，作为Kafka集群的chroot环境。如果不指定，默认使用根路径。如果指定的chroot路径不存在，broker会在启动的时候创建它。最好是配置/path，那么一个Zookeeper下就可以存在多个kafka集群了而不会发生冲突了。 2、l">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-01-07T08:21:41.403Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="02 | 安装Kafka">
+<meta name="twitter:description" content="✎常规配置1、zookeeper.connect该配置参数是用冒号分隔的一组hostname:port/path列表。/path是可选的Zookeeper路径，作为Kafka集群的chroot环境。如果不指定，默认使用根路径。如果指定的chroot路径不存在，broker会在启动的时候创建它。最好是配置/path，那么一个Zookeeper下就可以存在多个kafka集群了而不会发生冲突了。 2、l">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/10/08/Kafka权威指南_02_安装Kafka/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>02 | 安装Kafka | aFightz</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">aFightz</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/08/Kafka权威指南_02_安装Kafka/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aFightz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aFightz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">02 | 安装Kafka
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-10-08 14:36:33" itemprop="dateCreated datePublished" datetime="2019-10-08T14:36:33+08:00">2019-10-08</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-07 16:21:41" itemprop="dateModified" datetime="2020-01-07T16:21:41+08:00">2020-01-07</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Kafka/" itemprop="url" rel="index"><span itemprop="name">Kafka</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Kafka/Kafka权威指南/" itemprop="url" rel="index"><span itemprop="name">Kafka权威指南</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="✎常规配置"><a href="#✎常规配置" class="headerlink" title="✎常规配置"></a><center><font color="#36648B">✎</font><br><font color="#36648B">常规配置</font></center></h4><p><strong>1、zookeeper.connect</strong><br>该配置参数是用冒号分隔的一组<code>hostname:port/path</code>列表。<br><code>/path</code>是可选的Zookeeper路径，作为Kafka集群的chroot环境。如果不指定，<strong>默认使用根路径</strong>。如果指定的chroot路径不存在，broker会在启动的时候创建它。<br>最好是配置<code>/path</code>，那么一个Zookeeper下就可以存在多个kafka集群了而<strong>不会发生冲突</strong>了。</p>
+<p><strong>2、log.dirs</strong><br>如果指定了多个路径，那么broker会根据“<strong>最少使用</strong>”原则，把<strong>同一个分区的日志片段保存到同一个路径下</strong>。要注意，broker会往拥有<strong>最少数目分区的路径新增分区</strong>，而不是往拥有最小磁盘空间的路径新增分区。</p>
+<p><strong>3、num.recovery.threads.per.data.dir</strong><br>对于如下3种情况，Kafka会使用可配置的线程池来处理日志片段：</p>
+<ul>
+<li>服务器正常启动，用于打开每个分区的日志片段。</li>
+<li>服务器崩溃后重启，用于检查和截短每个分区的日志片段。</li>
+<li>服务器正常关闭，用于关闭日志片段。</li>
+</ul>
+<p>默认情况下，<strong>每个日志目录只使用一个线程</strong>。<br>所配置的数字对应的是<code>log.dirs</code>指定的单个日志目录，如果<code>num.recovery.threads.per.data.dir</code>被设为8，并且<code>log.dirs</code>指定了3个路径，那么总共需要24个线程。<br>配置多个线程，对于包含大量分区的服务器来说，一旦发生崩溃，在进行恢复时使用并行操作可能会省下数小时的时间。</p>
+<h4 id="✎✎主题配置"><a href="#✎✎主题配置" class="headerlink" title="✎✎主题配置"></a><center><font color="#36648B">✎✎</font><br><font color="#36648B">主题配置</font></center></h4><p><strong>1、数据的保留参数配置</strong></p>
+<ul>
+<li><strong>log.retention.ms/minutes/hours</strong></li>
+<li><strong>log.retention.bytes</strong></li>
+<li><strong>log.segment.ms</strong></li>
+<li><strong>log.segment.bytes</strong></li>
+</ul>
+<p>上面的参数都是作用在<strong>分区</strong>上的，当达到<code>segment</code>的限制时，日志片段就会被关闭。此时这个片段就进入<strong>等待删除</strong>阶段。当<strong>等待删除</strong>阶段达到了<code>retention</code>限制，这个日志片段就会被删除。<br><code>retention</code>是通过检查磁盘上日志片段文件的<strong>最后修改时间</strong>来实现的。所以如果移动了<strong>处于等待删除阶段的日志片段文件</strong>导致最后修改时间改变，那么删除的数据就会不准确。</p>
+<p><strong>2、message.max.bytes</strong><br>这个参数用来限制单个消息的大小，默认是1000000（1MB）。若超过这个大小，broker会返回错误。<br>这个参数必须要与消费者的<code>fetch.message.max.bytes</code>与集群里broker的<code>replica.fetch.max.bytes</code>进行协调，否则若<code>fetch.message.max.bytes</code>与<code>replica.fetch.max.bytes</code>小于这个参数，那么会出现<strong>堵塞</strong>的情况。</p>
+<h4 id="✎✎✎操作系统调优"><a href="#✎✎✎操作系统调优" class="headerlink" title="✎✎✎操作系统调优"></a><center><font color="#36648B">✎✎✎</font><br><font color="#36648B">操作系统调优</font></center></h4><p><strong>1、vm.swappiness</strong><br>默认为60，表示剩余内存低于40%时，使用交换空间。<br>0意味着“在任何情况下都不要发生交换”。所以现在建议把这个值设为1。</p>
+<p><strong>2、vm.dirty_background_ratio与vm.dirty_ratio</strong><br>当脏页数量到达<code>vm.dirty_background_ratio</code>时，会触发刷新进程异步地将脏页写入磁盘。应设置为小于10（大部分情况下设为5即可）。<br>当脏页数量到达<code>vm.dirty_ratio</code>时，会触发刷新进程同步地将脏页写入磁盘，此时写操作<strong>阻塞</strong>。可以设置得大一些（60~80）。</p>
+<blockquote>
+<p>当达到<code>vm.dirty_background_ratio</code>阈值时，触发异步写入磁盘进程，若此时写缓存的速度大于写入磁盘的速度，那么脏页数量就会一直增加，直到达到<code>vm.dirty_ratio</code>阈值，此时同步将缓存的数据写入硬盘，不给写缓存。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Kafka/" rel="tag"># Kafka</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/08/Kafka权威指南_01_初识Kafka/" rel="next" title="01 | 初识Kafka">
+                <i class="fa fa-chevron-left"></i> 01 | 初识Kafka
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/08/Kafka权威指南_03_Kafka生产者--向Kafka写入数据/" rel="prev" title="03 | Kafka生产者--向Kafka写入数据">
+                03 | Kafka生产者--向Kafka写入数据 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">aFightz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">98</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#✎常规配置"><span class="nav-number">1.</span> <span class="nav-text">✎常规配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎主题配置"><span class="nav-number">2.</span> <span class="nav-text">✎✎主题配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#✎✎✎操作系统调优"><span class="nav-number">3.</span> <span class="nav-text">✎✎✎操作系统调优</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aFightz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.5.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
