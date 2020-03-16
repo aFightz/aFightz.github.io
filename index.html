@@ -1,0 +1,2799 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="aFightz">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="aFightz">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="aFightz">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>aFightz</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">aFightz</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home menu-item-active">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/01/Java并发编程实战_15_原子变量与非阻塞同步机制/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aFightz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aFightz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/02/01/Java并发编程实战_15_原子变量与非阻塞同步机制/" class="post-title-link" itemprop="http://yoursite.com/index.html">15 | 原子变量与非阻塞同步机制</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-02-01 21:19:23" itemprop="dateCreated datePublished" datetime="2020-02-01T21:19:23+08:00">2020-02-01</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-03-16 20:32:21" itemprop="dateModified" datetime="2020-03-16T20:32:21+08:00">2020-03-16</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/Java并发编程实战/" itemprop="url" rel="index"><span itemprop="name">Java并发编程实战</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <center> <h4><font color="#36648B">✎<br>CAS</font></h4></center><br><strong>1、CAS的含义</strong><br>“我”认为V的值应该为A，如果是，那么将V的值更新为B，否则不修改并告诉V的值实际为多少。<br><br><center> <h4><font color="#36648B">✎✎<br>volatile</font></h4></center>
+
+<blockquote>
+<p>如果不加volatile，那么会写入变量更新到主内存吗？更新的规则会是什么？</p>
+</blockquote>
+<p><strong>1、volatile的可见性</strong><br>假设有以下逻辑：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">A线程</span><br><span class="line">A段逻辑</span><br><span class="line">写入volatile V</span><br><span class="line"></span><br><span class="line">B线程</span><br><span class="line">读取volatile V</span><br><span class="line">B段逻辑</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p> 假设时间上的执行顺序是A-&gt;B，那么A段逻辑对于B段逻辑是可见的吗？ </p>
+</blockquote>
+<p>DCL标准实现</p>
+<pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DoubleCheckLocking</span></span>{
+    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Resource resource;
+
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Resource <span class="title">getInstance</span><span class="params">()</span></span>{
+        <span class="keyword">if</span>(resource == <span class="keyword">null</span>){
+            <span class="keyword">synchronized</span> (DoubleCheckLocking.class){
+                <span class="keyword">if</span>(resource == <span class="keyword">null</span>){
+                    resource = <span class="keyword">new</span> Resource();
+                }
+            }
+        }
+    }
+}  
+</code></pre>
+<p>初始化过程中，对于可以通过某个final城到达的任意变量（例如某个final数组中的元素，或者由一个final域引用的HashMap的内客）将同样对于其他线程是可见（即不会被重排序）的。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              </p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/01/Java并发编程实战_14_构建自定义的同步工具/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aFightz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aFightz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/02/01/Java并发编程实战_14_构建自定义的同步工具/" class="post-title-link" itemprop="http://yoursite.com/index.html">14 | 构建自定义的同步工具</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-02-01 20:06:44" itemprop="dateCreated datePublished" datetime="2020-02-01T20:06:44+08:00">2020-02-01</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-03-16 20:32:21" itemprop="dateModified" datetime="2020-03-16T20:32:21+08:00">2020-03-16</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/Java并发编程实战/" itemprop="url" rel="index"><span itemprop="name">Java并发编程实战</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <center> <h4><font color="#36648B">✎<br>阻塞队列的实现</font></h4></center>
+
+<p>用wait()、notifyAll()实现阻塞put、take方法的标准格式<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//阻塞并直到：not-full </span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(V v)</span> <span class="keyword">throws</span> InterruptedException</span>&#123;</span><br><span class="line">   <span class="keyword">while</span>(isFull())</span><br><span class="line">      wait();</span><br><span class="line">   doPut(v);</span><br><span class="line">   notifyAll();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//阻塞并直到：not-empty </span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> V <span class="title">take</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException</span>&#123;</span><br><span class="line">   <span class="keyword">while</span>(isEmpty())</span><br><span class="line">      wait();</span><br><span class="line">   V v = doTake();</span><br><span class="line">   notifyAll();</span><br><span class="line">   <span class="keyword">return</span> v;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可对上面的进行优化：仅当缓存从空变为非空，或者从满转为非满时，才需要去通知（其他状态不会有线程阻塞）<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(V v)</span> <span class="keyword">throws</span> InterruptedException</span>&#123;</span><br><span class="line">   <span class="keyword">while</span>(isFull())</span><br><span class="line">      wait(); </span><br><span class="line">   <span class="keyword">boolean</span> wasEmpty = isEmpty(); </span><br><span class="line">   doPut(v); </span><br><span class="line">   <span class="keyword">if</span>(wasEmpty) </span><br><span class="line">      notifyAll();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><center> <h4><font color="#36648B">✎✎<br>Lock的Condition对象</font></h4></center><br>每个Lock，可以有任意数量的Condition对象。Condition对象继承了相关的Lock对象的公平性。</p>
+<p><strong>1、对应关系</strong></p>
+<ul>
+<li>Object.wait：Lock.await</li>
+<li>Object.notify：Lock.signal</li>
+<li>Object.notifyAll：Lock.signalAll</li>
+</ul>
+<p><strong>2、唤醒特定对象Demo</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ThreadSafe</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConditionBoundedBuffer</span> &lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">final</span> Lock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Condition notFull = lock.newCondition();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Condition notEmpty = lock.newCondition();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(T x)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (count == items.length)</span><br><span class="line">                notFull.await();</span><br><span class="line">            items[tail] = x;</span><br><span class="line">            <span class="keyword">if</span> (++tail == items.length)</span><br><span class="line">                tail = <span class="number">0</span>;</span><br><span class="line">            ++count;</span><br><span class="line">            notEmpty.signal();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">take</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (count == <span class="number">0</span>)</span><br><span class="line">                notEmpty.await();</span><br><span class="line">            T x = items[head];</span><br><span class="line">            items[head] = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">if</span> (++head == items.length)</span><br><span class="line">                head = <span class="number">0</span>;</span><br><span class="line">            --count;</span><br><span class="line">            notFull.signal();</span><br><span class="line">            <span class="keyword">return</span> x;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>UnSafe类中的park()与unPark()实际上就是相当于wait与notify。</p>
+<blockquote>
+<p>这两者有什么不同？</p>
+</blockquote>
+<p>Java的多数安全的方法类都有一个共同的基类：AbstractQueueSynchronizer(AQS)，它实际上上用UnSafe类中的park()与unPark()来实现等待与唤醒。涉及到变量的累加修改则用CAS实现。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/20/Java并发编程实战_11_性能与可伸缩性/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aFightz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aFightz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/01/20/Java并发编程实战_11_性能与可伸缩性/" class="post-title-link" itemprop="http://yoursite.com/index.html">11 | 性能与可伸缩性</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-20 00:59:58 / 修改时间：14:27:51" itemprop="dateCreated datePublished" datetime="2020-01-20T00:59:58+08:00">2020-01-20</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/Java并发编程实战/" itemprop="url" rel="index"><span itemprop="name">Java并发编程实战</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <center> <h4><font color="#36648B">✎<br>Amdahl定律</font></h4></center>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">加速比 &lt;= 1 / (F + (1-F)/N )</span><br><span class="line">加速比/CPU的数量=CPU的利用率</span><br></pre></td></tr></table></figure>
+<p>F为串行部分占的比重，N为CPU数量。<br>当N趋于无穷大时，加速比趋近于<strong>1/F</strong>。</p>
+<p>某个线程中的同步可能会影响其他线程的性能。因为同步会增加共享内存总线上的通信量，总线的带宽是有限的，并且所有的处理器都将共享这条总线。</p>
+<center> <h4><font color="#36648B">✎✎<br>竞争</font></h4></center>
+
+<p><strong>JVM对“竞争”的实现</strong></p>
+<ul>
+<li>如果等待时间较短，则适合采用自旋等待方式。</li>
+<li>如果等待时间较长，则适合采用线程挂起方式。<blockquote>
+<p>有些JVM将根据对历史等待时间的分析数据在这两者之间进行选择，但是大多数JVM在等待锁时都只是将线程挂起。</p>
+</blockquote>
+</li>
+</ul>
+<p>当线程无法获取某个锁或者由于在某个条件等待或在I/O操作上阻塞时，需要被挂起，在这个过程中将包含两次额外的上下文切换，以及所有必要的操作系统操作和缓存操作：被阻塞的线程在其执行时间片还未用完之前就被交换出去，而在随后当要获取的锁或者其他资源可用时，又再次被切换回来。</p>
+<center> <h4><font color="#36648B">✎✎✎<br>锁分段</font></h4></center><br>在ConcurrentHashMap的实现中使用了一个包含16个锁的数组，每个锁保护所有散列桶的1/16，其中第N个散列桶由第（N mod 16）个锁来保护。<br><br><strong>ConcurrentHashMap对size()的实现</strong><br>ConcurrentHashMap中的size将对每个分段进行枚举并将每个分段中的元素数量相加，而不是维护一个全局计数。为了避免枚举每个元素，ConcurrentHashMap为每个分段都维护了一个独立的计数，并通过每个分段的锁来维护这个值。<br><br><center> <h4><font color="#36648B">✎✎✎✎<br>Java对象分配</font></h4></center>
+
+<p>Java的分配操作比C语言的<code>malloc</code>调用更快。<br>对象分配操作的开销比同步的开销更低。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/20/Java并发编程实战_13_显示锁/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aFightz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aFightz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/01/20/Java并发编程实战_13_显示锁/" class="post-title-link" itemprop="http://yoursite.com/index.html">13 | 显示锁</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-20 00:59:58" itemprop="dateCreated datePublished" datetime="2020-01-20T00:59:58+08:00">2020-01-20</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-03-16 20:32:21" itemprop="dateModified" datetime="2020-03-16T20:32:21+08:00">2020-03-16</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/Java并发编程实战/" itemprop="url" rel="index"><span itemprop="name">Java并发编程实战</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <center> <h4><font color="#36648B">✎<br>公平锁与非公平锁</font></h4></center>
+
+<p>在ReentrantLock、Semaphore的构造函数中提供了两种公平性选择：创建一个<strong>非公平的锁（默认）</strong>或者一个<strong>公平的锁</strong>。</p>
+<p><strong>1、定义</strong></p>
+<ul>
+<li><strong>公平锁</strong>：线程将按照它们发出请求的顺序来获得锁。如果有另一个线程持有这个锁或者有其他线程在队列中等待这个锁，那么新发出请求的线程将被放入队列中。</li>
+<li><strong>非公平的锁</strong>：允许“插队”。当一个线程请求非公平的锁时，如果锁被某个线程持有时，新发出请求的线程才会被放入队列中。但如果在发出请求的同时该锁的状态变为可用，那么这个线程将跳过队列中所有的等待线程并获得这个锁。<blockquote>
+<p>是不是意味在在队列中的锁依旧会排队？</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>即使对于公平锁而言，可轮询的tryLock仍然会“插队”。（什么意思）。</p>
+</blockquote>
+<p><strong>2、性能</strong><br>非公平锁的性能会比公平锁的性能高，尤其是在竞争激烈的时候。</p>
+<p><strong>3、Lock与Synchronized</strong><br>ReentrantLock的非块结构特性仍然意味着，获取锁的操作不能与特定的<strong>栈帧</strong>关联起来，而内置锁却可以。</p>
+<p><center> <h4><font color="#36648B">✎<br>读写锁</font></h4></center><br>一个资源可以被多个读操作访问，或者被一个写操作访问，但两者不能同时进行。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/19/Java并发编程实战_10_活跃性、性能与测试/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aFightz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aFightz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/01/19/Java并发编程实战_10_活跃性、性能与测试/" class="post-title-link" itemprop="http://yoursite.com/index.html">10 | 活跃性、性能与测试</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-19 17:03:37" itemprop="dateCreated datePublished" datetime="2020-01-19T17:03:37+08:00">2020-01-19</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-20 14:18:10" itemprop="dateModified" datetime="2020-01-20T14:18:10+08:00">2020-01-20</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/Java并发编程实战/" itemprop="url" rel="index"><span itemprop="name">Java并发编程实战</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <center> <h4><font color="#36648B">✎<br>死锁</font></h4></center>
+
+<p>数据库在检测到事务发生死锁时，将选择一个牺牲者并放弃这个事务。</p>
+<p>若所有线程以固定的顺序来获得锁，那么在程序中就不会出现顺序死锁问题。</p>
+<p>解决顺序死锁的加锁方式<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(锁A)&#123;</span><br><span class="line">   <span class="keyword">synchronized</span>(锁B)&#123;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>尽量别再持有锁的时候调用加锁方法，容易造成死锁。</p>
+</blockquote>
+<center> <h4><font color="#36648B">✎✎<br>Thread.yield与Thread.sleep(0)</font></h4></center>
+
+<p>在JVM中Thread.yield（以及Thread.sleep(0)）的语义都是未定义的。JVM既可以将它们实现为空操作，也可以将它们视为线程调度的参考。</p>
+<blockquote>
+<p>有些JVM实现yield方法的方式就是sleep(0)。     </p>
+</blockquote>
+<p>UNIX系统中sleep(0)的语义：将当前线程放在与该优先级对应的运行队列末尾，并将执行权交给拥有相同优先级的其他线程。   </p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/19/Java并发编程实战_08_线程池的使用/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aFightz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aFightz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/01/19/Java并发编程实战_08_线程池的使用/" class="post-title-link" itemprop="http://yoursite.com/index.html">08 | 线程池的使用</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-19 12:23:59" itemprop="dateCreated datePublished" datetime="2020-01-19T12:23:59+08:00">2020-01-19</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-20 14:11:03" itemprop="dateModified" datetime="2020-01-20T14:11:03+08:00">2020-01-20</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/Java并发编程实战/" itemprop="url" rel="index"><span itemprop="name">Java并发编程实战</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在线程池的线程中不应该使用ThreadLocal在任务之间传递值。</p>
+<p>在线程池中，如果任务依赖于其他任务，那么可能产生饥饿死锁。除非线程池足够大。</p>
+<center> <h4><font color="#36648B">✎<br>线程池数量</font></h4></center><br>对于计算密集型的任务，在拥有N个处理器的系统上，当线程池的大小为<strong>N+1</strong>时，通常能实现最优的利用率。（即使当计算密集型的线程偶尔由于页缺失故障或者其他原因而暂停时，这个“额外”的线程也能确保CPU的时钟周期不会被浪费。）<br><br>而大多数的任务是计算与IO并存的，所以<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">最佳线程池数量 = CPU数量 * CPU利用率 * (1 + W/C)</span><br></pre></td></tr></table></figure><br><br>W为线程等待时间，C为线程计算时间。W+C即是一个线程任务实际运行时间。<br><br>Java中获得CPU数量<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> N_CPUS=Runtime.getRuntime().availableProcessors();</span><br></pre></td></tr></table></figure><br><br><center> <h4><font color="#36648B">✎✎<br>线程池原理</font></h4></center>
+
+<p><strong>1、线程池构造方法</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ThreadPoolExecutor</span><span class="params">(<span class="keyword">int</span> corePoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">                          <span class="keyword">int</span> maximumPoolSize,</span></span></span><br><span class="line"><span class="function"><span class="params">                          <span class="keyword">long</span> keepAliveTime,</span></span></span><br><span class="line"><span class="function"><span class="params">                          TimeUnit unit,</span></span></span><br><span class="line"><span class="function"><span class="params">                          BlockingQueue&lt;Runnable&gt; workQueue,</span></span></span><br><span class="line"><span class="function"><span class="params">                          ThreadFactory threadFactory,</span></span></span><br><span class="line"><span class="function"><span class="params">                          RejectedExecutionHandler handler)</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>2、线程池工作原理</strong></p>
+<ul>
+<li><strong>keepAliveTime</strong>：线程存活时间。</li>
+<li><strong>core Pool Size</strong>：线程池的基本大小，在没有任务执行时线程池的大小，并且只有在工作队列满了的情况下才会创建超出这个数量的线程。</li>
+<li><strong>maximum Pool Size</strong>：最大大小。表示可同时活动的线程数量的上限。如果某个线程的空闲时间超过了存活时间，那么将被标记为可回收的，并且当线程池的当前大小超过了基本大小时，这个线程将被终止。</li>
+</ul>
+<blockquote>
+<p><strong>newFixedThreadPool</strong>工厂方法将线程池的基本大小和最大大小设置为<strong>参数中指定的值</strong>，而且创建的线程池<strong>不会超时</strong>。<br><strong>newCachedThreadPool</strong>工厂方法将线程池的最大大小设置为<strong>Integer.MAX_VALUE</strong>，而将基本大小设置为<strong>零</strong>，并将超时设置为<strong>1分钟</strong>，这种方法创建出来的线程池可以被无限扩展，并且当需求降低时会自动收缩。</p>
+</blockquote>
+<p>如果线程池中的线程数量等于线程池的基本大小，那么仅当在<strong>工作队列已满</strong>的情况下ThreadPoolExecutor才会创建新的线程。</p>
+<p><strong>3、线程池其他知识点</strong><br>默认的线程池饱和策略是“<strong>中止</strong>”：即抛出<code>RejectedExecutionException</code>。</p>
+<p>可用Executors的<code>unconfigurableExecutorService</code>工厂方法包装ExecutorService，避免其被修改。</p>
+<p>可继承<code>ThreadPoolExecutor</code>的<code>beforeExecute</code>、<code>afterExecute</code>和<code>terminated</code>以实现一些日志统计等功能。</p>
+<center> <h4><font color="#36648B">✎✎<br>等待任务集返回</font></h4></center>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//提交任务</span></span><br><span class="line">exec.shutdown();</span><br><span class="line">exec.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);</span><br><span class="line"><span class="comment">//返回任务结果</span></span><br></pre></td></tr></table></figure>
+<p><center> <h4><font color="#36648B">✎✎✎<br>树与并发</font></h4></center><br>可用并发实现树的广度优先搜索。</p>
+<ul>
+<li>深度优先搜索的搜索过程将受限于栈的大小。</li>
+<li>广度优先搜索不会受到栈大小的限制（但如果待搜索的或者已搜索的位置集合大小超过了可用的内存总量，那么仍可能耗尽内存）。</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/19/Java并发编程实战_07_取消与关闭/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aFightz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aFightz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/01/19/Java并发编程实战_07_取消与关闭/" class="post-title-link" itemprop="http://yoursite.com/index.html">07 | 取消与关闭</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-19 10:54:46" itemprop="dateCreated datePublished" datetime="2020-01-19T10:54:46+08:00">2020-01-19</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-20 11:38:47" itemprop="dateModified" datetime="2020-01-20T11:38:47+08:00">2020-01-20</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/Java并发编程实战/" itemprop="url" rel="index"><span itemprop="name">Java并发编程实战</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <center> <h4><font color="#36648B">✎<br>中断与阻塞</font></h4></center>
+
+<p><strong>1、Thread中的中断方法</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">interrupt</span><span class="params">()</span></span>&#123;...&#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">boolean</span> isInterrupted)&#123;...&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">interrupted</span><span class="params">()</span></span>&#123;...&#125;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>interrupt：中断目标线程。</li>
+<li>isInterrupted：能返回目标线程的中断状态。</li>
+<li>静态的interrupted：清除当前线程的中断状态，并返回它之前的值。<blockquote>
+<p>这也是清除中断状态的唯一方法。</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>2、阻塞库方法</strong><br>例如Thread.sleep和Object.wait等，都会检查线程何时中断，并且在发现中断时提前返回。它们在响应中断时执行的操作包括：</p>
+<ul>
+<li>清除中断状态。</li>
+<li>抛出InterruptedException。</li>
+</ul>
+<blockquote>
+<p>用中断来取消任务并不是可靠的，如果任务内不响应中断，那么中断也没有用。</p>
+</blockquote>
+<p><strong>3、join的缺陷</strong><br>无法知道执行控制是因为线程正常退出而返回还是因为join超时而返回。</p>
+<p><strong>4、通过Future.cancel()取消任务</strong></p>
+<blockquote>
+<p>此方法很重要，可避免不必要的资源浪费。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">timedRun</span><span class="params">(Runnable r，<span class="keyword">long</span> timeout，TimeUnit unit)</span> <span class="keyword">throws</span> InterruptedException</span>&#123;</span><br><span class="line">    Future&lt;?&gt; task = taskExec.submit(x);</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        task.get(timeout , unit);</span><br><span class="line">    &#125;<span class="keyword">catch</span>()TimeoutException e)&#123;</span><br><span class="line">        <span class="comment">//接下来任务将被取消</span></span><br><span class="line">    &#125;<span class="keyword">catch</span>(ExecutionException e)&#123;</span><br><span class="line">        <span class="comment">//如果在任务中抛出了异常，那么重新抛出该异常throw launderThrowable(e.getCause())；</span></span><br><span class="line">    &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">        <span class="comment">//如果任务已经结来，那么执行取消操作也不会带来任何影响</span></span><br><span class="line">        task.cancel(<span class="keyword">true</span>);<span class="comment">//如果任务正在运行，那么将被中断</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<center> <h4><font color="#36648B">✎<br>线程异常</font></h4></center>
+
+<p>当一个线程由于未捕获异常而退出时，JVM会把这个事件报告给应用程序提供的<code>UncaughtExceptionHandler</code>异常处理器。如果没有提供任何异常处理器，那么默认的行为是将栈追踪信息输出到<code>System.err</code>。</p>
+<p>只有通过<code>execute</code>提交的任务，才能将它抛出的异常交给未捕获异常处理器，而通过<code>submit</code>提交的任务，无论是抛出的未检查异常还是已检查异常，都将被认为是任务返回状态的一部分。如果一个由submit提交的任务由于抛出了异常而结束，那么这个异常将被<code>Future.get</code>封装在<code>ExecutionException</code>中重新抛出。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/17/Java并发编程实战_06_任务执行/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aFightz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aFightz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/01/17/Java并发编程实战_06_任务执行/" class="post-title-link" itemprop="http://yoursite.com/index.html">06 | 任务执行</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-17 12:45:58" itemprop="dateCreated datePublished" datetime="2020-01-17T12:45:58+08:00">2020-01-17</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-20 11:24:47" itemprop="dateModified" datetime="2020-01-20T11:24:47+08:00">2020-01-20</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/Java并发编程实战/" itemprop="url" rel="index"><span itemprop="name">Java并发编程实战</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <center> <h4><font color="#36648B">✎<br>ExecutorService</font></h4></center>
+
+<p><strong>1、ExecutorService有三种状态：</strong></p>
+<ul>
+<li>运行。</li>
+<li>关闭。</li>
+<li>终止。</li>
+</ul>
+<p><strong>2、ExecutorService的关闭方式：</strong></p>
+<ul>
+<li>shutdown：平缓的关闭。</li>
+<li>shutdownNow：暴力关闭。<blockquote>
+<p>可用awaitTermination来等待ExecutorService到达终止状态，或者调用isTerminated来轮询ExecutorService是否终止。</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>3、ExecutorService等待一组提交任务</strong></p>
+<p><strong>先完成的先返回</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">executorService.submit(一组任务)</span><br><span class="line">循环&#123;</span><br><span class="line">   executorService.take()<span class="comment">//哪个任务优先完成则先返回。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>等待任务全部结束或中断、超时才返回</strong></p>
+<pre><code class="java">List&lt;Future&lt;TravelQuote&gt;&gt; futures = executorService.invokeAll(tasks, time, unit); 
+</code></pre>
+<p><center> <h4><font color="#36648B">✎<br>Timer</font></h4></center><br><strong>Timer的缺陷：</strong><br>例如某个周期TimerTask需要每l0ms执行一次，而另一个TimerTask需要执行40ms，那么这个周期任务或者在40ms任务执行完成后快速连续地调用4次，或者彻底“丢失”4次调用（取决于它是基于固定速率来调度还是基于固定延时来调度）。<br>Timer不会捕获异常，如果任务抛出异常时，Timer不会恢复线程的运行，此时将导致整个定时任务不可用。<br>可用<code>ScheduledThreadPoolExecutor</code>代替Timer。</p>
+<blockquote>
+<p>DelayQueue实现了BlockingQueue，并为ScheduledThreadPoolExecutor提供了调度功能。       </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/02/深入理解Java虚拟机_13_线程安全与锁优化/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aFightz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aFightz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/01/02/深入理解Java虚拟机_13_线程安全与锁优化/" class="post-title-link" itemprop="http://yoursite.com/index.html">13 | 线程安全与锁优化</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-02 22:54:11" itemprop="dateCreated datePublished" datetime="2020-01-02T22:54:11+08:00">2020-01-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-13 11:32:14" itemprop="dateModified" datetime="2020-01-13T11:32:14+08:00">2020-01-13</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/JVM/深入理解Java虚拟机/" itemprop="url" rel="index"><span itemprop="name">深入理解Java虚拟机</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Thread类的<code>suspend()</code>与<code>resume()</code>方法会产生死锁，已废弃。</p>
+<p>Java的线程是映射到操作系统的原生线程之上的，所说要阻塞或唤醒一个线程，需要从<strong>用户态转换到核心态</strong>中，非常耗费时间。<br>Java在通知操作系统阻塞线程之前加入一段<strong>自旋等待</strong> 过程，避免频繁地切入到核心态之中。</p>
+<center> <h4><font color="#36648B">✎<br>互斥同步</font></h4></center>
+
+<p>相比于synchronized，ReentrantLock有以下三个优点：</p>
+<ul>
+<li>等待可中断。</li>
+<li><p>可实现公平锁。</p>
+<ul>
+<li>公平锁：公平锁是指多个线程在等待同一个锁时，必须按照申请锁的时间顺序来依次获得锁。，。</li>
+<li>非公平锁：与公平锁相反，是随机获取锁的。在锁被释放时，任何一个等待锁的线程都有机会获得锁。<blockquote>
+<p>synchronized中的锁是非公平的。ReentrantLock默认情况下也是非公平的，但可以通过带布尔值的构造函数要求使用公平锁。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>锁可以绑定多个条件。</p>
+</li>
+</ul>
+<p>1.6后synchronized与ReentrantLock的性能就基本持平了。</p>
+<center> <h4><font color="#36648B">✎✎<br>非阻塞同步</font></h4></center>
+
+<p>互斥同步属于<strong>悲观并发策略</strong>，非阻塞同步属于<strong>乐观并发策略</strong>。<br>乐观并发策略只能靠硬件来完成（<strong>CAS指令</strong>）。</p>
+<p><strong>1、CAS操作过程：</strong><br>CAS指令需要有3个操作数，分别是内存位置（用v表示）、旧的预期值（用A表示）和新值（用B表示）。<br>CAS指令执行时，当且仅当V符合旧预期值A时，处理器用新值B更新V的值；否则它就不执行更新。无论是否更新了V的值，都会返回V的旧值。</p>
+<p>CAS操作由<code>sun.misc.Unsafe</code>类里面的<code>compareAndSwapInt()</code>和<code>compareAndSwapLong()</code>等几个方法包装提供。</p>
+<p><strong>2、Atomic的incrementAndGet方法源码</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">incrementAndGet</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(;;)&#123;</span><br><span class="line">        <span class="keyword">int</span> current = get(); </span><br><span class="line">        <span class="keyword">int</span> next=current +<span class="number">1</span>; </span><br><span class="line">        <span class="keyword">if</span> (compareAndSet(current,next))</span><br><span class="line">            <span class="keyword">return</span> next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>3、ABA问题</strong><br>CAS存在ABA问题，即一个值修改的顺序为A-&gt;B-&gt;A时，当前赋值无法检测到，仍然认为是正确的赋值。<br>但是一般情况下这种情况都可以忽略，若确实有场景不允许这样的情况，也可以使用<code>AtomicStampedReference</code>实现，它通过控制版本号来实现CAS。</p>
+<center> <h4><font color="#36648B">✎✎<br>锁</font></h4></center>
+
+<p><strong>1、自旋锁</strong><br>挂起线程和恢复线程的操作都需要转入内核态中完成，如果共享数据的锁定状态只会持续很短的一段时间，为了这段时间去挂起和恢复线程并不值得。如果物理机器有一个以上的处理器，能让两个或以上的线程同时并行执行，我们就可以让后面请求锁的那个线程“稍等一下”，但不放弃处理器的执行时间，看看持有锁的线程是否很快就会释放锁。为了让线程等待，我们只需让线程执行一个忙循环（自旋）。<br>自旋锁默认是开启的。</p>
+<p><strong>2、自适应自旋锁</strong><br>若虚拟机会判断如果此线程的此次自旋很有可能会成功，则会让自旋循环更多次，否则就会循环更少次。</p>
+<p><strong>3、锁消除</strong><br>锁消除是指虚拟机即时编译器在运行时，对一些代码上要求同步，但是被检测到不可能存在共享数据竞争的锁进行消除。</p>
+<p><strong>4、锁粗化</strong><br>如果虚拟机探测到有这样一串零碎的操作都对同一个对象加锁，将会把加锁同步的范围扩展（粗化）到整个操作序列的外部。</p>
+<p><strong>5、轻量级锁</strong><br>轻量级锁是默认开启的。<br>传统的锁机制称为重量级锁。重量级锁需要申请系统的互斥量（系统调用）。</p>
+<p>当同步对象没有被锁定时，锁标志位为<strong>01</strong>。<br>当线程尝试去锁定同步对象时：</p>
+<ul>
+<li>若判断同步对象未锁定，会使用CAS尝试将MarkWord更新为指向Lock Record的指针，（Lock Record是线程在栈空间中建立的锁记录，其实就是Mark Word的副本）并将锁标志位置为<strong>00</strong>。</li>
+<li>若发现锁标志位为<strong>00</strong>（轻量级锁定），或者说CAS更新同步对象失败，则判断是不是本线程持有锁（通过判断MarkWord的指针是否指向本线程的Lock Record即可知），如果不是，则将MarkWord存储为指向重量级锁（互斥量）的指针，将锁标志置为<strong>10</strong>，此线程以及后面的线程要进入阻塞状态。</li>
+</ul>
+<p>当持有锁对象执行完，需要释放锁时，使用CAS将Lock Record替换对象的MarkWord指针，如果替换不成功（说明有其他线程尝试获取此锁，MarkWord指针已被改变），则要释放锁的同时，还要唤醒其他等待的线程。</p>
+<blockquote>
+<p>互斥锁还需要唤醒？</p>
+</blockquote>
+<p>如果在绝大部分不存在竞争的情况下，轻量级锁是更好的，但是如有频繁的有竞争，轻量级锁会比重量级锁更慢，因为此时轻量级锁不仅有互斥量的开销，还有CAS操作的开销。</p>
+<p><strong>6、偏向锁</strong><br>当锁对象第一次被线程获取的时候，虚拟机将会把对象头中的标志位设为<strong>01</strong>，即<strong>偏向模式</strong>。同时使用CAS操作把获取到这个锁的线程的ID记录在对象的Mark Word之中，如果CAS操作成功，持有偏向锁的线程以后每次进人这个锁相关的同步块时，虚拟机都可以不再进行任何同步操作。</p>
+<p>当有另外一个线程去尝试获取这个锁时，偏向模式就宣告结束。撤销偏向（Revoke Bias）后恢复到未锁定（标志位为<strong>01</strong>）或轻量级锁定（标志位为<strong>00</strong>）的状态，后续的同步操作就如上面介绍的轻量级锁那样执行。</p>
+<p><img src="/2020/01/02/深入理解Java虚拟机_13_线程安全与锁优化/偏向锁、轻量级锁的状态转化及对象Mark Word的关系.png" alt=""></p>
+<p>对于大多数锁都是被同一线程获取的情况，使用偏向锁更好。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/31/Java并发编程实战_01_简介/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="aFightz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="aFightz">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/12/31/Java并发编程实战_01_简介/" class="post-title-link" itemprop="http://yoursite.com/index.html">01 | 简介</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-31 12:15:21" itemprop="dateCreated datePublished" datetime="2019-12-31T12:15:21+08:00">2019-12-31</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-01-13 12:36:17" itemprop="dateModified" datetime="2020-01-13T12:36:17+08:00">2020-01-13</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/" itemprop="url" rel="index"><span itemprop="name">学习笔记</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+                  ，
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/学习笔记/Java/Java并发编程实战/" itemprop="url" rel="index"><span itemprop="name">Java并发编程实战</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在大多数现代操作系统中，都是以线程为基本的调度单位。<br>同一个进程中的所有线程都将<strong>共享</strong>进程的内存地址空间。</p>
+<center> <h4><font color="#36648B">✎<br>线程注解</font></h4></center>
+
+<ul>
+<li><code>@NotThreadSafe</code></li>
+<li><code>@ThreadSafe</code></li>
+<li><code>@Immutable</code></li>
+<li><code>@GuardedBy</code></li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">aFightz</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">98</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">35</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">aFightz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.5.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
